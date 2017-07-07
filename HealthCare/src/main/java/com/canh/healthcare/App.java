@@ -3,6 +3,8 @@ package com.canh.healthcare;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 
+import com.canh.healthcare.mdimanager.HealthCareMain;
+
 /**
  * 
  * @author canh
@@ -21,7 +23,7 @@ public class App {
 		    // If Nimbus is not available, you can set the GUI to another look and feel.
 		}
 		HealthCareMain healthCareMain = new HealthCareMain();
-		healthCareMain.setSize(800, 600);
+		healthCareMain.setSize(800, 400);
 		healthCareMain.setVisible(true);
 	}
 }

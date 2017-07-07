@@ -1,4 +1,4 @@
-package com.canh.healthcare;
+package com.canh.healthcare.mdimanager;
 
 import java.awt.Dimension;
 import java.awt.Insets;

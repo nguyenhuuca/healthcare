@@ -1,4 +1,4 @@
-package com.canh.healthcare;
+package com.canh.healthcare.mdimanager;
 
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JInternalFrame;

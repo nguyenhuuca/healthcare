@@ -1,4 +1,4 @@
-package com.canh.healthcare;
+package com.canh.healthcare.mdimanager;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
@@ -13,6 +13,8 @@ import javax.swing.JMenuItem;
 import javax.swing.JScrollPane;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
+
+import com.canh.healthcare.mdimanager.patientgui.PatientForm;
 
 // Referenced from http://www.javaworld.com/javaworld/jw-05-2001/jw-0525-mdi.html
 
@@ -30,12 +32,13 @@ public class HealthCareMain extends JFrame {
 	private JScrollPane scrollPane = new JScrollPane();
 
 	public HealthCareMain() {
+		setLocationRelativeTo(null);
 		menuBar.add(fileMenu);
 		menuBar.add(medicalMenu);
 		menuBar.add(new WindowMenu(desktop));
 		fileMenu.add(newMenu);
 		setJMenuBar(menuBar);
-		setTitle("MDI Test");
+		setTitle("HealthCare Anh Thy");
 		scrollPane.getViewport().add(desktop);
 		getContentPane().setLayout(new BorderLayout());
 		getContentPane().add(scrollPane, BorderLayout.CENTER);
@@ -47,7 +50,7 @@ public class HealthCareMain extends JFrame {
 		});
 		newMenu.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				desktop.add(new TextFrame());
+				desktop.add(new PatientForm());
 			}
 		});
 
