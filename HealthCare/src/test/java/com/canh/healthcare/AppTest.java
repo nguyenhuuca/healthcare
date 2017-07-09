@@ -50,7 +50,7 @@ public class AppTest
     	Session session = HibernateUtil.getSessionFactory().openSession();
 		session.beginTransaction();
  
-		AppUser user = new AppUser("firstuser");
+		AppUser user = new AppUser("firstuser","123456","test");
 		session.save(user);
  
 		session.getTransaction().commit();
