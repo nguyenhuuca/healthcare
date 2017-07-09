@@ -32,7 +32,7 @@ public class HealthCareMain extends JFrame {
 	private JScrollPane scrollPane = new JScrollPane();
 
 	public HealthCareMain() {
-		setLocationRelativeTo(null);
+		//setLocationRelativeTo(null);
 		menuBar.add(fileMenu);
 		menuBar.add(medicalMenu);
 		menuBar.add(new WindowMenu(desktop));

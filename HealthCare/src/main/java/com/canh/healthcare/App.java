@@ -13,14 +13,15 @@ import com.canh.healthcare.mdimanager.HealthCareMain;
 public class App {
 	public static void main(String[] args) {
 		try {
-		    for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-		        if ("Nimbus".equals(info.getName())) {
-		            UIManager.setLookAndFeel(info.getClassName());
-		            break;
-		        }
-		    }
+			/*
+			 * for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels())
+			 * { if ("Nimbus".equals(info.getName())) {
+			 * UIManager.setLookAndFeel(info.getClassName()); break; } }
+			 */
+			UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
 		} catch (Exception e) {
-		    // If Nimbus is not available, you can set the GUI to another look and feel.
+			// If Nimbus is not available, you can set the GUI to another look
+			// and feel.
 		}
 		HealthCareMain healthCareMain = new HealthCareMain();
 		healthCareMain.setSize(800, 400);
