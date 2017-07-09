@@ -5,6 +5,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
 import com.canh.healthcare.jpa.entity.AppUser;
+import com.canh.healthcare.jpa.utils.HibernateUtil;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -43,9 +44,10 @@ public class AppTest
     }
     
     public void testApp1() {
-		SessionFactory sessionFactory = new Configuration().configure()
-				.buildSessionFactory();
-		Session session = sessionFactory.openSession();
+		//SessionFactory sessionFactory = new Configuration().configure()
+		//		.buildSessionFactory();
+		//Session session = sessionFactory.openSession();
+    	Session session = HibernateUtil.getSessionFactory().openSession();
 		session.beginTransaction();
  
 		AppUser user = new AppUser("firstuser");
