@@ -24,7 +24,7 @@ public class App {
 			// and feel.
 		}
 		HealthCareMain healthCareMain = new HealthCareMain();
-		healthCareMain.setSize(800, 400);
+		healthCareMain.setSize(1024, 400);
 		healthCareMain.setVisible(true);
 	}
 }

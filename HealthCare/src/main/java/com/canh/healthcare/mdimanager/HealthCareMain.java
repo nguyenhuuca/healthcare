@@ -15,7 +15,6 @@ import javax.swing.JScrollPane;
 
 import com.canh.healthcare.mdimanager.authgui.LoginForm;
 import com.canh.healthcare.mdimanager.patientgui.PatientForm;
-import com.canh.healthcare.mdimanager.utils.GUIUtils;
 
 // Referenced from http://www.javaworld.com/javaworld/jw-05-2001/jw-0525-mdi.html
 
