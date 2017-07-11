@@ -1,6 +1,7 @@
 package com.canh.healthcare.mdimanager.patientgui;
 
 import java.awt.BorderLayout;
+import java.awt.ComponentOrientation;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -11,6 +12,8 @@ import javax.swing.JButton;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 
 public class PatientForm extends JInternalFrame {
@@ -37,6 +40,11 @@ public class PatientForm extends JInternalFrame {
 	private JLabel lblUrgentContact = new JLabel("LHKC");
 	private JTextField txtUrgent = new JTextField(20);
 	private JButton buttonLogin = new JButton("Tạo mới");
+	
+	// create control for list area
+	private JLabel lblIdSearch = new JLabel("Tìm kiếm");
+	private JTextField txtSearch = new JTextField(10);
+	private JButton btnSearch = new JButton("Tìm");
 
 	public PatientForm() {
 		super();
@@ -50,11 +58,12 @@ public class PatientForm extends JInternalFrame {
 		this.setTitle("Thông tin bệnh nhân");
 		this.setVisible(true);
 		// setLocationRelativeTo(null);
+		pack();
 	}
 
 	public void createInputForm() {
 		JPanel newPanel = new JPanel(new GridBagLayout());
-		newPanel.setPreferredSize(new Dimension(300, 200));
+		newPanel.setPreferredSize(new Dimension(950, 150));
 		// newPanel.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
 		GridBagConstraints constraints = new GridBagConstraints();
 		constraints.anchor = GridBagConstraints.WEST;
@@ -63,10 +72,10 @@ public class PatientForm extends JInternalFrame {
 		 * newPanel.add(new Gap(GAP), pos.nextCol()); newPanel.add(txtId,
 		 * pos.nextCol());
 		 */
-		//constraints.insets = new Insets(5, 10, 5, 10);
+		// constraints.insets = new Insets(5, 10, 5, 10);
 		constraints.weightx = 0;
 		constraints.weighty = 0;
-		constraints.fill=GridBagConstraints.VERTICAL;
+		constraints.fill = GridBagConstraints.VERTICAL;
 		// add components to the panel
 
 		constraints.gridx = 0;
@@ -138,18 +147,66 @@ public class PatientForm extends JInternalFrame {
 		newPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Thông tin bệnh nhân"));
 
 		// add the panel to this frame
-		
-		//newPanel.setSize(950,200);
+
+		// newPanel.setSize(950,200);
 		add(newPanel);
-		pack();
-		
+		// pack();
+
 	}
 
 	public void createListPatient() {
 		JPanel pnlListPatient = new JPanel(new GridBagLayout());
-		add(pnlListPatient, BorderLayout.AFTER_LAST_LINE);
+		pnlListPatient.setPreferredSize(new Dimension(950, 200));
 		pnlListPatient.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Danh sách"));
+		pnlListPatient.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
+		GridBagConstraints setup = new GridBagConstraints();
+		Object rowData[][] = { { "Row1-Column1", "Row1-Column2", "Row1-Column3","Row1-Column1", "Row1-Column2", "Row1-Column3" ,"Row1-Column1", "Row1-Column2", "Row1-Column3"  },
+				{ "Row2-Column1", "Row2-Column2", "Row2-Column3","Row2-Column1", "Row2-Column2", "Row2-Column3","Row2-Column1", "Row2-Column2", "Row2-Column3" } };
+		Object columnNames[] = { "Id", "Tên bệnh nhân", "Năm sinh","Giới tính","Ngày khám ĐT","Địa chỉ","SĐT","Người thân","LHKC" };
+		JTable table = new JTable(rowData, columnNames);
+
+		JScrollPane scrollPane = new JScrollPane(table);
+		setup.anchor = GridBagConstraints.WEST;
+		setup.gridwidth = 1;
+		setup.weightx = 0;
+		setup.weighty = 0;
+		//setup.insets = new Insets(3, 3, 3, 30);
+		//setup.weighty = 0;
+		//setup.fill = GridBagConstraints.HORIZONTAL;
+		setup.gridx = 0;
+		setup.gridy = 0;
+		pnlListPatient.add(lblIdSearch, setup);
+		setup.gridx = 1;
+		setup.gridwidth = 1;
+		txtSearch.setMinimumSize(txtSearch.getPreferredSize());
+		pnlListPatient.add(txtSearch, setup);
+		setup.gridx = 2;
+		setup.gridwidth = 4;
+		setup.fill = GridBagConstraints.WEST;
 		
-		//pnlListPatient.setVisible(true);
+		//btnSearch.setSize(new Dimension(50, 20));
+		//btnSearch.setMinimumSize(btnSearch.getPreferredSize());
+		pnlListPatient.add(btnSearch, setup);
+		
+		
+		
+        
+		//table.setFillsViewportHeight(true);
+	    setup.fill = GridBagConstraints.BOTH;
+	    //table.setPreferredScrollableViewportSize(new Dimension(450, 150));
+		setup.weightx = 1;
+		setup.weighty = 1;
+		//setup.fill = GridBagConstraints.VERTICAL;
+		setup.gridx = 0;
+		setup.gridy = 1;
+		setup.gridwidth = 6;
+		pnlListPatient.add(scrollPane, setup);
+		pnlListPatient.setSize(300, 150);
+		pnlListPatient.setVisible(true);
+		add(pnlListPatient, BorderLayout.AFTER_LAST_LINE);
+		
+		//add(pnlListPatient, BorderLayout.AFTER_LAST_LINE);
+
+		// pnlListPatient.setVisible(true);
 	}
 }
