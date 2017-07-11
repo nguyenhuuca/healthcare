@@ -2,15 +2,20 @@ package com.canh.healthcare.model;
 
 import java.util.Date;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
 public class Patient {
 	int id;
 	String name;
-	Date birthDay;
+	String birthDay;
 	boolean male;
 	String address;
 	String mobile;
 	String familyContact;
-	Date firstJoin = new Date();
+	Date firstDateJoin = new Date();
+	String urgentContact;
 
 	public int getId() {
 		return id;
@@ -26,14 +31,6 @@ public class Patient {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public Date getBirthDay() {
-		return birthDay;
-	}
-
-	public void setBirthDay(Date birthDay) {
-		this.birthDay = birthDay;
 	}
 
 	public boolean isMale() {
@@ -68,12 +65,27 @@ public class Patient {
 		this.familyContact = familyContact;
 	}
 
-	public Date getFirstJoin() {
-		return firstJoin;
+	public String getBirthDay() {
+		return birthDay;
 	}
 
-	public void setFirstJoin(Date firstJoin) {
-		this.firstJoin = firstJoin;
+	public void setBirthDay(String birthDay) {
+		this.birthDay = birthDay;
 	}
 
+	public Date getFirstDateJoin() {
+		return firstDateJoin;
+	}
+
+	public void setFirstDateJoin(Date firstDateJoin) {
+		this.firstDateJoin = firstDateJoin;
+	}
+
+	public String getUrgentContact() {
+		return urgentContact;
+	}
+
+	public void setUrgentContact(String urgentContact) {
+		this.urgentContact = urgentContact;
+	}
 }

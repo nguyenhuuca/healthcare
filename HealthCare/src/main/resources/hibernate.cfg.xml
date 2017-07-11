@@ -11,6 +11,8 @@
         <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/TestDb</property>
         <property name="hibernate.connection.username">postgres</property>
         <property name="hibernate.connection.password">123456</property>
+        <property name="show_sql">true</property>
+        <property name="format_sql">true</property>
 
 		
 		<!-->property name="hibernate.temp.use_jdbc_metadata_defaults">false</property -->
@@ -21,10 +23,11 @@
         <property name="show_sql">true</property>
 
         <!-- Drop and re-create all database on startup -->
-        <!--property name="hibernate.hbm2ddl.auto">create-drop</property-->
+        <property name="hibernate.hbm2ddl.auto">update</property>
 
         <!-- Annotated entity classes -->
         <mapping class="com.canh.healthcare.jpa.entity.AppUser"/>
+        <mapping class="com.canh.healthcare.jpa.entity.PatientEnt"/>
         
     </session-factory>
 </hibernate-configuration>

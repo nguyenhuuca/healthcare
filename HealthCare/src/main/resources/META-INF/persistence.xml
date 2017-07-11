@@ -2,10 +2,11 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
 	version="2.0">
-	<persistence-unit name="jpa-healthcare">
+	<persistence-unit name="jpa-healthcare" transaction-type="RESOURCE_LOCAL">
 		<provider>org.hibernate.ejb.HibernatePersistence</provider>
 		<!-- Annotated entity classes -->
 		<class>com.canh.healthcare.jpa.entity.AppUser</class>
+		<class>com.canh.healthcare.jpa.entity.PatientEnt</class>
 		<properties>
 			<property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/TestDb" />
 			<property name="javax.persistence.jdbc.user" value="postgres" />
@@ -14,7 +15,7 @@
 			<property name="hibernate.show_sql" value="true" />
 			<property name="hibernate.format_sql" value="true" />
 			<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" />
-			<property name="hibernate.hbm2ddl.auto" value="validate" />
+			<property name="hibernate.hbm2ddl.auto" value="update" />
 			<!-- Configuring Connection Pool -->
 			<!-->property name="hibernate.c3p0.min_size" value="5" /> <property name="hibernate.c3p0.max_size" 
 				value="20" /> <property name="hibernate.c3p0.timeout" value="500" /> <property 

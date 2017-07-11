@@ -1,13 +1,11 @@
 package com.canh.healthcare;
 
-import javax.persistence.EntityManager;
-import javax.persistence.Persistence;
+import java.util.List;
 
-import org.hibernate.Session;
+import javax.persistence.EntityManager;
 
 import com.canh.healthcare.jpa.entity.AppUser;
 import com.canh.healthcare.jpa.utils.EntityManagerUtil;
-import com.canh.healthcare.jpa.utils.HibernateUtil;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -42,7 +40,7 @@ public class AppTest extends TestCase {
 	public void testApp() {
 		assertTrue(true);
 	}
-
+    /*
 	public void testApp1() {
 		// SessionFactory sessionFactory = new Configuration().configure()
 		// .buildSessionFactory();
@@ -55,8 +53,8 @@ public class AppTest extends TestCase {
 
 		session.getTransaction().commit();
 		session.close();
-	}
-
+	}*/
+    
 	public void testApp2() {
 		entityManager = EntityManagerUtil.getEntityManager();
 
@@ -67,5 +65,40 @@ public class AppTest extends TestCase {
 
 		entityManager.getTransaction().commit();
 		entityManager.close();
+	}
+	/*
+	public void testPatient(){
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		session.beginTransaction();
+		
+        Patient patient = new Patient();
+		patient.setAddress("canh test");
+		patient.setBirthDay("1990");
+		patient.setFamilyContact("tan binh");
+		patient.setFirstDateJoin(new Date());
+		patient.setMale(true);
+		patient.setMobile("0123456");
+		patient.setName("Nguyễn Ca");
+		patient.setUrgentContact("Vợ");
+		PatientEnt patientEnt = new PatientEnt(patient);
+		session.save(patientEnt);
+
+		session.getTransaction().commit();
+		session.close();
+		
+	} */
+	public void testPatient2(){
+		//Session session = HibernateUtil.getSessionFactory().openSession();
+		entityManager = EntityManagerUtil.getEntityManager();
+		entityManager.getTransaction().begin();
+		//Query query = session.getNamedQuery("findPatientById")
+		//		.setString("idPatient", "1");
+		int id = 1;
+		List patientEnt = entityManager.createNamedQuery("findPatientById")
+				.setParameter("idPatient", id)
+				.getResultList();
+		entityManager.getTransaction().commit();
+		entityManager.close();
+		//session.close();
 	}
 }
