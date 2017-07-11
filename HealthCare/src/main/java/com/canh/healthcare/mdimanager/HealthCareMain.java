@@ -15,6 +15,7 @@ import javax.swing.JScrollPane;
 
 import com.canh.healthcare.mdimanager.authgui.LoginForm;
 import com.canh.healthcare.mdimanager.patientgui.PatientForm;
+import com.canh.healthcare.mdimanager.utils.GUIUtils;
 
 // Referenced from http://www.javaworld.com/javaworld/jw-05-2001/jw-0525-mdi.html
 
@@ -34,7 +35,7 @@ public class HealthCareMain extends JFrame {
 	private JScrollPane scrollPane = new JScrollPane();
 
 	public HealthCareMain() {
-		// setLocationRelativeTo(null);
+		//setLocationRelativeTo(null);
 		menuBar.add(fileMenu);
 		menuBar.add(medicalMenu);
 		menuBar.add(new WindowMenu(desktop));
@@ -54,7 +55,9 @@ public class HealthCareMain extends JFrame {
 		});
 		newMenu.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				desktop.add(new PatientForm());
+				PatientForm patientForm = new PatientForm();
+				desktop.add(patientForm);
+				GUIUtils.centerWithinDesktop(patientForm);
 			}
 		});
 		loginMnuItem.addActionListener(new ActionListener() {
@@ -62,12 +65,13 @@ public class HealthCareMain extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				LoginForm f = new LoginForm();
-				desktop.add(f);
-				Dimension parentSize = desktop.getSize();
-				Dimension childSize = f.getSize();
+				desktop.add(f);;
+				GUIUtils.centerWithinDesktop(f);
+				//Dimension parentSize = desktop.getSize();
+				//Dimension childSize = f.getSize()
 				// set center screen
-				f.setLocation((parentSize.width - childSize.width) / 2, (parentSize.height - childSize.height) / 2);
-				f.setVisible(true);
+				//f.setLocation((parentSize.width - childSize.width) / 2, (parentSize.height - childSize.height) / 2);
+				//f.setVisible(true);
 
 			}
 		});

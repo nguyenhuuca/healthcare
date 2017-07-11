@@ -1,7 +1,8 @@
 package com.canh.healthcare;
 
+import java.awt.Dimension;
+
 import javax.swing.UIManager;
-import javax.swing.UIManager.LookAndFeelInfo;
 
 import com.canh.healthcare.mdimanager.HealthCareMain;
 
@@ -24,7 +25,9 @@ public class App {
 			// and feel.
 		}
 		HealthCareMain healthCareMain = new HealthCareMain();
-		healthCareMain.setSize(1024, 600);
+		Dimension d= healthCareMain.getMaximumSize();
+		healthCareMain.setSize(1024,600 );
 		healthCareMain.setVisible(true);
+	
 	}
 }

@@ -67,8 +67,10 @@ public class LoginForm extends JInternalFrame {
 		// add the panel to this frame
 		add(newPanel);
 
-		pack();
 		setSize(400, 200);
+		setVisible(true);
+		pack();
+		
 		//this.setVisible(true);
 		//setPreferredSize(new Dimension(200, 300));
 		//setMaximumSize(new Dimension(200, 300));
