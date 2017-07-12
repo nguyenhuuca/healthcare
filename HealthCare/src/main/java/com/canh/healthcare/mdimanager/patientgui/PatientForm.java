@@ -5,18 +5,26 @@ import java.awt.ComponentOrientation;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Date;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
-public class PatientForm extends JInternalFrame {
+import com.canh.healthcare.model.PatientDto;
+
+import services.impl.PatientServiceImpl;
+import services.interfaces.PatientService;
+
+public class PatientForm extends JInternalFrame implements ActionListener {
 
 	// private static final int BORDER = 12; // Window border in pixels.
 	// private static final int GAP = 5; // Default gap btwn components.
@@ -39,12 +47,13 @@ public class PatientForm extends JInternalFrame {
 	private JTextField txtFamilyContact = new JTextField(20);
 	private JLabel lblUrgentContact = new JLabel("LHKC");
 	private JTextField txtUrgent = new JTextField(20);
-	private JButton buttonLogin = new JButton("Tạo mới");
+	private JButton btnNewPatient = new JButton("Tạo mới");
 	
 	// create control for list area
 	private JLabel lblIdSearch = new JLabel("Tìm kiếm");
 	private JTextField txtSearch = new JTextField(10);
 	private JButton btnSearch = new JButton("Tìm");
+	PatientService service = new PatientServiceImpl();
 
 	public PatientForm() {
 		super();
@@ -141,7 +150,8 @@ public class PatientForm extends JInternalFrame {
 		constraints.gridy = 3;
 		constraints.gridwidth = 6;
 		constraints.anchor = GridBagConstraints.CENTER;
-		newPanel.add(buttonLogin, constraints);
+		btnNewPatient.addActionListener(this);
+		newPanel.add(btnNewPatient, constraints);
 
 		// set border for the panel
 		newPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Thông tin bệnh nhân"));
@@ -208,5 +218,28 @@ public class PatientForm extends JInternalFrame {
 		//add(pnlListPatient, BorderLayout.AFTER_LAST_LINE);
 
 		// pnlListPatient.setVisible(true);
+	}
+	
+	public void createNewPatient(){
+		PatientDto patient = new PatientDto();
+		patient.setAddress(txtAddress.getText());
+		patient.setBirthDay(txtBirthDate.getText());
+		patient.setFamilyContact(txtFamilyContact.getText());
+		patient.setFirstDateJoin(new Date());
+		patient.setMale(true);
+		patient.setMobile(txtMobile.getText());
+		patient.setName(txtName.getText());
+		patient.setUrgentContact(txtUrgent.getText());
+		service.create(patient);
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		if(e.getSource() == btnNewPatient) {
+			createNewPatient();
+			JOptionPane.showMessageDialog(null, "My Goodness, this is so concise");
+		}
+		
 	}
 }

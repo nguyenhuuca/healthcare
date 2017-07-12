@@ -27,7 +27,9 @@
 
         <!-- Annotated entity classes -->
         <mapping class="com.canh.healthcare.jpa.entity.AppUser"/>
-        <mapping class="com.canh.healthcare.jpa.entity.PatientEnt"/>
+        <mapping class="com.canh.healthcare.jpa.entity.Patient"/>
+        <mapping class="com.canh.healthcare.jpa.entity.PatientRecord"/>
+        <mapping class="com.canh.healthcare.jpa.entity.Medicine"/>
         
     </session-factory>
 </hibernate-configuration>

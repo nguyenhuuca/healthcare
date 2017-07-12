@@ -1,11 +1,17 @@
 package com.canh.healthcare;
 
-import java.util.List;
+import java.util.Date;
 
 import javax.persistence.EntityManager;
 
+import org.hibernate.Session;
+
 import com.canh.healthcare.jpa.entity.AppUser;
+import com.canh.healthcare.jpa.entity.Patient;
+import com.canh.healthcare.jpa.entity.PatientRecord;
 import com.canh.healthcare.jpa.utils.EntityManagerUtil;
+import com.canh.healthcare.jpa.utils.HibernateUtil;
+import com.canh.healthcare.model.PatientDto;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -65,13 +71,13 @@ public class AppTest extends TestCase {
 
 		entityManager.getTransaction().commit();
 		entityManager.close();
-	}
-	/*
+	} 
+	
 	public void testPatient(){
-		Session session = HibernateUtil.getSessionFactory().openSession();
-		session.beginTransaction();
+		entityManager = EntityManagerUtil.getEntityManager();
+		entityManager.getTransaction().begin();
 		
-        Patient patient = new Patient();
+        PatientDto patient = new PatientDto();
 		patient.setAddress("canh test");
 		patient.setBirthDay("1990");
 		patient.setFamilyContact("tan binh");
@@ -80,14 +86,16 @@ public class AppTest extends TestCase {
 		patient.setMobile("0123456");
 		patient.setName("Nguyễn Ca");
 		patient.setUrgentContact("Vợ");
-		PatientEnt patientEnt = new PatientEnt(patient);
-		session.save(patientEnt);
-
-		session.getTransaction().commit();
-		session.close();
+		Patient patientEnt = new Patient(patient);
+		PatientRecord petientRecord = new PatientRecord(patientEnt, new Date() );
+		//patientEnt.getPattientRecords().add(petientRecord);
+		entityManager.persist(patientEnt);
+		entityManager.getTransaction().commit();
+		entityManager.close();
 		
-	} */
-	public void testPatient2(){
+	} 
+	
+	/*public void testPatient2(){
 		//Session session = HibernateUtil.getSessionFactory().openSession();
 		entityManager = EntityManagerUtil.getEntityManager();
 		entityManager.getTransaction().begin();
@@ -100,5 +108,5 @@ public class AppTest extends TestCase {
 		entityManager.getTransaction().commit();
 		entityManager.close();
 		//session.close();
-	}
+	}*/
 }

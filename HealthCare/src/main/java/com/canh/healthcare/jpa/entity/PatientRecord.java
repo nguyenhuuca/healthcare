@@ -2,6 +2,8 @@ package com.canh.healthcare.jpa.entity;
 
 import java.util.Date;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -20,6 +22,14 @@ public class PatientRecord {
 	int patientRecordId;
 	Date dateCome;
 	Patient patient;
+	
+	public PatientRecord(){
+		
+	}
+	public PatientRecord(Patient patient, Date date){
+		this.patient = patient;
+		this.dateCome = date;
+	}
 	public int getPatientRecordId() {
 		return patientRecordId;
 	}
@@ -36,6 +46,7 @@ public class PatientRecord {
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id", nullable = false)
+	@Access(AccessType.PROPERTY)
 	public Patient getPatient() {
 		return patient;
 	}

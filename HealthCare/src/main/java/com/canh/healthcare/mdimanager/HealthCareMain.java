@@ -19,7 +19,7 @@ import com.canh.healthcare.mdimanager.utils.GUIUtils;
 
 // Referenced from http://www.javaworld.com/javaworld/jw-05-2001/jw-0525-mdi.html
 
-public class HealthCareMain extends JFrame {
+public class HealthCareMain extends JFrame  {
 	private MDIDesktopPane desktop = new MDIDesktopPane();
 
 	private JMenuBar menuBar = new JMenuBar();

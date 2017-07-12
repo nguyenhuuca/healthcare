@@ -5,8 +5,10 @@
 	<persistence-unit name="jpa-healthcare" transaction-type="RESOURCE_LOCAL">
 		<provider>org.hibernate.ejb.HibernatePersistence</provider>
 		<!-- Annotated entity classes -->
-		<class>com.canh.healthcare.jpa.entity.AppUser</class>
-		<class>com.canh.healthcare.jpa.entity.PatientEnt</class>
+		<!--class>com.canh.healthcare.jpa.entity.AppUser</class>
+		<class>com.canh.healthcare.jpa.entity.Patient</class>
+		<class>com.canh.healthcare.jpa.entity.PatientRecord</class>
+        <class>com.canh.healthcare.jpa.entity.Medicine</class-->
 		<properties>
 			<property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/TestDb" />
 			<property name="javax.persistence.jdbc.user" value="postgres" />
