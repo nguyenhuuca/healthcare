@@ -1,25 +1,29 @@
 package com.canh.healthcare.jpa.entity;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedNativeQueries;
 import javax.persistence.NamedNativeQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.canh.healthcare.model.Patient;
+import com.canh.healthcare.model.PatientDto;
 @Entity
 @Table(name = "patients")
 @NamedNativeQueries({
-	@NamedNativeQuery(name = "findPatientById",query = " select * from patients p where p.id = :idPatient ",resultClass = PatientEnt.class
-	),@NamedNativeQuery(name = "findPatientById2",query = " select * from patients p ",resultClass = PatientEnt.class
+	@NamedNativeQuery(name = "findPatientById",query = " select * from patients p where p.id = :idPatient ",resultClass = Patient.class
+	),@NamedNativeQuery(name = "findPatientById2",query = " select * from patients p ",resultClass = Patient.class
 			)
 })
-public class PatientEnt {
+public class Patient {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,11 +36,12 @@ public class PatientEnt {
 	String familyContact;
 	Date firstDateJoin = new Date();
 	String urgentContact;
+	List<PatientRecord> pattientRecords = new ArrayList<PatientRecord>();
 
-	public PatientEnt() {
+	public Patient() {
 
 	}
-	public PatientEnt(Patient patient) {
+	public Patient(PatientDto patient) {
 		this.address = patient.getAddress();
 		this.birthDay = patient.getBirthDay();
 		this.familyContact= patient.getFamilyContact();
@@ -126,4 +131,12 @@ public class PatientEnt {
 	public void setUrgentContact(String urgentContact) {
 		this.urgentContact = urgentContact;
 	}
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "patient")
+	public List<PatientRecord> getPattientRecords() {
+		return pattientRecords;
+	}
+	public void setPattientRecords(List<PatientRecord> pattientRecords) {
+		this.pattientRecords = pattientRecords;
+	}
+	
 }

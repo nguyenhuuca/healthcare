@@ -1,10 +1,10 @@
 package services.interfaces;
 
-import com.canh.healthcare.model.Patient;
+import com.canh.healthcare.model.PatientDto;
 
 public interface PatientService {
-	public void create();
-	public void update();
-	public Patient findPatientById(int id);
+	public void create(PatientDto patient);
+	public void update(PatientDto patient);
+	public PatientDto findPatientById(int id);
 
 }

@@ -2,11 +2,7 @@ package com.canh.healthcare.model;
 
 import java.util.Date;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-
-public class Patient {
+public class PatientDto {
 	int id;
 	String name;
 	String birthDay;

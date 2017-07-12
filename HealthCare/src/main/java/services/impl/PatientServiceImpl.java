@@ -2,7 +2,8 @@ package services.impl;
 
 import javax.persistence.EntityManager;
 
-import com.canh.healthcare.model.Patient;
+import com.canh.healthcare.jpa.entity.Patient;
+import com.canh.healthcare.model.PatientDto;
 
 import services.interfaces.PatientService;
 
@@ -15,21 +16,25 @@ public class PatientServiceImpl implements PatientService {
 	}
 
 	@Override
-	public void create() {
+	public void create(PatientDto patient) {
 		// TODO Auto-generated method stub
+		Patient patientEnt = new Patient(patient); 
+		em.persist(patientEnt);
 
 	}
 
 	@Override
-	public void update() {
+	public void update(PatientDto patient) {
 		// TODO Auto-generated method stub
+		Patient patientEnt = new Patient(patient); 
+		patientEnt = em.merge(patientEnt);
 
 	}
 
 	@Override
-	public Patient findPatientById(int id) {
+	public PatientDto findPatientById(int id) {
 		// TODO Auto-generated method stub
-		return (Patient)em.createNamedQuery("findPatientById")
+		return (PatientDto)em.createNamedQuery("findPatientById")
 				.setParameter("idPatient", id)
 				.getSingleResult();
 	}
