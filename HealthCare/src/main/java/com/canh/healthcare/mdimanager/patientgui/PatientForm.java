@@ -187,9 +187,11 @@ public class PatientForm extends JInternalFrame implements ActionListener {
 
 		JScrollPane scrollPane = new JScrollPane(table);
 		int prefBarWidth = scrollPane.getVerticalScrollBar().getPreferredSize().width;
-		//scrollPane.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-		//scrollPane.setViewportView(table);
-		//scrollPane.getVerticalScrollBar().setPreferredSize(new Dimension(table.getPreferredSize().width + prefBarWidth, 0));
+		// scrollPane.setBorder(BorderFactory.createEmptyBorder(20, 20, 20,
+		// 20));
+		// scrollPane.setViewportView(table);
+		// scrollPane.getVerticalScrollBar().setPreferredSize(new
+		// Dimension(table.getPreferredSize().width + prefBarWidth, 0));
 		setup.anchor = GridBagConstraints.WEST;
 		setup.gridwidth = 1;
 		setup.weightx = 0;
@@ -244,24 +246,29 @@ public class PatientForm extends JInternalFrame implements ActionListener {
 		patientBusiness.create(patient);
 	}
 
-	public void populateJtable(DefaultTableModel model){
-		String rowData[][] = { { "Row1-Column1", "Row1-Column2", "Row1-Column3","Row1-Column1", "Row1-Column2", "Row1-Column3" ,"Row1-Column1", "Row1-Column2", "Row1-Column3"  },
-				{ "Row2-Column2dfdf", "Row2-Column2", "Row2-Column3","Row2-Column1", "Row2-Column2", "Row2-Column3","Row2-Column1", "Row2-Column2", "Row2-Column3" },
-				{ "Row2-Column2dfdf", "Row2-Column2", "Row2-Column3","Row2-Column1", "Row2-Column2", "Row2-Column3","Row2-Column1", "Row2-Column2", "Row2-Column3" } ,
-				{ "Row2-Column2dfdf", "Row2-Column2", "Row2-Column3","Row2-Column1", "Row2-Column2", "Row2-Column3","Row2-Column1", "Row2-Column2", "Row2-Column3" } ,
-				{ "Row2-Column2dfdf", "Row2-Column2", "Row2-Column3","Row2-Column1", "Row2-Column2", "Row2-Column3","Row2-Column1", "Row2-Column2", "Row2-Column3" } ,
-				{ "Row2-Column2dfdf", "Row2-Column2", "Row2-Column3","Row2-Column1", "Row2-Column2", "Row2-Column3","Row2-Column1", "Row2-Column2", "Row2-Column3" } ,
-				{ "Row2-Column2dfdf", "Row2-Column2", "Row2-Column3","Row2-Column1", "Row2-Column2", "Row2-Column3","Row2-Column1", "Row2-Column2", "Row2-Column3" } ,
-				{ "Row2-Column2dfdf", "Row2-Column2", "Row2-Column3","Row2-Column1", "Row2-Column2", "Row2-Column3","Row2-Column1", "Row2-Column2", "Row2-Column3" } ,
-				{ "Row2-Column2dfdf", "Row2-Column2", "Row2-Column3","Row2-Column1", "Row2-Column2", "Row2-Column3","Row2-Column1", "Row2-Column2", "Row2-Column3" } };
-		List<String[]> ar = new ArrayList<String[]>();
-		for (int i = 0; i < rowData.length; i++) {
-		      ar.add(rowData[i]);
-		    }
-		
+	public void populateJtable(DefaultTableModel model) {
+		PatientDto patientDto = patientBusiness.findPatientById(1);
+		List<PatientDto> patientDtoLst = patientBusiness.findAll();
+		//patientDtoLst.add(patientDto);
+		List<Object[]> ar = new ArrayList<Object[]>();
+		for (int i = 0; i < patientDtoLst.size(); i++) {
+			int id = patientDtoLst.get(i).getId();
+			String name = patientDtoLst.get(i).getName();
+			String birthDay = patientDtoLst.get(i).getBirthDay();
+			boolean male = patientDtoLst.get(i).isMale();
+			Date firstDate = patientDtoLst.get(i).getFirstDateJoin();
+			String address = patientDtoLst.get(i).getAddress();
+			String mobile = patientDtoLst.get(i).getMobile();
+			String familyContact = patientDtoLst.get(i).getFamilyContact();
+			String urgentContact = patientDtoLst.get(i).getUrgentContact();
+
+			Object[] row = { id, name, birthDay, male, firstDate, address, mobile, familyContact, urgentContact };
+			ar.add(row);
+		}
+
 		for (int i = 0; i < ar.size(); i++) {
-		      model.addRow(ar.get(i));
-		    }
+			model.addRow(ar.get(i));
+		}
 	}
 
 	@Override
