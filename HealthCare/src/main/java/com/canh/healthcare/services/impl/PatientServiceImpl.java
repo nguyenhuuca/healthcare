@@ -1,18 +1,17 @@
-package services.impl;
+package com.canh.healthcare.services.impl;
 
 import javax.persistence.EntityManager;
 
 import com.canh.healthcare.jpa.entity.Patient;
 import com.canh.healthcare.jpa.utils.EntityManagerUtil;
 import com.canh.healthcare.model.PatientDto;
-
-import services.interfaces.PatientService;
+import com.canh.healthcare.services.interfaces.PatientService;
 
 public class PatientServiceImpl implements PatientService {
 
 	protected EntityManager em;
 	public PatientServiceImpl(){
-		em = EntityManagerUtil.getEntityManager();
+		//em = EntityManagerUtil.getEntityManager();
 	}
 	public PatientServiceImpl(EntityManager em) {
 		this.em = em;
@@ -20,12 +19,12 @@ public class PatientServiceImpl implements PatientService {
 
 	@Override
 	public void create(PatientDto patient) {
-		em = EntityManagerUtil.getEntityManager();
+		/*em = EntityManagerUtil.getEntityManager();
 		em.getTransaction().begin();
 		Patient patientEnt = new Patient(patient); 
 		em.persist(patientEnt);
 		em.getTransaction().commit();
-		em.close();
+		em.close();*/
 
 	}
 

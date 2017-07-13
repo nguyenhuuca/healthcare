@@ -85,7 +85,7 @@ public class AppTest extends TestCase {
 		patient.setMale(true);
 		patient.setMobile("0123456");
 		patient.setName("Nguyễn Ca");
-		patient.setUrgentContact("Vợ");
+		patient.setUrgentContact("vợ");
 		Patient patientEnt = new Patient(patient);
 		PatientRecord petientRecord = new PatientRecord(patientEnt, new Date() );
 		//patientEnt.getPattientRecords().add(petientRecord);

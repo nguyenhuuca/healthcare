@@ -1,4 +1,4 @@
-package services.interfaces;
+package com.canh.healthcare.services.interfaces;
 
 import com.canh.healthcare.model.PatientDto;
 

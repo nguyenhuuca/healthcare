@@ -7,7 +7,9 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -18,11 +20,11 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
 
+import com.canh.healthcare.domain.impl.PatientBusinessImpl;
+import com.canh.healthcare.domain.interfaces.PatientBusiness;
 import com.canh.healthcare.model.PatientDto;
-
-import services.impl.PatientServiceImpl;
-import services.interfaces.PatientService;
 
 public class PatientForm extends JInternalFrame implements ActionListener {
 
@@ -48,12 +50,12 @@ public class PatientForm extends JInternalFrame implements ActionListener {
 	private JLabel lblUrgentContact = new JLabel("LHKC");
 	private JTextField txtUrgent = new JTextField(20);
 	private JButton btnNewPatient = new JButton("Tạo mới");
-	
+
 	// create control for list area
 	private JLabel lblIdSearch = new JLabel("Tìm kiếm");
 	private JTextField txtSearch = new JTextField(10);
 	private JButton btnSearch = new JButton("Tìm");
-	PatientService service = new PatientServiceImpl();
+	PatientBusiness patientBusiness = new PatientBusinessImpl();
 
 	public PatientForm() {
 		super();
@@ -170,19 +172,31 @@ public class PatientForm extends JInternalFrame implements ActionListener {
 		pnlListPatient.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Danh sách"));
 		pnlListPatient.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
 		GridBagConstraints setup = new GridBagConstraints();
-		Object rowData[][] = { { "Row1-Column1", "Row1-Column2", "Row1-Column3","Row1-Column1", "Row1-Column2", "Row1-Column3" ,"Row1-Column1", "Row1-Column2", "Row1-Column3"  },
-				{ "Row2-Column1", "Row2-Column2", "Row2-Column3","Row2-Column1", "Row2-Column2", "Row2-Column3","Row2-Column1", "Row2-Column2", "Row2-Column3" } };
-		Object columnNames[] = { "Id", "Tên bệnh nhân", "Năm sinh","Giới tính","Ngày khám ĐT","Địa chỉ","SĐT","Người thân","LHKC" };
-		JTable table = new JTable(rowData, columnNames);
+		Object rowData[][] = {
+				{ "Row1-Column1", "Row1-Column2", "Row1-Column3", "Row1-Column1", "Row1-Column2", "Row1-Column3",
+						"Row1-Column1", "Row1-Column2", "Row1-Column3" },
+				{ "Row2-Column1", "Row2-Column2", "Row2-Column3", "Row2-Column1", "Row2-Column2", "Row2-Column3",
+						"Row2-Column1", "Row2-Column2", "Row2-Column3" } };
+		Object columnNames[] = { "Id", "Tên bệnh nhân", "Năm sinh", "Giới tính", "Ngày khám ĐT", "Địa chỉ", "SĐT",
+				"Người thân", "LHKC" };
+		JTable table = new JTable();
+		DefaultTableModel model = new DefaultTableModel();
+		model.setColumnIdentifiers(columnNames);
+		table.setModel(model);
+		populateJtable(model);
 
 		JScrollPane scrollPane = new JScrollPane(table);
+		int prefBarWidth = scrollPane.getVerticalScrollBar().getPreferredSize().width;
+		//scrollPane.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+		//scrollPane.setViewportView(table);
+		//scrollPane.getVerticalScrollBar().setPreferredSize(new Dimension(table.getPreferredSize().width + prefBarWidth, 0));
 		setup.anchor = GridBagConstraints.WEST;
 		setup.gridwidth = 1;
 		setup.weightx = 0;
 		setup.weighty = 0;
-		//setup.insets = new Insets(3, 3, 3, 30);
-		//setup.weighty = 0;
-		//setup.fill = GridBagConstraints.HORIZONTAL;
+		// setup.insets = new Insets(3, 3, 3, 30);
+		// setup.weighty = 0;
+		// setup.fill = GridBagConstraints.HORIZONTAL;
 		setup.gridx = 0;
 		setup.gridy = 0;
 		pnlListPatient.add(lblIdSearch, setup);
@@ -193,20 +207,17 @@ public class PatientForm extends JInternalFrame implements ActionListener {
 		setup.gridx = 2;
 		setup.gridwidth = 4;
 		setup.fill = GridBagConstraints.WEST;
-		
-		//btnSearch.setSize(new Dimension(50, 20));
-		//btnSearch.setMinimumSize(btnSearch.getPreferredSize());
+
+		// btnSearch.setSize(new Dimension(50, 20));
+		// btnSearch.setMinimumSize(btnSearch.getPreferredSize());
 		pnlListPatient.add(btnSearch, setup);
-		
-		
-		
-        
-		//table.setFillsViewportHeight(true);
-	    setup.fill = GridBagConstraints.BOTH;
-	    //table.setPreferredScrollableViewportSize(new Dimension(450, 150));
+
+		// table.setFillsViewportHeight(true);
+		setup.fill = GridBagConstraints.BOTH;
+		// table.setPreferredScrollableViewportSize(new Dimension(450, 150));
 		setup.weightx = 1;
 		setup.weighty = 1;
-		//setup.fill = GridBagConstraints.VERTICAL;
+		// setup.fill = GridBagConstraints.VERTICAL;
 		setup.gridx = 0;
 		setup.gridy = 1;
 		setup.gridwidth = 6;
@@ -214,13 +225,13 @@ public class PatientForm extends JInternalFrame implements ActionListener {
 		pnlListPatient.setSize(300, 150);
 		pnlListPatient.setVisible(true);
 		add(pnlListPatient, BorderLayout.AFTER_LAST_LINE);
-		
-		//add(pnlListPatient, BorderLayout.AFTER_LAST_LINE);
+
+		// add(pnlListPatient, BorderLayout.AFTER_LAST_LINE);
 
 		// pnlListPatient.setVisible(true);
 	}
-	
-	public void createNewPatient(){
+
+	public void createNewPatient() {
 		PatientDto patient = new PatientDto();
 		patient.setAddress(txtAddress.getText());
 		patient.setBirthDay(txtBirthDate.getText());
@@ -230,16 +241,36 @@ public class PatientForm extends JInternalFrame implements ActionListener {
 		patient.setMobile(txtMobile.getText());
 		patient.setName(txtName.getText());
 		patient.setUrgentContact(txtUrgent.getText());
-		service.create(patient);
+		patientBusiness.create(patient);
+	}
+
+	public void populateJtable(DefaultTableModel model){
+		String rowData[][] = { { "Row1-Column1", "Row1-Column2", "Row1-Column3","Row1-Column1", "Row1-Column2", "Row1-Column3" ,"Row1-Column1", "Row1-Column2", "Row1-Column3"  },
+				{ "Row2-Column2dfdf", "Row2-Column2", "Row2-Column3","Row2-Column1", "Row2-Column2", "Row2-Column3","Row2-Column1", "Row2-Column2", "Row2-Column3" },
+				{ "Row2-Column2dfdf", "Row2-Column2", "Row2-Column3","Row2-Column1", "Row2-Column2", "Row2-Column3","Row2-Column1", "Row2-Column2", "Row2-Column3" } ,
+				{ "Row2-Column2dfdf", "Row2-Column2", "Row2-Column3","Row2-Column1", "Row2-Column2", "Row2-Column3","Row2-Column1", "Row2-Column2", "Row2-Column3" } ,
+				{ "Row2-Column2dfdf", "Row2-Column2", "Row2-Column3","Row2-Column1", "Row2-Column2", "Row2-Column3","Row2-Column1", "Row2-Column2", "Row2-Column3" } ,
+				{ "Row2-Column2dfdf", "Row2-Column2", "Row2-Column3","Row2-Column1", "Row2-Column2", "Row2-Column3","Row2-Column1", "Row2-Column2", "Row2-Column3" } ,
+				{ "Row2-Column2dfdf", "Row2-Column2", "Row2-Column3","Row2-Column1", "Row2-Column2", "Row2-Column3","Row2-Column1", "Row2-Column2", "Row2-Column3" } ,
+				{ "Row2-Column2dfdf", "Row2-Column2", "Row2-Column3","Row2-Column1", "Row2-Column2", "Row2-Column3","Row2-Column1", "Row2-Column2", "Row2-Column3" } ,
+				{ "Row2-Column2dfdf", "Row2-Column2", "Row2-Column3","Row2-Column1", "Row2-Column2", "Row2-Column3","Row2-Column1", "Row2-Column2", "Row2-Column3" } };
+		List<String[]> ar = new ArrayList<String[]>();
+		for (int i = 0; i < rowData.length; i++) {
+		      ar.add(rowData[i]);
+		    }
+		
+		for (int i = 0; i < ar.size(); i++) {
+		      model.addRow(ar.get(i));
+		    }
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		if(e.getSource() == btnNewPatient) {
+		if (e.getSource() == btnNewPatient) {
 			createNewPatient();
 			JOptionPane.showMessageDialog(null, "My Goodness, this is so concise");
 		}
-		
+
 	}
 }
