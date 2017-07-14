@@ -15,6 +15,7 @@ import javax.swing.JScrollPane;
 
 import com.canh.healthcare.mdimanager.authgui.LoginForm;
 import com.canh.healthcare.mdimanager.patientgui.PatientForm;
+import com.canh.healthcare.mdimanager.patientgui.PrescribingForm;
 import com.canh.healthcare.mdimanager.utils.GUIUtils;
 
 // Referenced from http://www.javaworld.com/javaworld/jw-05-2001/jw-0525-mdi.html
@@ -24,23 +25,26 @@ public class HealthCareMain extends JFrame  {
 
 	private JMenuBar menuBar = new JMenuBar();
 
-	private JMenu fileMenu = new JMenu("Bệnh Nhân");
+	private JMenu patientMenu = new JMenu("Bệnh Nhân");
 
 	private JMenu medicalMenu = new JMenu("Quản Lý Thuốc");
 	private JMenu authMenu = new JMenu("Autheticate");
 	private JMenuItem loginMnuItem = new JMenuItem("Đăng Nhập");
 
-	private JMenuItem newMenu = new JMenuItem("New");
+	private JMenuItem newMenu = new JMenuItem("Tạo mới          ");
+	private JMenuItem prescribingMnuItem = new JMenuItem("Kê Toa");
+	
 
 	private JScrollPane scrollPane = new JScrollPane();
 
 	public HealthCareMain() {
 		//setLocationRelativeTo(null);
-		menuBar.add(fileMenu);
+		menuBar.add(patientMenu);
 		menuBar.add(medicalMenu);
 		menuBar.add(new WindowMenu(desktop));
 		menuBar.add(authMenu);
-		fileMenu.add(newMenu);
+		patientMenu.add(newMenu);
+		patientMenu.add(prescribingMnuItem);
 		authMenu.add(loginMnuItem);
 		setJMenuBar(menuBar);
 		setTitle("HealthCare Anh Thy");
@@ -73,6 +77,15 @@ public class HealthCareMain extends JFrame  {
 				//f.setLocation((parentSize.width - childSize.width) / 2, (parentSize.height - childSize.height) / 2);
 				//f.setVisible(true);
 
+			}
+		});
+		prescribingMnuItem.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				PrescribingForm prescribingForm = new PrescribingForm();
+				desktop.add(prescribingForm);
+				GUIUtils.centerWithinDesktop(prescribingForm);
 			}
 		});
 	}

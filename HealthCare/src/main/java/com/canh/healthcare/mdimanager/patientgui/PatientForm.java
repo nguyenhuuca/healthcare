@@ -55,7 +55,11 @@ public class PatientForm extends JInternalFrame implements ActionListener {
 	private JLabel lblIdSearch = new JLabel("Tìm kiếm");
 	private JTextField txtSearch = new JTextField(10);
 	private JButton btnSearch = new JButton("Tìm");
+	
+	JTable table = new JTable();
+	DefaultTableModel model = new DefaultTableModel();
 	PatientBusiness patientBusiness = new PatientBusinessImpl();
+	
 
 	public PatientForm() {
 		super();
@@ -152,6 +156,7 @@ public class PatientForm extends JInternalFrame implements ActionListener {
 		constraints.gridy = 3;
 		constraints.gridwidth = 6;
 		constraints.anchor = GridBagConstraints.CENTER;
+		btnNewPatient.setActionCommand("NewPatient");
 		btnNewPatient.addActionListener(this);
 		newPanel.add(btnNewPatient, constraints);
 
@@ -179,11 +184,9 @@ public class PatientForm extends JInternalFrame implements ActionListener {
 						"Row2-Column1", "Row2-Column2", "Row2-Column3" } };
 		Object columnNames[] = { "Id", "Tên bệnh nhân", "Năm sinh", "Giới tính", "Ngày khám ĐT", "Địa chỉ", "SĐT",
 				"Người thân", "LHKC" };
-		JTable table = new JTable();
-		DefaultTableModel model = new DefaultTableModel();
 		model.setColumnIdentifiers(columnNames);
 		table.setModel(model);
-		populateJtable(model);
+		//populateJtable(model);
 
 		JScrollPane scrollPane = new JScrollPane(table);
 		int prefBarWidth = scrollPane.getVerticalScrollBar().getPreferredSize().width;
@@ -212,6 +215,8 @@ public class PatientForm extends JInternalFrame implements ActionListener {
 
 		// btnSearch.setSize(new Dimension(50, 20));
 		// btnSearch.setMinimumSize(btnSearch.getPreferredSize());
+		btnSearch.setActionCommand("SeachPatient");
+		btnSearch.addActionListener(this);
 		pnlListPatient.add(btnSearch, setup);
 
 		// table.setFillsViewportHeight(true);
@@ -249,7 +254,7 @@ public class PatientForm extends JInternalFrame implements ActionListener {
 	public void populateJtable(DefaultTableModel model) {
 		PatientDto patientDto = patientBusiness.findPatientById(1);
 		List<PatientDto> patientDtoLst = patientBusiness.findAll();
-		//patientDtoLst.add(patientDto);
+		// patientDtoLst.add(patientDto);
 		List<Object[]> ar = new ArrayList<Object[]>();
 		for (int i = 0; i < patientDtoLst.size(); i++) {
 			int id = patientDtoLst.get(i).getId();
@@ -274,10 +279,22 @@ public class PatientForm extends JInternalFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		if (e.getSource() == btnNewPatient) {
-			createNewPatient();
-			JOptionPane.showMessageDialog(null, "My Goodness, this is so concise");
+		switch (e.getActionCommand()) {
+		case "NewPatient":
+			// createNewPatient();
+			JOptionPane.showMessageDialog(null, "Tạo thành công");
+			break;
+		case "SeachPatient":
+			//populateJtable(model);
+			JOptionPane.showMessageDialog(null, "Search");
+			break;
+
 		}
+		/*
+		 * if (e.getSource() == btnNewPatient) {
+		 * 
+		 * }
+		 */
 
 	}
 }
