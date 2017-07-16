@@ -8,7 +8,9 @@ public interface PatientBusiness {
 	
 	public void create(PatientDto patient);
 	public void update(PatientDto patient);
-	public PatientDto findPatientById(int id);
-	public List<PatientDto> findAll();
+	public PatientDto searchPatientById(int id);
+	public List<PatientDto> searchAll();
+	public List<PatientDto> searchByName(String name);
+	
 
 }

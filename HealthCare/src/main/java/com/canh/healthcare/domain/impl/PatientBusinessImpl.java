@@ -26,14 +26,14 @@ public class PatientBusinessImpl implements PatientBusiness {
 	}
 
 	@Override
-	public PatientDto findPatientById(int id) {
+	public PatientDto searchPatientById(int id) {
 		// TODO Auto-generated method stub
 		Patient patient = service.findPatientById(id);
 		return populateData(patient);
 	}
 	
 	@Override
-	public List<PatientDto> findAll() {
+	public List<PatientDto> searchAll() {
 		List<Patient> patientLst = service.findAll();
 		List<PatientDto> patientDtoLst =  new ArrayList<PatientDto>();
 		for(Patient patient : patientLst){
@@ -57,4 +57,16 @@ public class PatientBusinessImpl implements PatientBusiness {
 		
 		return patientDto;
 	}
+
+	@Override
+	public List<PatientDto> searchByName(String name) {
+		List<Patient> patientLst = service.findByName(name);
+		List<PatientDto> patientDtoLst =  new ArrayList<PatientDto>();
+		for(Patient patient : patientLst){
+			PatientDto patientDto = populateData(patient);
+			patientDtoLst.add(patientDto);
+		}
+		return patientDtoLst;
+	}
+	
 }

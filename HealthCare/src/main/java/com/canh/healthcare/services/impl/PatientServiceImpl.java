@@ -62,4 +62,16 @@ public class PatientServiceImpl extends BaseSercvices implements PatientService 
 		return patientLst;
 	}
 
+	@Override
+	public List<Patient> findByName(String name) {
+		em = EntityManagerUtil.getEntityManager();
+		em.getTransaction().begin();
+		List<Patient> patientLst = (ArrayList<Patient>)em.createQuery("Select p from Patient p where p.name like :namePatient")
+				.setParameter("namePatient", "%"+name+"%")
+				.getResultList();
+		em.getTransaction().commit();
+		em.close();
+		return patientLst;
+	}
+
 }

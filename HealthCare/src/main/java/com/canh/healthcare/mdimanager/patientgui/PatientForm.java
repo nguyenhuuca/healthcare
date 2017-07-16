@@ -10,9 +10,11 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Properties;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -22,8 +24,13 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
+import org.jdatepicker.impl.JDatePanelImpl;
+import org.jdatepicker.impl.JDatePickerImpl;
+import org.jdatepicker.impl.UtilDateModel;
+
 import com.canh.healthcare.domain.impl.PatientBusinessImpl;
 import com.canh.healthcare.domain.interfaces.PatientBusiness;
+import com.canh.healthcare.mdimanager.utils.DateLabelFormatter;
 import com.canh.healthcare.model.PatientDto;
 
 public class PatientForm extends JInternalFrame implements ActionListener {
@@ -31,28 +38,35 @@ public class PatientForm extends JInternalFrame implements ActionListener {
 	// private static final int BORDER = 12; // Window border in pixels.
 	// private static final int GAP = 5; // Default gap btwn components.
 
-	private JLabel lblId = new JLabel("Id bệnh nhân");
-	private JLabel lblName = new JLabel("Tên bệnh nhân");
-	private JTextField txtId = new JTextField("test", 10);
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private JLabel lblId = new JLabel("Id bệnh nhân:");
+	private JLabel lblName = new JLabel("Tên bệnh nhân:");
+	private JTextField txtId = new JTextField("auto",10);
 	private JTextField txtName = new JTextField("test", 20);
-	private JLabel lblBirthDay = new JLabel("Năm sinh");
+	private JLabel lblBirthDay = new JLabel("Năm sinh:");
 	private JTextField txtBirthDate = new JTextField(10);
-	private JLabel lblGender = new JLabel("Giới tính");
+	private JLabel lblGender = new JLabel("Giới tính:");
 	private JTextField txtGender = new JTextField(10);
-	private JLabel lblFirstDateJoin = new JLabel("Ngày khám ĐT");
+	private JComboBox<String> cbxGender = new JComboBox<String>();
+	private JLabel lblFirstDateJoin = new JLabel("Ngày khám ĐT:");
 	private JTextField txtFirstDateJoin = new JTextField(10);
-	private JLabel lblAddress = new JLabel("Địa chỉ");
+	private JLabel lblAddress = new JLabel("Địa chỉ:");
 	private JTextField txtAddress = new JTextField(30);
-	private JLabel lblMobile = new JLabel("SĐT");
+	private JLabel lblMobile = new JLabel("SĐT:");
 	private JTextField txtMobile = new JTextField(10);
-	private JLabel lblFamilyContact = new JLabel("Người thân");
+	private JLabel lblFamilyContact = new JLabel("Người thân:");
 	private JTextField txtFamilyContact = new JTextField(20);
-	private JLabel lblUrgentContact = new JLabel("LHKC");
+	private JLabel lblUrgentContact = new JLabel("LHKC:");
 	private JTextField txtUrgent = new JTextField(20);
 	private JButton btnNewPatient = new JButton("Tạo mới");
+	JDatePanelImpl datePanelFirstDateJoin;
+	JDatePickerImpl datePickerFirstDateJoin;
 
 	// create control for list area
-	private JLabel lblIdSearch = new JLabel("Tìm kiếm");
+	private JLabel lblIdSearch = new JLabel("Nhập tên:");
 	private JTextField txtSearch = new JTextField(10);
 	private JButton btnSearch = new JButton("Tìm");
 	
@@ -99,6 +113,7 @@ public class PatientForm extends JInternalFrame implements ActionListener {
 		newPanel.add(lblId, constraints);
 		constraints.gridx = 1;
 		txtId.setMinimumSize(txtId.getPreferredSize());
+		txtId.setEditable(false);
 		newPanel.add(txtId, constraints);
 		constraints.gridx = 2;
 		// constraints.gridy = 1;
@@ -117,13 +132,25 @@ public class PatientForm extends JInternalFrame implements ActionListener {
 		constraints.gridy = 1;
 		newPanel.add(lblGender, constraints);
 		constraints.gridx = 1;
-		txtGender.setMinimumSize(txtGender.getPreferredSize());
-		newPanel.add(txtGender, constraints);
+		//txtGender.setMinimumSize(txtGender.getPreferredSize());
+		//newPanel.add(txtGender, constraints);
+		cbxGender.setPreferredSize(new Dimension(100, 25));
+		cbxGender.addItem("Nam");
+		cbxGender.addItem("Nữ");
+		newPanel.add(cbxGender, constraints);
 		constraints.gridx = 2;
 		newPanel.add(lblFirstDateJoin, constraints);
 		constraints.gridx = 3;
-		txtFirstDateJoin.setMinimumSize(txtFirstDateJoin.getPreferredSize());
-		newPanel.add(txtFirstDateJoin, constraints);
+		//txtFirstDateJoin.setMinimumSize(txtFirstDateJoin.getPreferredSize());
+		//newPanel.add(txtFirstDateJoin, constraints);
+		UtilDateModel modelDate = new UtilDateModel();
+		Properties p = new Properties();
+		p.put("text.today", "Today");
+		p.put("text.month", "Month");
+		p.put("text.year", "Year");
+		datePanelFirstDateJoin = new JDatePanelImpl(modelDate,p);
+		datePickerFirstDateJoin = new JDatePickerImpl(datePanelFirstDateJoin, new DateLabelFormatter());
+		newPanel.add(datePickerFirstDateJoin, constraints);
 		constraints.gridx = 4;
 		// constraints.gridy = 1;
 		newPanel.add(lblAddress, constraints);
@@ -177,31 +204,17 @@ public class PatientForm extends JInternalFrame implements ActionListener {
 		pnlListPatient.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Danh sách"));
 		pnlListPatient.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
 		GridBagConstraints setup = new GridBagConstraints();
-		Object rowData[][] = {
-				{ "Row1-Column1", "Row1-Column2", "Row1-Column3", "Row1-Column1", "Row1-Column2", "Row1-Column3",
-						"Row1-Column1", "Row1-Column2", "Row1-Column3" },
-				{ "Row2-Column1", "Row2-Column2", "Row2-Column3", "Row2-Column1", "Row2-Column2", "Row2-Column3",
-						"Row2-Column1", "Row2-Column2", "Row2-Column3" } };
 		Object columnNames[] = { "Id", "Tên bệnh nhân", "Năm sinh", "Giới tính", "Ngày khám ĐT", "Địa chỉ", "SĐT",
 				"Người thân", "LHKC" };
 		model.setColumnIdentifiers(columnNames);
 		table.setModel(model);
 		//populateJtable(model);
-
 		JScrollPane scrollPane = new JScrollPane(table);
-		int prefBarWidth = scrollPane.getVerticalScrollBar().getPreferredSize().width;
-		// scrollPane.setBorder(BorderFactory.createEmptyBorder(20, 20, 20,
-		// 20));
-		// scrollPane.setViewportView(table);
-		// scrollPane.getVerticalScrollBar().setPreferredSize(new
-		// Dimension(table.getPreferredSize().width + prefBarWidth, 0));
 		setup.anchor = GridBagConstraints.WEST;
 		setup.gridwidth = 1;
 		setup.weightx = 0;
 		setup.weighty = 0;
-		// setup.insets = new Insets(3, 3, 3, 30);
-		// setup.weighty = 0;
-		// setup.fill = GridBagConstraints.HORIZONTAL;
+
 		setup.gridx = 0;
 		setup.gridy = 0;
 		pnlListPatient.add(lblIdSearch, setup);
@@ -213,15 +226,11 @@ public class PatientForm extends JInternalFrame implements ActionListener {
 		setup.gridwidth = 4;
 		setup.fill = GridBagConstraints.WEST;
 
-		// btnSearch.setSize(new Dimension(50, 20));
-		// btnSearch.setMinimumSize(btnSearch.getPreferredSize());
 		btnSearch.setActionCommand("SeachPatient");
 		btnSearch.addActionListener(this);
 		pnlListPatient.add(btnSearch, setup);
 
-		// table.setFillsViewportHeight(true);
 		setup.fill = GridBagConstraints.BOTH;
-		// table.setPreferredScrollableViewportSize(new Dimension(450, 150));
 		setup.weightx = 1;
 		setup.weighty = 1;
 		// setup.fill = GridBagConstraints.VERTICAL;
@@ -232,9 +241,6 @@ public class PatientForm extends JInternalFrame implements ActionListener {
 		pnlListPatient.setSize(300, 150);
 		pnlListPatient.setVisible(true);
 		add(pnlListPatient, BorderLayout.AFTER_LAST_LINE);
-
-		// add(pnlListPatient, BorderLayout.AFTER_LAST_LINE);
-
 		// pnlListPatient.setVisible(true);
 	}
 
@@ -243,17 +249,16 @@ public class PatientForm extends JInternalFrame implements ActionListener {
 		patient.setAddress(txtAddress.getText());
 		patient.setBirthDay(txtBirthDate.getText());
 		patient.setFamilyContact(txtFamilyContact.getText());
-		patient.setFirstDateJoin(new Date());
-		patient.setMale(true);
+		patient.setFirstDateJoin( (Date) datePickerFirstDateJoin.getModel().getValue());
+		boolean male = cbxGender.getSelectedItem().toString().equals("Nam")?true:false;
+		patient.setMale(male);
 		patient.setMobile(txtMobile.getText());
 		patient.setName(txtName.getText());
 		patient.setUrgentContact(txtUrgent.getText());
 		patientBusiness.create(patient);
 	}
 
-	public void populateJtable(DefaultTableModel model) {
-		PatientDto patientDto = patientBusiness.findPatientById(1);
-		List<PatientDto> patientDtoLst = patientBusiness.findAll();
+	public void populateJtable(DefaultTableModel model, List<PatientDto> patientDtoLst ) {
 		// patientDtoLst.add(patientDto);
 		List<Object[]> ar = new ArrayList<Object[]>();
 		for (int i = 0; i < patientDtoLst.size(); i++) {
@@ -281,15 +286,17 @@ public class PatientForm extends JInternalFrame implements ActionListener {
 		// TODO Auto-generated method stub
 		switch (e.getActionCommand()) {
 		case "NewPatient":
-			// createNewPatient();
+			createNewPatient();
 			JOptionPane.showMessageDialog(null, "Tạo thành công");
 			break;
 		case "SeachPatient":
-			//populateJtable(model);
-			JOptionPane.showMessageDialog(null, "Search");
+			((DefaultTableModel)table.getModel()).setRowCount(0);
+			List<PatientDto> patientDtoLst = patientBusiness.searchByName(txtSearch.getText());
+			populateJtable(model, patientDtoLst);
 			break;
 
 		}
+		
 		/*
 		 * if (e.getSource() == btnNewPatient) {
 		 * 

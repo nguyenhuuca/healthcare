@@ -10,5 +10,7 @@ public interface PatientService {
 	public void update(PatientDto patient);
 	public Patient findPatientById(int id);
 	public List<Patient> findAll();
+	public List<Patient> findByName(String name);
+	
 
 }
