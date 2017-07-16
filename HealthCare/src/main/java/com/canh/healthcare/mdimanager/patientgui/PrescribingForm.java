@@ -6,6 +6,10 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -14,6 +18,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -23,8 +28,9 @@ import javax.swing.table.DefaultTableModel;
 import com.canh.healthcare.domain.impl.MedicineBusinessImpl;
 import com.canh.healthcare.domain.interfaces.MedicineBusiness;
 import com.canh.healthcare.model.MedicineDto;
+import com.canh.healthcare.model.PatientDto;
 
-public class PrescribingForm extends JInternalFrame {
+public class PrescribingForm extends JInternalFrame implements ActionListener {
 
 	private JLabel lblId = new JLabel("Id bệnh nhân");
 	private JLabel lblName = new JLabel("Tên bệnh nhân");
@@ -48,12 +54,19 @@ public class PrescribingForm extends JInternalFrame {
 	private JButton btnNewPrescribing = new JButton("Tạo mới");
 	private JButton btnUpdatePrescribing = new JButton("Cập nhật");
 	
+	JLabel lblNameMedical = new JLabel("Tên thuốc:");
+	JComboBox<MedicineDto> cbxMedical = new JComboBox<MedicineDto>();
+	JLabel lblQuantity = new JLabel("Số lượng");
+	JTextField txtQuantity = new JTextField("1",5);
+	JButton btnAdd = new JButton("Xác nhận");
+
 	MedicineBusiness medicineBusiness = new MedicineBusinessImpl();
+	JTable tablePrescribing = new JTable();
+	DefaultTableModel modelPrescribing = new DefaultTableModel();
 
 	public PrescribingForm() {
 		super();
 		createPrescribingInput();
-		createPrescribingArea();
 		createPrescribingArea();
 		createPrescribingList();
 		setSize(1000, 700);
@@ -167,11 +180,6 @@ public class PrescribingForm extends JInternalFrame {
 		prescribingArea.setLayout(null);
 		prescribingArea.setPreferredSize(new Dimension(800, 70));
 		prescribingArea.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
-		JLabel lblNameMedical = new JLabel("Tên thuốc:");
-		JComboBox<MedicineDto> cbxMedical = new JComboBox<MedicineDto>();
-		JLabel lblQuantity = new JLabel("Số lượng");
-		JTextField txtQuantity = new JTextField(5);
-		JButton btnAdd = new JButton("Xác nhận");
 		cbxMedical.setPreferredSize(new Dimension(250, 25));
 		Insets insets = prescribingArea.getInsets();
 		Dimension size = lblNameMedical.getPreferredSize();
@@ -190,21 +198,23 @@ public class PrescribingForm extends JInternalFrame {
 		width = size.width;
 		height = size.height;
 		lblQuantity.setBounds(marginLeft, margintTop, width, height);
-		
+
 		size = txtQuantity.getPreferredSize();
 		marginLeft += width;
 		width = size.width;
 		height = size.height;
 		txtQuantity.setBounds(marginLeft, 20 + insets.top, width, height);
-		
+
 		size = btnAdd.getPreferredSize();
 		marginLeft += width;
 		width = size.width;
 		height = size.height;
 		btnAdd.setBounds(marginLeft, 20 + insets.top, width, height);
-		
-		List<MedicineDto>  medicineDtoList = medicineBusiness.findAll();
-		for(MedicineDto medicieDto : medicineDtoList) {
+		btnAdd.setActionCommand("addMedicine");
+		btnAdd.addActionListener(this);
+
+		List<MedicineDto> medicineDtoList = medicineBusiness.findAll();
+		for (MedicineDto medicieDto : medicineDtoList) {
 			cbxMedical.addItem(medicieDto);
 		}
 		prescribingArea.add(lblNameMedical);
@@ -222,25 +232,60 @@ public class PrescribingForm extends JInternalFrame {
 		prescribingConsume.setLayout(null);
 		prescribingConsume.setPreferredSize(new Dimension(800, 180));
 		prescribingConsume.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
-		JTable table = new JTable();
-		
-		DefaultTableModel model = new DefaultTableModel();
+
 		Object columnNames[] = { "Id", "Tên thuốc", "Số lượng", "Thành tiền" };
-		model.setColumnIdentifiers(columnNames);
-		table.setModel(model);
-		//populateJtable(model);
-		JScrollPane scrollPane = new JScrollPane(table);
-		scrollPane.setPreferredSize(new Dimension(500, 150));
+		modelPrescribing.setColumnIdentifiers(columnNames);
+		tablePrescribing.setModel(modelPrescribing);
+		// populateJtable(model);
+		JScrollPane scrollPane = new JScrollPane(tablePrescribing);
+		scrollPane.setPreferredSize(new Dimension(700, 150));
 		Insets insets = prescribingConsume.getInsets();
 		Dimension size = scrollPane.getPreferredSize();
 		int marginLeft = 25 + insets.left;
 		int margintTop = 25 + insets.top;
 		int width = size.width;
 		int height = size.height;
-		scrollPane.setBounds(marginLeft,margintTop,width,height);
-		
+		scrollPane.setBounds(marginLeft, margintTop, width, height);
+
 		prescribingConsume.add(scrollPane);
 		prescribingConsume.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Chi tiết"));
 		add(prescribingConsume, BorderLayout.SOUTH);
+	}
+
+	public void populateJtable(DefaultTableModel model, MedicineDto medicineDto) {
+		//List<PatientDto> patientDtoLst = patientBusiness.findAll();
+		// patientDtoLst.add(patientDto);
+		//	Object columnNames[] = { "Id", "Tên thuốc", "Số lượng", "Thành tiền" };
+		List<Object[]> ar = new ArrayList<Object[]>();
+		//for (int i = 0; i < patientDtoLst.size(); i++) {
+		int id = medicineDto.getId();
+		String name = medicineDto.getName();
+		int quantity = medicineDto.getQuantity();
+		Long totalCost = medicineDto.getTotaCost();
+		Object[] row = { id, name, quantity, totalCost };
+		ar.add(row);
+		//}
+
+		for (int i = 0; i < ar.size(); i++) {
+			model.addRow(ar.get(i));
+		}
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		switch (e.getActionCommand()) {
+		case "addMedicine":
+			MedicineDto medicineDto = (MedicineDto)cbxMedical.getSelectedItem();
+			medicineDto.setQuantity(Integer.parseInt(txtQuantity.getText()));
+			populateJtable(modelPrescribing, medicineDto);
+			//JOptionPane.showMessageDialog(null, "Tạo thành công");
+			break;
+		case "SeachPatient":
+			//populateJtable(model);
+			JOptionPane.showMessageDialog(null, "Search");
+			break;
+
+		}
+
 	}
 }

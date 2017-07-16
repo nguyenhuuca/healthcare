@@ -6,6 +6,8 @@ public class MedicineDto {
 	String unit;
 	Long unitPriceBuy;
 	Long unitPriceSell;
+	Long totaCost;
+	int quantity;
 	public int getId() {
 		return id;
 	}
@@ -40,5 +42,18 @@ public class MedicineDto {
 	public String toString(){
 		return name;
 	}
+	public Long getTotaCost() {
+		return unitPriceSell*quantity;
+		
+	}
+	public int getQuantity() {
+		return quantity;
+	}
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
+	
+	
+	
 
 }
