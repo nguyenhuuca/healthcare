@@ -9,11 +9,9 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.swing.BorderFactory;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JInternalFrame;
@@ -28,10 +26,13 @@ import javax.swing.table.DefaultTableModel;
 import com.canh.healthcare.domain.impl.MedicineBusinessImpl;
 import com.canh.healthcare.domain.interfaces.MedicineBusiness;
 import com.canh.healthcare.model.MedicineDto;
-import com.canh.healthcare.model.PatientDto;
 
 public class PrescribingForm extends JInternalFrame implements ActionListener {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JLabel lblId = new JLabel("Id bệnh nhân");
 	private JLabel lblName = new JLabel("Tên bệnh nhân");
 	private JTextField txtId = new JTextField("test", 10);

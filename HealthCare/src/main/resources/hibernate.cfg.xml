@@ -30,6 +30,7 @@
         <mapping class="com.canh.healthcare.jpa.entity.Patient"/>
         <mapping class="com.canh.healthcare.jpa.entity.PatientRecord"/>
         <mapping class="com.canh.healthcare.jpa.entity.Medicine"/>
+        <mapping class="com.canh.healthcare.jpa.entity.PatientBillItem"/>
         
     </session-factory>
 </hibernate-configuration>
