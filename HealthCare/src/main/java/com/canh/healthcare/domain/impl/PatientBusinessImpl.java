@@ -34,7 +34,6 @@ public class PatientBusinessImpl implements PatientBusiness {
 	
 	@Override
 	public List<PatientDto> findAll() {
-		// TODO Auto-generated method stub
 		List<Patient> patientLst = service.findAll();
 		List<PatientDto> patientDtoLst =  new ArrayList<PatientDto>();
 		for(Patient patient : patientLst){

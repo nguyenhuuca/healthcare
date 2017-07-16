@@ -8,11 +8,10 @@ import javax.persistence.EntityManager;
 import com.canh.healthcare.jpa.entity.Patient;
 import com.canh.healthcare.jpa.utils.EntityManagerUtil;
 import com.canh.healthcare.model.PatientDto;
+import com.canh.healthcare.services.BaseSercvices;
 import com.canh.healthcare.services.interfaces.PatientService;
 
-public class PatientServiceImpl implements PatientService {
-
-	protected EntityManager em;
+public class PatientServiceImpl extends BaseSercvices implements PatientService {
 
 	public PatientServiceImpl() {
 		// em = EntityManagerUtil.getEntityManager();

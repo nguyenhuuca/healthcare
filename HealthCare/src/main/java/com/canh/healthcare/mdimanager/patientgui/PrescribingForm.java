@@ -6,8 +6,10 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.util.List;
 
 import javax.swing.BorderFactory;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JInternalFrame;
@@ -17,6 +19,10 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
+
+import com.canh.healthcare.domain.impl.MedicineBusinessImpl;
+import com.canh.healthcare.domain.interfaces.MedicineBusiness;
+import com.canh.healthcare.model.MedicineDto;
 
 public class PrescribingForm extends JInternalFrame {
 
@@ -41,6 +47,8 @@ public class PrescribingForm extends JInternalFrame {
 	private JTextField txtTotalCost = new JTextField(10);
 	private JButton btnNewPrescribing = new JButton("Tạo mới");
 	private JButton btnUpdatePrescribing = new JButton("Cập nhật");
+	
+	MedicineBusiness medicineBusiness = new MedicineBusinessImpl();
 
 	public PrescribingForm() {
 		super();
@@ -158,16 +166,13 @@ public class PrescribingForm extends JInternalFrame {
 		JPanel prescribingArea = new JPanel();
 		prescribingArea.setLayout(null);
 		prescribingArea.setPreferredSize(new Dimension(800, 70));
-		// GridBagConstraints constraints = new GridBagConstraints();
 		prescribingArea.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
-		// constraints.anchor = GridBagConstraints.WEST;
-		// constraints.fill = GridBagConstraints.VERTICAL;
 		JLabel lblNameMedical = new JLabel("Tên thuốc:");
-		JComboBox cbxMedical = new JComboBox();
+		JComboBox<MedicineDto> cbxMedical = new JComboBox<MedicineDto>();
 		JLabel lblQuantity = new JLabel("Số lượng");
 		JTextField txtQuantity = new JTextField(5);
 		JButton btnAdd = new JButton("Xác nhận");
-		cbxMedical.setPreferredSize(new Dimension(150, 25));
+		cbxMedical.setPreferredSize(new Dimension(250, 25));
 		Insets insets = prescribingArea.getInsets();
 		Dimension size = lblNameMedical.getPreferredSize();
 		int marginLeft = 25 + insets.left;
@@ -180,7 +185,6 @@ public class PrescribingForm extends JInternalFrame {
 		width = size.width;
 		height = size.height;
 		cbxMedical.setBounds(marginLeft, 20 + insets.top, width, height);
-		
 		size = lblQuantity.getPreferredSize();
 		marginLeft += width;
 		width = size.width;
@@ -199,6 +203,10 @@ public class PrescribingForm extends JInternalFrame {
 		height = size.height;
 		btnAdd.setBounds(marginLeft, 20 + insets.top, width, height);
 		
+		List<MedicineDto>  medicineDtoList = medicineBusiness.findAll();
+		for(MedicineDto medicieDto : medicineDtoList) {
+			cbxMedical.addItem(medicieDto);
+		}
 		prescribingArea.add(lblNameMedical);
 		prescribingArea.add(cbxMedical);
 		prescribingArea.add(lblQuantity);
@@ -213,10 +221,7 @@ public class PrescribingForm extends JInternalFrame {
 		JPanel prescribingConsume = new JPanel();
 		prescribingConsume.setLayout(null);
 		prescribingConsume.setPreferredSize(new Dimension(800, 180));
-		// GridBagConstraints constraints = new GridBagConstraints();
 		prescribingConsume.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
-		// constraints.anchor = GridBagConstraints.WEST;
-		// constraints.fill = GridBagConstraints.VERTICAL;
 		JTable table = new JTable();
 		
 		DefaultTableModel model = new DefaultTableModel();
