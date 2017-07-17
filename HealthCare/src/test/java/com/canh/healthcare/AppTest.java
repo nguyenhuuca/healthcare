@@ -62,18 +62,20 @@ public class AppTest extends TestCase {
 	}*/
     
 	public void testApp2() {
+		/*
 		entityManager = EntityManagerUtil.getEntityManager();
 
 		entityManager.getTransaction().begin();
 
-		AppUser user = new AppUser("firstuser", "123456", "test_entity");
+		AppUser user = new AppUser();
 		entityManager.persist(user);
 
 		entityManager.getTransaction().commit();
-		entityManager.close();
+		entityManager.close();*/
 	} 
 	
 	public void testPatient(){
+		/*
 		entityManager = EntityManagerUtil.getEntityManager();
 		entityManager.getTransaction().begin();
 		
@@ -91,7 +93,7 @@ public class AppTest extends TestCase {
 		//patientEnt.getPattientRecords().add(petientRecord);
 		entityManager.persist(patientEnt);
 		entityManager.getTransaction().commit();
-		entityManager.close();
+		entityManager.close();*/
 		
 	} 
 	

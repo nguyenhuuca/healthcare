@@ -213,11 +213,11 @@ public class PrescribingForm extends JInternalFrame implements ActionListener {
 		btnAdd.setBounds(marginLeft, 20 + insets.top, width, height);
 		btnAdd.setActionCommand("addMedicine");
 		btnAdd.addActionListener(this);
-
+		/* todo
 		List<MedicineDto> medicineDtoList = medicineBusiness.findAll();
 		for (MedicineDto medicieDto : medicineDtoList) {
 			cbxMedical.addItem(medicieDto);
-		}
+		}*/
 		prescribingArea.add(lblNameMedical);
 		prescribingArea.add(cbxMedical);
 		prescribingArea.add(lblQuantity);

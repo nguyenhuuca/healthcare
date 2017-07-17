@@ -7,12 +7,22 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedNativeQueries;
+import javax.persistence.NamedNativeQuery;
 import javax.persistence.Table;
+
+import com.canh.healthcare.model.AppUserDto;
 
 @Entity
 @Table(name = "appuser")
+@NamedNativeQueries({
+		@NamedNativeQuery(name = "findUser", query = " select * from AppUser e where e.userName = :userName and e.user = :password", resultClass = AppUser.class) })
 public class AppUser implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -24,10 +34,13 @@ public class AppUser implements Serializable {
 
 	};
 
-	public AppUser(String userName, String pass, String comment) {
-		this.userName = userName;
-		this.passUser = pass;
-		this.comment = comment;
+	public AppUser(AppUserDto appUserDto) {
+		if (appUserDto.getId() != null) {
+			this.id = appUserDto.getId();
+		}
+		this.userName = appUserDto.getUserName();
+		this.passUser = appUserDto.getPassUser();
+		this.comment = appUserDto.getComment();
 
 	};
 
@@ -66,6 +79,5 @@ public class AppUser implements Serializable {
 	public void setComment(String comment) {
 		this.comment = comment;
 	}
-	
-	
+
 }

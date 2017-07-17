@@ -9,6 +9,6 @@ import com.canh.healthcare.model.MedicineDto;
 public interface MedicineService {
 	public void create(MedicineDto patient);
 	public void update(MedicineDto patient);
-	public Patient findMedicineById(int id);
+	public Medicine findMedicineById(int id);
 	public List<Medicine> findAll();
 }

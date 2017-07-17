@@ -39,11 +39,16 @@ public class Patient {
 	String urgentContact;
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL,mappedBy = "patient")
 	List<PatientRecord> pattientRecords = new ArrayList<PatientRecord>();
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL,mappedBy = "patient")
+	List<PatientBill> patientBill = new ArrayList<PatientBill>();
 
 	public Patient() {
 
 	}
 	public Patient(PatientDto patient) {
+		if(patient.getId() != 0){
+			this.id = patient.getId();
+		}
 		this.address = patient.getAddress();
 		this.birthDay = patient.getBirthDay();
 		this.familyContact= patient.getFamilyContact();
@@ -140,5 +145,12 @@ public class Patient {
 	public void setPattientRecords(List<PatientRecord> pattientRecords) {
 		this.pattientRecords = pattientRecords;
 	}
+	public List<PatientBill> getPatientBill() {
+		return patientBill;
+	}
+	public void setPatientBill(List<PatientBill> patientBill) {
+		this.patientBill = patientBill;
+	}
+	
 	
 }

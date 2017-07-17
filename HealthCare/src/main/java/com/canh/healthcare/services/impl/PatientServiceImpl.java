@@ -6,8 +6,10 @@ import java.util.List;
 import javax.persistence.EntityManager;
 
 import com.canh.healthcare.jpa.entity.Patient;
+import com.canh.healthcare.jpa.entity.PatientRecord;
 import com.canh.healthcare.jpa.utils.EntityManagerUtil;
 import com.canh.healthcare.model.PatientDto;
+import com.canh.healthcare.model.PatientRecordDto;
 import com.canh.healthcare.services.BaseSercvices;
 import com.canh.healthcare.services.interfaces.PatientService;
 
@@ -34,9 +36,12 @@ public class PatientServiceImpl extends BaseSercvices implements PatientService 
 
 	@Override
 	public void update(PatientDto patient) {
-		// TODO Auto-generated method stub
+		em = EntityManagerUtil.getEntityManager();
+		em.getTransaction().begin();
 		Patient patientEnt = new Patient(patient);
 		patientEnt = em.merge(patientEnt);
+		em.getTransaction().commit();
+		em.close();
 
 	}
 
@@ -44,34 +49,58 @@ public class PatientServiceImpl extends BaseSercvices implements PatientService 
 	public Patient findPatientById(int id) {
 		em = EntityManagerUtil.getEntityManager();
 		em.getTransaction().begin();
-		Patient patientDto = (Patient) em.createNamedQuery("findPatientById").setParameter("idPatient", id)
+		Patient patient = (Patient) em.createNamedQuery("findPatientById").setParameter("idPatient", id)
 				.getSingleResult();
 		em.getTransaction().commit();
 		em.close();
-		return patientDto;
+		return patient;
 
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Patient> findAll() {
 		em = EntityManagerUtil.getEntityManager();
 		em.getTransaction().begin();
-		List<Patient> patientLst = (ArrayList<Patient>)em.createQuery("Select p from Patient p").getResultList();
+		List<Patient> patientLst = (ArrayList<Patient>) em.createQuery("Select p from Patient p").getResultList();
+		em.getTransaction().commit();
+		em.close();
+		return patientLst;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Patient> findByName(String name) {
+		em = EntityManagerUtil.getEntityManager();
+		em.getTransaction().begin();
+		List<Patient> patientLst = (ArrayList<Patient>) em
+				.createQuery("Select p from Patient p where p.name like :namePatient")
+				.setParameter("namePatient", "%" + name + "%").getResultList();
 		em.getTransaction().commit();
 		em.close();
 		return patientLst;
 	}
 
 	@Override
-	public List<Patient> findByName(String name) {
+	public void createPatientRecord(PatientRecordDto patientRecordDto) {
 		em = EntityManagerUtil.getEntityManager();
 		em.getTransaction().begin();
-		List<Patient> patientLst = (ArrayList<Patient>)em.createQuery("Select p from Patient p where p.name like :namePatient")
-				.setParameter("namePatient", "%"+name+"%")
-				.getResultList();
+		PatientRecord patientRecord = new PatientRecord(patientRecordDto);
+		em.persist(patientRecord);
 		em.getTransaction().commit();
 		em.close();
-		return patientLst;
+		
+	}
+
+	@Override
+	public void updatePatientRecord(PatientRecordDto patientRecordDto) {
+		em = EntityManagerUtil.getEntityManager();
+		em.getTransaction().begin();
+		PatientRecord patientRecord = new PatientRecord(patientRecordDto);
+		em.merge(patientRecord);
+		em.getTransaction().commit();
+		em.close();
+		
 	}
 
 }

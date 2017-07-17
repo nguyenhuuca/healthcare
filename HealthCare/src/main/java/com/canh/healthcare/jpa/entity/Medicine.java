@@ -5,10 +5,18 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedNativeQueries;
+import javax.persistence.NamedNativeQuery;
 import javax.persistence.Table;
+
+import com.canh.healthcare.model.MedicineDto;
 
 @Entity
 @Table(name = "medicine")
+@NamedNativeQueries({
+	@NamedNativeQuery(name = "findMedicineById",query = " select * from Medicine p where p.id = :medicineId ",resultClass = Medicine.class
+	)
+})
 public class Medicine {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,6 +25,19 @@ public class Medicine {
 	String unit;
 	Long unitPriceBuy;
 	Long unitPriceSell;
+	
+	public Medicine(){
+		
+	}
+	public Medicine(MedicineDto medicineDto){
+		if(medicineDto.getId()!=0){
+			this.id = medicineDto.getId();
+		}
+		this.name = medicineDto.getName();
+		this.unit =  medicineDto.getUnit();
+		this.unitPriceBuy = medicineDto.getUnitPriceSell();
+		this.unitPriceSell = medicineDto.getUnitPriceSell();
+	}
 
 	public int getId() {
 		return id;
