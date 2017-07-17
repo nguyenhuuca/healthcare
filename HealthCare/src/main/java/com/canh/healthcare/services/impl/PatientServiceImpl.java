@@ -48,10 +48,8 @@ public class PatientServiceImpl extends BaseSercvices implements PatientService 
 	@Override
 	public Patient findPatientById(int id) {
 		em = EntityManagerUtil.getEntityManager();
-		em.getTransaction().begin();
 		Patient patient = (Patient) em.createNamedQuery("findPatientById").setParameter("idPatient", id)
 				.getSingleResult();
-		em.getTransaction().commit();
 		em.close();
 		return patient;
 
