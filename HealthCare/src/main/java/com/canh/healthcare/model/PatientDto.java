@@ -1,6 +1,8 @@
 package com.canh.healthcare.model;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class PatientDto {
 	int id;
@@ -12,6 +14,8 @@ public class PatientDto {
 	String familyContact;
 	Date firstDateJoin = new Date();
 	String urgentContact;
+	List<PatientRecordDto> pattientRecords = new ArrayList<PatientRecordDto>();
+	List<PatientBillDto> patientBill = new ArrayList<PatientBillDto>();
 
 	public int getId() {
 		return id;
@@ -79,6 +83,24 @@ public class PatientDto {
 
 	public String getUrgentContact() {
 		return urgentContact;
+	}
+	
+	
+
+	public List<PatientRecordDto> getPattientRecords() {
+		return pattientRecords;
+	}
+
+	public void setPattientRecords(List<PatientRecordDto> pattientRecords) {
+		this.pattientRecords = pattientRecords;
+	}
+
+	public List<PatientBillDto> getPatientBill() {
+		return patientBill;
+	}
+
+	public void setPatientBill(List<PatientBillDto> patientBill) {
+		this.patientBill = patientBill;
 	}
 
 	public void setUrgentContact(String urgentContact) {

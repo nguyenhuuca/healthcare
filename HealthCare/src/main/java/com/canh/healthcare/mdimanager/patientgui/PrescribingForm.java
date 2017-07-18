@@ -12,9 +12,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 
+import javax.naming.PartialResultException;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -37,7 +39,9 @@ import com.canh.healthcare.domain.interfaces.MedicineBusiness;
 import com.canh.healthcare.domain.interfaces.PatientBusiness;
 import com.canh.healthcare.mdimanager.utils.DateLabelFormatter;
 import com.canh.healthcare.model.MedicineDto;
+import com.canh.healthcare.model.PatientBillDto;
 import com.canh.healthcare.model.PatientDto;
+import com.canh.healthcare.model.PatientRecordDto;
 
 public class PrescribingForm extends JInternalFrame implements ActionListener {
 
@@ -69,6 +73,7 @@ public class PrescribingForm extends JInternalFrame implements ActionListener {
 	private JTextField txtTotalCost = new JTextField(10);
 	private JButton btnConfirmPatient = new JButton("Ok");
 	private JButton btnUpdatePrescribing = new JButton("Cập nhật");
+	private JButton btnSavePrescribing = new JButton("Lưu toa");
 
 	JLabel lblNameMedical = new JLabel("Tên thuốc:");
 	JComboBox<MedicineDto> cbxMedical = new JComboBox<MedicineDto>();
@@ -85,6 +90,14 @@ public class PrescribingForm extends JInternalFrame implements ActionListener {
 	PatientBusiness patientBusiness = new PatientBusinessImpl();
 	JTable tablePrescribing = new JTable();
 	DefaultTableModel modelPrescribing = new DefaultTableModel();
+	
+	//hold  date
+	PatientDto patientDto = new PatientDto();
+	//PatientRecordDto patientRecordDto = new PatientRecordDto();
+	PatientBillDto patientBillDto = new PatientBillDto();
+	List<MedicineDto> medicineDtoLst = new ArrayList<MedicineDto>();
+	List<PatientBillDto> patientBillDtoLst = new ArrayList<PatientBillDto>();
+	List<PatientRecordDto> patientRecordDtoList = new ArrayList<PatientRecordDto>();
 
 	public PrescribingForm() {
 		super();
@@ -332,7 +345,16 @@ public class PrescribingForm extends JInternalFrame implements ActionListener {
 		height = size.height;
 		datePickerReExaminatrionDate.setBounds(marginLeft, insets.top + 80, width, height);
 		prescribingArea.add(datePickerReExaminatrionDate);
-
+		
+		size = btnSavePrescribing.getPreferredSize();
+		marginLeft += width + 50;
+		width = size.width;
+		height = size.height;
+		btnSavePrescribing.setActionCommand("SavePrescribing");
+		btnSavePrescribing.addActionListener(this);
+		btnSavePrescribing.setBounds(marginLeft, insets.top + 80, width, height);
+		prescribingArea.add(btnSavePrescribing);
+		
 		prescribingArea.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Kê toa"));
 		add(prescribingArea, BorderLayout.WEST);
 	}
@@ -394,13 +416,31 @@ public class PrescribingForm extends JInternalFrame implements ActionListener {
 		case "addMedicine":
 			MedicineDto medicineDto = (MedicineDto) cbxMedical.getSelectedItem();
 			medicineDto.setQuantity(Integer.parseInt(txtQuantity.getText()));
+			medicineDtoLst.add(medicineDto);
+			PatientRecordDto patientRecordDto = new PatientRecordDto();
+			patientRecordDto.setDateCome((Date) datePickerExaminationDate.getModel().getValue());
+			patientRecordDto.setMedicineId(medicineDto.getId());
+			patientRecordDto.setQuantityMedicine(Integer.parseInt(txtQuantity.getText()));
+			patientRecordDtoList.add(patientRecordDto);
 			populateJtable(modelPrescribing, medicineDto);
 			// JOptionPane.showMessageDialog(null, "Tạo thành công");
 			break;
 		case "ConfirmPatient":
 			int idPatient = Integer.parseInt(txtId.getText().toString());
-			PatientDto patientDto = patientBusiness.searchPatientById(idPatient);
+			patientDto = patientBusiness.searchPatientById(idPatient);
 			populateDateForPatientGroup(patientDto);
+			break;
+		case "SavePrescribing":
+			//save patient record
+			//save Pateint Bill
+			PatientBillDto patietnBillDto = new PatientBillDto();
+			patientBillDto.setExaminationDay((Date) datePickerExaminationDate.getModel().getValue());
+			patientBillDto.setReExaminationDate((Date)datePickerReExaminatrionDate.getModel().getValue());
+			patientBillDto.setTotalHour(Integer.parseInt(txtHourExamination.getText()));
+			patientBillDtoLst.add(patietnBillDto);
+			patientDto.setPatientBill(patientBillDtoLst);
+			patientDto.setPattientRecords(patientRecordDtoList);
+			patientBusiness.update(patientDto);
 			break;
 
 		}

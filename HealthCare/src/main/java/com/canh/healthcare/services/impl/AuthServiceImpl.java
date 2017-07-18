@@ -3,7 +3,6 @@ package com.canh.healthcare.services.impl;
 import java.util.List;
 
 import com.canh.healthcare.jpa.entity.AppUser;
-import com.canh.healthcare.jpa.entity.Medicine;
 import com.canh.healthcare.jpa.utils.EntityManagerUtil;
 import com.canh.healthcare.model.AppUserDto;
 import com.canh.healthcare.services.BaseSercvices;

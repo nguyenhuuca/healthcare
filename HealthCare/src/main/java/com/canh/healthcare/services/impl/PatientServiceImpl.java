@@ -6,8 +6,10 @@ import java.util.List;
 import javax.persistence.EntityManager;
 
 import com.canh.healthcare.jpa.entity.Patient;
+import com.canh.healthcare.jpa.entity.PatientBill;
 import com.canh.healthcare.jpa.entity.PatientRecord;
 import com.canh.healthcare.jpa.utils.EntityManagerUtil;
+import com.canh.healthcare.model.PatientBillDto;
 import com.canh.healthcare.model.PatientDto;
 import com.canh.healthcare.model.PatientRecordDto;
 import com.canh.healthcare.services.BaseSercvices;
@@ -80,14 +82,20 @@ public class PatientServiceImpl extends BaseSercvices implements PatientService 
 	}
 
 	@Override
-	public void createPatientRecord(PatientRecordDto patientRecordDto) {
+	public void createPatientRecord(PatientRecordDto patientRecordDto, PatientBillDto patientBillDto) {
 		em = EntityManagerUtil.getEntityManager();
-		em.getTransaction().begin();
-		PatientRecord patientRecord = new PatientRecord(patientRecordDto);
-		em.persist(patientRecord);
-		em.getTransaction().commit();
-		em.close();
-		
+		try {
+			em.getTransaction().begin();
+			PatientRecord patientRecord = new PatientRecord(patientRecordDto);
+			PatientBill patientBill = new PatientBill(patientBillDto);
+			em.persist(patientRecord);
+			em.persist(patientBill);
+			em.getTransaction().commit();
+			em.close();
+		} catch (Exception e) {
+			em.getTransaction().rollback();
+		}
+
 	}
 
 	@Override
@@ -98,7 +106,7 @@ public class PatientServiceImpl extends BaseSercvices implements PatientService 
 		em.merge(patientRecord);
 		em.getTransaction().commit();
 		em.close();
-		
+
 	}
 
 }

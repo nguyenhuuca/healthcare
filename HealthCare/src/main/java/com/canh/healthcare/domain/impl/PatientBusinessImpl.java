@@ -5,7 +5,9 @@ import java.util.List;
 
 import com.canh.healthcare.domain.interfaces.PatientBusiness;
 import com.canh.healthcare.jpa.entity.Patient;
+import com.canh.healthcare.model.PatientBillDto;
 import com.canh.healthcare.model.PatientDto;
+import com.canh.healthcare.model.PatientRecordDto;
 import com.canh.healthcare.services.impl.PatientServiceImpl;
 import com.canh.healthcare.services.interfaces.PatientService;
 
@@ -21,7 +23,7 @@ public class PatientBusinessImpl implements PatientBusiness {
 
 	@Override
 	public void update(PatientDto patient) {
-		// TODO Auto-generated method stub
+		service.update(patient);
 		
 	}
 
@@ -67,6 +69,12 @@ public class PatientBusinessImpl implements PatientBusiness {
 			patientDtoLst.add(patientDto);
 		}
 		return patientDtoLst;
+	}
+
+	@Override
+	public void createPatientRecord(PatientRecordDto patientRecordDto, PatientBillDto patientBillDto) {
+		service.createPatientRecord(patientRecordDto, patientBillDto);
+		
 	}
 	
 }
