@@ -9,6 +9,7 @@ public class PatientBillDto {
 	int totalHour;
 	Date examinationDay;
 	Patient patient;
+	Date reExaminationDate;
 	public int getPatientBillId() {
 		return patientBillId;
 	}
@@ -33,5 +34,12 @@ public class PatientBillDto {
 	public void setPatient(Patient patient) {
 		this.patient = patient;
 	}
+	public Date getReExaminationDate() {
+		return reExaminationDate;
+	}
+	public void setReExaminationDate(Date reExaminationDate) {
+		this.reExaminationDate = reExaminationDate;
+	}
+	
 	
 }

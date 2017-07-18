@@ -1,6 +1,7 @@
 package com.canh.healthcare.mdimanager.patientgui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.ComponentOrientation;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -8,25 +9,33 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
+
+import org.jdatepicker.impl.JDatePanelImpl;
+import org.jdatepicker.impl.JDatePickerImpl;
+import org.jdatepicker.impl.UtilDateModel;
 
 import com.canh.healthcare.domain.impl.MedicineBusinessImpl;
 import com.canh.healthcare.domain.impl.PatientBusinessImpl;
 import com.canh.healthcare.domain.interfaces.MedicineBusiness;
 import com.canh.healthcare.domain.interfaces.PatientBusiness;
+import com.canh.healthcare.mdimanager.utils.DateLabelFormatter;
 import com.canh.healthcare.model.MedicineDto;
 import com.canh.healthcare.model.PatientDto;
 
@@ -45,6 +54,8 @@ public class PrescribingForm extends JInternalFrame implements ActionListener {
 	private JLabel lblGender = new JLabel("Giới tính");
 	private JTextField txtGender = new JTextField(10);
 	private JComboBox<String> cbxGender = new JComboBox<String>();
+	private JLabel lblMobile = new JLabel("Số điện thoại");
+	private JTextField txtMobile = new JTextField(10);
 
 	private JLabel lblExamination = new JLabel("Ngày khám");
 	private JTextField txtExamination = new JTextField(10);
@@ -65,6 +76,11 @@ public class PrescribingForm extends JInternalFrame implements ActionListener {
 	JTextField txtQuantity = new JTextField("1", 5);
 	JButton btnAdd = new JButton("Xác nhận");
 
+	JDatePanelImpl datePanelExaminationDate;
+	JDatePickerImpl datePickerExaminationDate;
+	JDatePanelImpl datePanelReExaminationDate;
+	JDatePickerImpl datePickerReExaminatrionDate;
+
 	MedicineBusiness medicineBusiness = new MedicineBusinessImpl();
 	PatientBusiness patientBusiness = new PatientBusinessImpl();
 	JTable tablePrescribing = new JTable();
@@ -81,6 +97,11 @@ public class PrescribingForm extends JInternalFrame implements ActionListener {
 		setClosable(true);
 		this.setTitle("Bảng kê thuốc và chi phí bệnh nhân");
 		this.setVisible(true);
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				txtPriceExamination.requestFocus();
+			}
+		});
 		pack();
 	}
 
@@ -99,30 +120,44 @@ public class PrescribingForm extends JInternalFrame implements ActionListener {
 		// row 1
 		constraints.gridx = 0;
 		constraints.gridy = 0;
-		prescribingPanel.add(lblName, constraints);
+		prescribingPanel.add(lblMobile, constraints);
 
 		constraints.gridx = 1;
+		txtMobile.setMinimumSize(txtMobile.getPreferredSize());
+		txtMobile.setForeground(Color.GRAY);
+		txtMobile.addFocusListener(new FocusListener() {
+
+			@Override
+			public void focusLost(FocusEvent e) {
+				if (txtMobile.getText().isEmpty()) {
+					txtMobile.setText("Nhập để tìm");
+					txtMobile.setForeground(Color.GRAY);
+				}
+
+			}
+
+			@Override
+			public void focusGained(FocusEvent e) {
+				if (txtMobile.getText().equals("Nhập để tìm")) {
+					txtMobile.setForeground(Color.BLACK);
+					txtMobile.setText("");
+				}
+			}
+		});
+		prescribingPanel.add(txtMobile, constraints);
+
+		constraints.gridx = 2;
+		prescribingPanel.add(lblName, constraints);
+		constraints.gridx = 3;
 		txtName.setMinimumSize(txtName.getPreferredSize());
 		prescribingPanel.add(txtName, constraints);
 
-		constraints.gridx = 2;
+		constraints.gridx = 4;
 		prescribingPanel.add(lblBirthDay, constraints);
 
-		constraints.gridx = 3;
+		constraints.gridx = 5;
 		txtBirthDate.setMinimumSize(txtBirthDate.getPreferredSize());
 		prescribingPanel.add(txtBirthDate, constraints);
-
-		constraints.gridx = 4;
-		prescribingPanel.add(lblGender, constraints);
-
-		constraints.gridx = 5;
-		// txtGender.setMinimumSize(txtGender.getPreferredSize());
-		// prescribingPanel.add(txtGender, constraints);
-		cbxGender.setPreferredSize(new Dimension(100, 25));
-		cbxGender.addItem("");
-		cbxGender.addItem("Nam");
-		cbxGender.addItem("Nữ");
-		prescribingPanel.add(cbxGender, constraints);
 
 		// row 2
 		constraints.gridx = 0;
@@ -134,46 +169,20 @@ public class PrescribingForm extends JInternalFrame implements ActionListener {
 		prescribingPanel.add(txtId, constraints);
 
 		constraints.gridx = 2;
-		prescribingPanel.add(lblExamination, constraints);
+		prescribingPanel.add(lblGender, constraints);
 
 		constraints.gridx = 3;
-		txtExamination.setMinimumSize(txtExamination.getPreferredSize());
-		prescribingPanel.add(txtExamination, constraints);
+		cbxGender.setPreferredSize(new Dimension(100, 25));
+		cbxGender.addItem("");
+		cbxGender.addItem("Nam");
+		cbxGender.addItem("Nữ");
+		prescribingPanel.add(cbxGender, constraints);
 
-		constraints.gridx = 4;
-		prescribingPanel.add(lblReExamination, constraints);
-
-		constraints.gridx = 5;
-		txtReExamination.setMinimumSize(txtReExamination.getPreferredSize());
-		prescribingPanel.add(txtReExamination, constraints);
-
-		// row 3
-		/*
-		 * constraints.gridx = 0; constraints.gridy = 2;
-		 * prescribingPanel.add(lblPriceExamination, constraints);
-		 * 
-		 * constraints.gridx = 1;
-		 * txtPriceExamination.setMinimumSize(txtPriceExamination.getPreferredSize());
-		 * prescribingPanel.add(txtPriceExamination, constraints);
-		 * 
-		 * constraints.gridx = 2; prescribingPanel.add(lblHourExamination, constraints);
-		 * 
-		 * constraints.gridx = 3;
-		 * txtHourExamination.setMinimumSize(txtHourExamination.getPreferredSize());
-		 * prescribingPanel.add(txtHourExamination, constraints);
-		 * 
-		 * constraints.gridx = 4; prescribingPanel.add(lblTotalCost, constraints);
-		 * 
-		 * constraints.gridx = 5;
-		 * txtTotalCost.setMinimumSize(txtTotalCost.getPreferredSize());
-		 * prescribingPanel.add(txtTotalCost, constraints);
-		 */
-
-		constraints.gridx = 2;
+		constraints.gridx = 0;
 		constraints.gridy = 2;
 		constraints.gridwidth = 6;
 		// constraints.insets = new Insets(20,20,20,20);
-		// constraints.anchor = GridBagConstraints.CENTER;
+		constraints.anchor = GridBagConstraints.CENTER;
 		btnConfirmPatient.setActionCommand("ConfirmPatient");
 		btnConfirmPatient.addActionListener(this);
 		prescribingPanel.add(btnConfirmPatient, constraints);
@@ -191,7 +200,7 @@ public class PrescribingForm extends JInternalFrame implements ActionListener {
 	public void createPrescribingArea() {
 		JPanel prescribingArea = new JPanel();
 		prescribingArea.setLayout(null);
-		prescribingArea.setPreferredSize(new Dimension(800, 100));
+		prescribingArea.setPreferredSize(new Dimension(800, 130));
 		prescribingArea.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
 		cbxMedical.setPreferredSize(new Dimension(250, 25));
 		Insets insets = prescribingArea.getInsets();
@@ -226,10 +235,11 @@ public class PrescribingForm extends JInternalFrame implements ActionListener {
 		btnAdd.setActionCommand("addMedicine");
 		btnAdd.addActionListener(this);
 
-		List<MedicineDto> medicineDtoList = medicineBusiness.findAll();
-		for (MedicineDto medicieDto : medicineDtoList) {
-			cbxMedical.addItem(medicieDto);
-		}
+		/*
+		 * List<MedicineDto> medicineDtoList = medicineBusiness.findAll(); for
+		 * (MedicineDto medicieDto : medicineDtoList) {
+		 * cbxMedical.addItem(medicieDto); }
+		 */
 		prescribingArea.add(lblNameMedical);
 		prescribingArea.add(cbxMedical);
 		prescribingArea.add(lblQuantity);
@@ -248,13 +258,13 @@ public class PrescribingForm extends JInternalFrame implements ActionListener {
 
 		size = txtPriceExamination.getPreferredSize();
 		marginLeft += width;
-		width = size.width;
+		width = size.width + 50;
 		height = size.height;
 		txtPriceExamination.setBounds(marginLeft, insets.top + 50, width, height);
 		prescribingArea.add(txtPriceExamination);
 
 		size = lblHourExamination.getPreferredSize();
-		marginLeft += width;
+		marginLeft += width + 25;
 		width = size.width;
 		height = size.height;
 		lblHourExamination.setBounds(marginLeft, margintTop, width, height);
@@ -281,8 +291,50 @@ public class PrescribingForm extends JInternalFrame implements ActionListener {
 		txtTotalCost.setBounds(marginLeft, insets.top + 50, width, height);
 		prescribingArea.add(txtTotalCost);
 
+		// row 3
+		insets = prescribingArea.getInsets();
+		size = lblExamination.getPreferredSize();
+		marginLeft = 25 + insets.left;
+		margintTop = 85 + insets.top;
+		width = size.width;
+		height = size.height;
+		lblExamination.setBounds(marginLeft, margintTop, width, height);
+		prescribingArea.add(lblExamination);
+
+		UtilDateModel examinationDate = new UtilDateModel();
+		UtilDateModel reExaminationDate = new UtilDateModel();
+		Properties p = new Properties();
+		p.put("text.today", "Today");
+		p.put("text.month", "Month");
+		p.put("text.year", "Year");
+		datePanelExaminationDate = new JDatePanelImpl(examinationDate, p);
+		datePickerExaminationDate = new JDatePickerImpl(datePanelExaminationDate, new DateLabelFormatter());
+		datePanelReExaminationDate = new JDatePanelImpl(reExaminationDate, p);
+		datePickerReExaminatrionDate = new JDatePickerImpl(datePanelReExaminationDate, new DateLabelFormatter());
+
+		size = datePickerExaminationDate.getPreferredSize();
+		marginLeft += width;
+		width = size.width;
+		height = size.height;
+		datePickerExaminationDate.setBounds(marginLeft, insets.top + 80, width, height);
+		prescribingArea.add(datePickerExaminationDate);
+
+		size = lblReExamination.getPreferredSize();
+		marginLeft += width;
+		width = size.width;
+		height = size.height;
+		lblReExamination.setBounds(marginLeft, margintTop, width, height);
+		prescribingArea.add(lblReExamination);
+
+		size = datePickerReExaminatrionDate.getPreferredSize();
+		marginLeft += width;
+		width = size.width;
+		height = size.height;
+		datePickerReExaminatrionDate.setBounds(marginLeft, insets.top + 80, width, height);
+		prescribingArea.add(datePickerReExaminatrionDate);
+
 		prescribingArea.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Kê toa"));
-		add(prescribingArea, BorderLayout.CENTER);
+		add(prescribingArea, BorderLayout.WEST);
 	}
 
 	public void createPrescribingList() {
@@ -313,7 +365,8 @@ public class PrescribingForm extends JInternalFrame implements ActionListener {
 	public void populateJtable(DefaultTableModel model, MedicineDto medicineDto) {
 		// List<PatientDto> patientDtoLst = patientBusiness.findAll();
 		// patientDtoLst.add(patientDto);
-		// Object columnNames[] = { "Id", "Tên thuốc", "Số lượng", "Thành tiền" };
+		// Object columnNames[] = { "Id", "Tên thuốc", "Số lượng", "Thành tiền"
+		// };
 		List<Object[]> ar = new ArrayList<Object[]>();
 		// for (int i = 0; i < patientDtoLst.size(); i++) {
 		int id = medicineDto.getId();
@@ -332,7 +385,7 @@ public class PrescribingForm extends JInternalFrame implements ActionListener {
 	public void populateDateForPatientGroup(PatientDto patientDto) {
 		txtName.setText(patientDto.getName());
 		txtBirthDate.setText(patientDto.getBirthDay());
-		cbxGender.setSelectedItem(patientDto.isMale()==true?"Nam":"Nữ");
+		cbxGender.setSelectedItem(patientDto.isMale() == true ? "Nam" : "Nữ");
 	}
 
 	@Override

@@ -14,6 +14,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.canh.healthcare.model.PatientBillDto;
+
 @Entity
 @Table(name = "Patient_Bills")
 public class PatientBill {
@@ -22,15 +24,17 @@ public class PatientBill {
 	int patientBillId;
 	int totalHour;
 	Date examinationDay;
+	Date reExamminatioDate;
 	Patient patient;
 	
 	public PatientBill(){
 		
 	}
-	public PatientBill(Patient patient, Date examinationDate, int totalHour){
-		this.patient = patient;
-		this.examinationDay = examinationDate;
-		this.totalHour = totalHour;
+	public PatientBill(PatientBillDto patientBillDto){
+		this.patient = patientBillDto.getPatient();
+		this.examinationDay = patientBillDto.getExaminationDay();
+		this.totalHour = patientBillDto.getTotalHour();
+		this.reExamminatioDate = patientBillDto.getReExaminationDate();
 	}
 	public int getPatientBillId() {
 		return patientBillId;
@@ -60,6 +64,12 @@ public class PatientBill {
 	}
 	public void setPatient(Patient patient) {
 		this.patient = patient;
+	}
+	public Date getReExamminatioDate() {
+		return reExamminatioDate;
+	}
+	public void setReExamminatioDate(Date reExamminatioDate) {
+		this.reExamminatioDate = reExamminatioDate;
 	}
 	
 	
