@@ -37,11 +37,11 @@ public class PatientServiceImpl extends BaseSercvices implements PatientService 
 	}
 
 	@Override
-	public void update(PatientDto patient) {
+	public void update(Patient patient) {
 		em = EntityManagerUtil.getEntityManager();
 		em.getTransaction().begin();
-		Patient patientEnt = new Patient(patient);
-		patientEnt = em.merge(patientEnt);
+		//Patient patientEnt = new Patient(patient);
+		patient = em.merge(patient);
 		em.getTransaction().commit();
 		em.close();
 

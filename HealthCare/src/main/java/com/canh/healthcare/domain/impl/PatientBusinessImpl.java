@@ -5,6 +5,8 @@ import java.util.List;
 
 import com.canh.healthcare.domain.interfaces.PatientBusiness;
 import com.canh.healthcare.jpa.entity.Patient;
+import com.canh.healthcare.jpa.entity.PatientBill;
+import com.canh.healthcare.jpa.entity.PatientRecord;
 import com.canh.healthcare.model.PatientBillDto;
 import com.canh.healthcare.model.PatientDto;
 import com.canh.healthcare.model.PatientRecordDto;
@@ -17,14 +19,16 @@ public class PatientBusinessImpl implements PatientBusiness {
 	@Override
 	public void create(PatientDto patient) {
 		// TODO Auto-generated method stub
+
 		service.create(patient);
-		
+
 	}
 
 	@Override
-	public void update(PatientDto patient) {
+	public void update(PatientDto patientDto) {
+		Patient patient = populateDateForPatient(patientDto);
 		service.update(patient);
-		
+
 	}
 
 	@Override
@@ -33,19 +37,19 @@ public class PatientBusinessImpl implements PatientBusiness {
 		Patient patient = service.findPatientById(id);
 		return populateData(patient);
 	}
-	
+
 	@Override
 	public List<PatientDto> searchAll() {
 		List<Patient> patientLst = service.findAll();
-		List<PatientDto> patientDtoLst =  new ArrayList<PatientDto>();
-		for(Patient patient : patientLst){
+		List<PatientDto> patientDtoLst = new ArrayList<PatientDto>();
+		for (Patient patient : patientLst) {
 			PatientDto patientDto = populateData(patient);
 			patientDtoLst.add(patientDto);
 		}
 		return patientDtoLst;
 	}
-	
-	public PatientDto populateData(Patient patient){
+
+	public PatientDto populateData(Patient patient) {
 		PatientDto patientDto = new PatientDto();
 		patientDto.setAddress(patient.getAddress());
 		patientDto.setBirthDay(patient.getBirthDay());
@@ -56,15 +60,32 @@ public class PatientBusinessImpl implements PatientBusiness {
 		patientDto.setMobile(patient.getMobile());
 		patientDto.setName(patient.getName());
 		patientDto.setUrgentContact(patient.getUrgentContact());
-		
+
 		return patientDto;
+	}
+
+	public Patient populateDateForPatient(PatientDto patientDto) {
+		Patient patient = new Patient(patientDto);
+		Patient patientRef = new Patient(patientDto);
+		for (PatientRecordDto patientRecordDto : patientDto.getPattientRecords()) {
+			PatientRecord patientRecord = new PatientRecord(patientRecordDto);
+			patientRecord.setPatient(patientRef);
+			patient.getPattientRecords().add(patientRecord);
+		}
+
+		for (PatientBillDto patientBillDto : patientDto.getPatientBill()) {
+			PatientBill patientBill = new PatientBill(patientBillDto);
+			patientBill.setPatient(patientRef);
+			patient.getPatientBill().add(patientBill);
+		}
+		return patient;
 	}
 
 	@Override
 	public List<PatientDto> searchByName(String name) {
 		List<Patient> patientLst = service.findByName(name);
-		List<PatientDto> patientDtoLst =  new ArrayList<PatientDto>();
-		for(Patient patient : patientLst){
+		List<PatientDto> patientDtoLst = new ArrayList<PatientDto>();
+		for (Patient patient : patientLst) {
 			PatientDto patientDto = populateData(patient);
 			patientDtoLst.add(patientDto);
 		}
@@ -74,7 +95,7 @@ public class PatientBusinessImpl implements PatientBusiness {
 	@Override
 	public void createPatientRecord(PatientRecordDto patientRecordDto, PatientBillDto patientBillDto) {
 		service.createPatientRecord(patientRecordDto, patientBillDto);
-		
+
 	}
-	
+
 }
