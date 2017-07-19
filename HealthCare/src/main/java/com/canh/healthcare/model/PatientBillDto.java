@@ -10,7 +10,7 @@ import com.canh.healthcare.jpa.entity.PatientBillDetails;
 public class PatientBillDto {
 	int patientBillId;
 	Patient patient;
-	List<PatientBillDetails> patientBillDetails = new ArrayList<PatientBillDetails>();
+	List<PatientBillDetailsDto> patientBillDetails = new ArrayList<PatientBillDetailsDto>();
 	Date createDate;
 	public int getPatientBillId() {
 		return patientBillId;
@@ -24,10 +24,10 @@ public class PatientBillDto {
 	public void setPatient(Patient patient) {
 		this.patient = patient;
 	}
-	public List<PatientBillDetails> getPatientBillDetails() {
+	public List<PatientBillDetailsDto> getPatientBillDetails() {
 		return patientBillDetails;
 	}
-	public void setPatientBillDetails(List<PatientBillDetails> patientBillDetails) {
+	public void setPatientBillDetails(List<PatientBillDetailsDto> patientBillDetails) {
 		this.patientBillDetails = patientBillDetails;
 	}
 	public Date getCreateDate() {

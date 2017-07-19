@@ -4,9 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.canh.healthcare.domain.interfaces.PatientBusiness;
+import com.canh.healthcare.jpa.entity.Medicine;
 import com.canh.healthcare.jpa.entity.Patient;
 import com.canh.healthcare.jpa.entity.PatientBill;
+import com.canh.healthcare.jpa.entity.PatientBillDetails;
 import com.canh.healthcare.jpa.entity.PatientRecord;
+import com.canh.healthcare.model.PatientBillDetailsDto;
 import com.canh.healthcare.model.PatientBillDto;
 import com.canh.healthcare.model.PatientDto;
 import com.canh.healthcare.model.PatientRecordDto;
@@ -76,6 +79,12 @@ public class PatientBusinessImpl implements PatientBusiness {
 		for (PatientBillDto patientBillDto : patientDto.getPatientBill()) {
 			PatientBill patientBill = new PatientBill(patientBillDto);
 			patientBill.setPatient(patientRef);
+			//PatientBillDetails billDetails = new PatientBillDetails();
+			//for(PatientBillDetailsDto patientBillDetailsDto : patientBillDto.getPatientBillDetails()) {
+			//	billDetails = convertToPatientDetail(patientBillDetailsDto);
+			//	patientBill.getPatientBillDetails().add(billDetails);
+			//}
+			
 			patient.getPatientBill().add(patientBill);
 		}
 		return patient;
@@ -96,6 +105,18 @@ public class PatientBusinessImpl implements PatientBusiness {
 	public void createPatientRecord(PatientRecordDto patientRecordDto, PatientBillDto patientBillDto) {
 		service.createPatientRecord(patientRecordDto, patientBillDto);
 
+	}
+	
+	public PatientBillDetails convertToPatientDetail(PatientBillDetailsDto patientDetailDto) {
+		PatientBillDetails billDetail = new PatientBillDetails();
+		Medicine medicine = new Medicine(patientDetailDto.getMedicine());
+		PatientBill patientBill = new PatientBill();
+		billDetail.setMedicine(medicine);
+		billDetail.setPatientBill(patientBill);
+		billDetail.setQuantity(patientDetailDto.getQuantity());
+		return billDetail;
+				
+		
 	}
 
 }

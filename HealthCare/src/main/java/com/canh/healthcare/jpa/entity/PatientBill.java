@@ -30,7 +30,7 @@ public class PatientBill {
 	
 	//update schema
 	Date createDate;
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL,mappedBy = "PatientBill")
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL,mappedBy = "patientBill")
 	List<PatientBillDetails> patientBillDetails = new ArrayList<PatientBillDetails>();
 	public PatientBill(){
 		

@@ -1,5 +1,7 @@
 package com.canh.healthcare.jpa.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -8,8 +10,12 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "Patient_Bill_Details")
-public class PatientBillDetails {
+public class PatientBillDetails implements Serializable  {
   
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	Medicine medicine;
 	PatientBill patientBill;
 	int quantity;

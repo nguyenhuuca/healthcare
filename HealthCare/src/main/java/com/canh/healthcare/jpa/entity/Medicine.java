@@ -31,7 +31,7 @@ public class Medicine {
 	String unit;
 	Long unitPriceBuy;
 	Long unitPriceSell;
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL,mappedBy = "Medicine")
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL,mappedBy = "medicine")
 	List<PatientBillDetails> patientBillDetails = new ArrayList<PatientBillDetails>();
 	
 	public Medicine(){
