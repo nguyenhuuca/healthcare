@@ -22,10 +22,15 @@ public class PatientRecord {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	int patientRecordId;
-	int quantityMedicine;
-	int medicineId;
 	Date dateCome;
 	Patient patient;
+	/// update
+	int totalHour;
+	Date examinationDay;
+	Date reExamminatioDate;
+	Long examinationCost;
+	Long totalCost;
+	String description;
 
 	public PatientRecord() {
 
@@ -37,8 +42,11 @@ public class PatientRecord {
 		}
 		this.patient = patientRecordDto.getPatient();
 		this.dateCome = patientRecordDto.getDateCome();
-		this.quantityMedicine = patientRecordDto.getQuantityMedicine();
-		this.medicineId = patientRecordDto.getMedicineId();
+		this.totalCost = patientRecordDto.getTotalCost();
+		this.examinationDay = patientRecordDto.getExaminationDay();
+		this.reExamminatioDate = patientRecordDto.getReExamminatioDate();
+		this.totalHour = patientRecordDto.getTotalHour();
+		this.description = patientRecordDto.getDescription();
 	}
 
 	public int getPatientRecordId() {
@@ -69,22 +77,58 @@ public class PatientRecord {
 		this.patient = patient;
 	}
 
-	@Column(name = "quantity")
-	public int getQuantityMedicine() {
-		return quantityMedicine;
+    @Column(name="total_hour")
+	public int getTotalHour() {
+		return totalHour;
 	}
 
-	public void setQuantityMedicine(int quantityMedicine) {
-		this.quantityMedicine = quantityMedicine;
+	public void setTotalHour(int totalHour) {
+		this.totalHour = totalHour;
+	}
+    
+	@Column(name="examination_date")
+	public Date getExaminationDay() {
+		return examinationDay;
 	}
 
-	@Column(name = "medicine_id")
-	public int getMedicineId() {
-		return medicineId;
+	public void setExaminationDay(Date examinationDay) {
+		this.examinationDay = examinationDay;
+	}
+    @Column(name ="re_examination_date")
+	public Date getReExamminatioDate() {
+		return reExamminatioDate;
+	}
+    
+	public void setReExamminatioDate(Date reExamminatioDate) {
+		this.reExamminatioDate = reExamminatioDate;
+	}
+    
+	@Column(name="examination_cost")
+	public Long getExaminationCost() {
+		return examinationCost;
 	}
 
-	public void setMedicineId(int medicineId) {
-		this.medicineId = medicineId;
+	public void setExaminationCost(Long examinationCost) {
+		this.examinationCost = examinationCost;
 	}
+    
+	@Column(name = "total_cost")
+	public Long getTotalCost() {
+		return totalCost;
+	}
+
+	public void setTotalCost(Long totalCost) {
+		this.totalCost = totalCost;
+	}
+    
+	@Column(name = "description")
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	
 
 }

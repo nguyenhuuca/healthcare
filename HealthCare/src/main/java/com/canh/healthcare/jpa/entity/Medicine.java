@@ -1,12 +1,18 @@
 package com.canh.healthcare.jpa.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedNativeQueries;
 import javax.persistence.NamedNativeQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.canh.healthcare.model.MedicineDto;
@@ -25,6 +31,8 @@ public class Medicine {
 	String unit;
 	Long unitPriceBuy;
 	Long unitPriceSell;
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL,mappedBy = "Medicine")
+	List<PatientBillDetails> patientBillDetails = new ArrayList<PatientBillDetails>();
 	
 	public Medicine(){
 		
@@ -83,5 +91,12 @@ public class Medicine {
 	public void setUnitPriceSell(Long unitPriceSell) {
 		this.unitPriceSell = unitPriceSell;
 	}
+	public List<PatientBillDetails> getPatientBillDetails() {
+		return patientBillDetails;
+	}
+	public void setPatientBillDetails(List<PatientBillDetails> patientBillDetails) {
+		this.patientBillDetails = patientBillDetails;
+	}
+	
 
 }

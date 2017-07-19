@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 
+import org.hibernate.Session;
+
 import com.canh.healthcare.jpa.entity.Patient;
 import com.canh.healthcare.jpa.entity.PatientBill;
 import com.canh.healthcare.jpa.entity.PatientRecord;

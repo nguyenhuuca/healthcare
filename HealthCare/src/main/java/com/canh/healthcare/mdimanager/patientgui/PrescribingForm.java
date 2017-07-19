@@ -63,14 +63,18 @@ public class PrescribingForm extends JInternalFrame implements ActionListener {
 
 	private JLabel lblExamination = new JLabel("Ngày khám");
 	private JTextField txtExamination = new JTextField(10);
-	private JLabel lblReExamination = new JLabel("Ngày khám");
+	private JLabel lblReExamination = new JLabel("Ngày tái khám");
 	private JTextField txtReExamination = new JTextField(10);
 	private JLabel lblPriceExamination = new JLabel("Tiền khám");
 	private JTextField txtPriceExamination = new JTextField(10);
 	private JLabel lblHourExamination = new JLabel("Số giờ khám");
 	private JTextField txtHourExamination = new JTextField(5);
-	private JLabel lblTotalCost = new JLabel("Tổng tiền khám");
-	private JTextField txtTotalCost = new JTextField(10);
+	private JLabel lblTotalExaminationCost = new JLabel("Tổng tiền khám");
+	private JTextField txtTotalExaminationCost = new JTextField(10);
+	private JLabel lblTotalMedicineCost = new JLabel("Tiền thuốc");
+	private JTextField txtTotalMedicineCost = new JTextField(10);
+    private JLabel lblTotalCost = new JLabel("Thành tiền");
+    private JTextField txtTotalCost = new JTextField(10);
 	private JButton btnConfirmPatient = new JButton("Ok");
 	private JButton btnUpdatePrescribing = new JButton("Cập nhật");
 	private JButton btnSavePrescribing = new JButton("Lưu toa");
@@ -94,7 +98,7 @@ public class PrescribingForm extends JInternalFrame implements ActionListener {
 	// hold date
 	PatientDto patientDto = new PatientDto();
 	// PatientRecordDto patientRecordDto = new PatientRecordDto();
-	//PatientBillDto patientBillDto = new PatientBillDto();
+	// PatientBillDto patientBillDto = new PatientBillDto();
 	List<MedicineDto> medicineDtoLst = new ArrayList<MedicineDto>();
 	List<PatientBillDto> patientBillDtoLst = new ArrayList<PatientBillDto>();
 	List<PatientRecordDto> patientRecordDtoList = new ArrayList<PatientRecordDto>();
@@ -215,102 +219,14 @@ public class PrescribingForm extends JInternalFrame implements ActionListener {
 		prescribingArea.setLayout(null);
 		prescribingArea.setPreferredSize(new Dimension(800, 130));
 		prescribingArea.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
-		cbxMedical.setPreferredSize(new Dimension(250, 25));
+
+		// row 1
 		Insets insets = prescribingArea.getInsets();
-		Dimension size = lblNameMedical.getPreferredSize();
+		Dimension size = lblExamination.getPreferredSize();
 		int marginLeft = 25 + insets.left;
 		int margintTop = 25 + insets.top;
 		int width = size.width;
 		int height = size.height;
-		lblNameMedical.setBounds(marginLeft, margintTop, width, height);
-		size = cbxMedical.getPreferredSize();
-		marginLeft += width;
-		width = size.width;
-		height = size.height;
-		cbxMedical.setBounds(marginLeft, 20 + insets.top, width, height);
-		size = lblQuantity.getPreferredSize();
-		marginLeft += width;
-		width = size.width;
-		height = size.height;
-		lblQuantity.setBounds(marginLeft, margintTop, width, height);
-
-		size = txtQuantity.getPreferredSize();
-		marginLeft += width;
-		width = size.width;
-		height = size.height;
-		txtQuantity.setBounds(marginLeft, 20 + insets.top, width, height);
-
-		size = btnAdd.getPreferredSize();
-		marginLeft += width;
-		width = size.width;
-		height = size.height;
-		btnAdd.setBounds(marginLeft, 20 + insets.top, width, height);
-		btnAdd.setActionCommand("addMedicine");
-		btnAdd.addActionListener(this);
-
-		List<MedicineDto> medicineDtoList = medicineBusiness.findAll();
-		for (MedicineDto medicieDto : medicineDtoList) {
-			cbxMedical.addItem(medicieDto);
-		}
-
-		prescribingArea.add(lblNameMedical);
-		prescribingArea.add(cbxMedical);
-		prescribingArea.add(lblQuantity);
-		prescribingArea.add(txtQuantity);
-		prescribingArea.add(btnAdd);
-
-		// row 2;
-		insets = prescribingArea.getInsets();
-		size = lblPriceExamination.getPreferredSize();
-		marginLeft = 25 + insets.left;
-		margintTop = 55 + insets.top;
-		width = size.width;
-		height = size.height;
-		lblPriceExamination.setBounds(marginLeft, margintTop, width, height);
-		prescribingArea.add(lblPriceExamination);
-
-		size = txtPriceExamination.getPreferredSize();
-		marginLeft += width;
-		width = size.width + 50;
-		height = size.height;
-		txtPriceExamination.setBounds(marginLeft, insets.top + 50, width, height);
-		prescribingArea.add(txtPriceExamination);
-
-		size = lblHourExamination.getPreferredSize();
-		marginLeft += width + 25;
-		width = size.width;
-		height = size.height;
-		lblHourExamination.setBounds(marginLeft, margintTop, width, height);
-		prescribingArea.add(lblHourExamination);
-
-		size = txtHourExamination.getPreferredSize();
-		marginLeft += width;
-		width = size.width;
-		height = size.height;
-		txtHourExamination.setBounds(marginLeft, insets.top + 50, width, height);
-		prescribingArea.add(txtHourExamination);
-
-		size = lblTotalCost.getPreferredSize();
-		marginLeft += width;
-		width = size.width;
-		height = size.height;
-		lblTotalCost.setBounds(marginLeft, margintTop, width, height);
-		prescribingArea.add(lblTotalCost);
-
-		size = txtTotalCost.getPreferredSize();
-		marginLeft += width;
-		width = size.width;
-		height = size.height;
-		txtTotalCost.setBounds(marginLeft, insets.top + 50, width, height);
-		prescribingArea.add(txtTotalCost);
-
-		// row 3
-		insets = prescribingArea.getInsets();
-		size = lblExamination.getPreferredSize();
-		marginLeft = 25 + insets.left;
-		margintTop = 85 + insets.top;
-		width = size.width;
-		height = size.height;
 		lblExamination.setBounds(marginLeft, margintTop, width, height);
 		prescribingArea.add(lblExamination);
 
@@ -329,7 +245,7 @@ public class PrescribingForm extends JInternalFrame implements ActionListener {
 		marginLeft += width;
 		width = size.width;
 		height = size.height;
-		datePickerExaminationDate.setBounds(marginLeft, insets.top + 80, width, height);
+		datePickerExaminationDate.setBounds(marginLeft, insets.top + 20, width, height);
 		prescribingArea.add(datePickerExaminationDate);
 
 		size = lblReExamination.getPreferredSize();
@@ -343,7 +259,7 @@ public class PrescribingForm extends JInternalFrame implements ActionListener {
 		marginLeft += width;
 		width = size.width;
 		height = size.height;
-		datePickerReExaminatrionDate.setBounds(marginLeft, insets.top + 80, width, height);
+		datePickerReExaminatrionDate.setBounds(marginLeft, insets.top + 20, width, height);
 		prescribingArea.add(datePickerReExaminatrionDate);
 
 		size = btnSavePrescribing.getPreferredSize();
@@ -352,8 +268,126 @@ public class PrescribingForm extends JInternalFrame implements ActionListener {
 		height = size.height;
 		btnSavePrescribing.setActionCommand("SavePrescribing");
 		btnSavePrescribing.addActionListener(this);
-		btnSavePrescribing.setBounds(marginLeft, insets.top + 80, width, height);
+		btnSavePrescribing.setBounds(marginLeft, insets.top + 20, width, height);
 		prescribingArea.add(btnSavePrescribing);
+
+		// row 2;
+		insets = prescribingArea.getInsets();
+		size = lblPriceExamination.getPreferredSize();
+		marginLeft = 25 + insets.left;
+		margintTop = 55 + insets.top;
+		width = size.width;
+		height = size.height;
+		lblPriceExamination.setBounds(marginLeft, margintTop, width, height);
+		prescribingArea.add(lblPriceExamination);
+
+		size = txtPriceExamination.getPreferredSize();
+		marginLeft += width;
+		width = size.width;
+		height = size.height;
+		txtPriceExamination.setBounds(marginLeft, insets.top + 50, width, height);
+		prescribingArea.add(txtPriceExamination);
+
+		size = lblHourExamination.getPreferredSize();
+		marginLeft += width;
+		width = size.width;
+		height = size.height;
+		lblHourExamination.setBounds(marginLeft, margintTop, width, height);
+		prescribingArea.add(lblHourExamination);
+
+		size = txtHourExamination.getPreferredSize();
+		marginLeft += width;
+		width = size.width;
+		height = size.height;
+		txtHourExamination.setBounds(marginLeft, insets.top + 50, width, height);
+		prescribingArea.add(txtHourExamination);
+
+		size = lblTotalExaminationCost.getPreferredSize();
+		marginLeft += width;
+		width = size.width;
+		height = size.height;
+		lblTotalExaminationCost.setBounds(marginLeft, margintTop, width, height);
+		prescribingArea.add(lblTotalExaminationCost);
+
+		size = txtTotalExaminationCost.getPreferredSize();
+		marginLeft += width;
+		width = size.width;
+		height = size.height;
+		txtTotalExaminationCost.setBounds(marginLeft, insets.top + 50, width, height);
+		prescribingArea.add(txtTotalExaminationCost);
+		
+		size = lblTotalCost.getPreferredSize();
+		marginLeft += width;
+		width = size.width;
+		height = size.height;
+		lblTotalCost.setBounds(marginLeft, margintTop, width, height);
+		prescribingArea.add(lblTotalCost);
+		
+		size = txtTotalCost.getPreferredSize();
+		marginLeft += width;
+		width = size.width;
+		height = size.height;
+		txtTotalCost.setBounds(marginLeft, insets.top+50, width, height);
+		prescribingArea.add(txtTotalCost);
+
+		// row 3
+		cbxMedical.setPreferredSize(new Dimension(250, 25));
+		insets = prescribingArea.getInsets();
+		size = lblNameMedical.getPreferredSize();
+		marginLeft = 25 + insets.left;
+		margintTop = 85 + insets.top;
+		width = size.width;
+		height = size.height;
+		lblNameMedical.setBounds(marginLeft, margintTop, width, height);
+		size = cbxMedical.getPreferredSize();
+		marginLeft += width;
+		width = size.width;
+		height = size.height;
+		cbxMedical.setBounds(marginLeft, 80 + insets.top, width, height);
+		size = lblQuantity.getPreferredSize();
+		marginLeft += width;
+		width = size.width;
+		height = size.height;
+		lblQuantity.setBounds(marginLeft, margintTop, width, height);
+
+		size = txtQuantity.getPreferredSize();
+		marginLeft += width;
+		width = size.width;
+		height = size.height;
+		txtQuantity.setBounds(marginLeft, 80+ insets.top, width, height);
+
+		size = btnAdd.getPreferredSize();
+		marginLeft += width;
+		width = size.width;
+		height = size.height;
+		btnAdd.setBounds(marginLeft, 80 + insets.top, width, height);
+		btnAdd.setActionCommand("addMedicine");
+		btnAdd.addActionListener(this);
+		/*
+		 * List<MedicineDto> medicineDtoList = medicineBusiness.findAll(); for
+		 * (MedicineDto medicieDto : medicineDtoList) {
+		 * cbxMedical.addItem(medicieDto); }
+		 */
+		
+		size  = lblTotalMedicineCost.getPreferredSize();
+		marginLeft += width +20;
+		width = size.width;
+		height = size.height;
+		lblTotalMedicineCost.setBounds(marginLeft,margintTop,width, height);
+		
+		size = txtTotalMedicineCost.getPreferredSize();
+		marginLeft += width;
+		width = size.width;
+		height = size.height;
+		txtTotalMedicineCost.setBounds(marginLeft, insets.top + 80,width, height);
+
+		prescribingArea.add(lblNameMedical);
+		prescribingArea.add(cbxMedical);
+		prescribingArea.add(lblQuantity);
+		prescribingArea.add(txtQuantity);
+		prescribingArea.add(btnAdd);
+		prescribingArea.add(lblTotalMedicineCost);
+		prescribingArea.add(txtTotalMedicineCost);
 
 		prescribingArea.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Kê toa"));
 		add(prescribingArea, BorderLayout.WEST);
@@ -417,11 +451,6 @@ public class PrescribingForm extends JInternalFrame implements ActionListener {
 			MedicineDto medicineDto = (MedicineDto) cbxMedical.getSelectedItem();
 			medicineDto.setQuantity(Integer.parseInt(txtQuantity.getText()));
 			medicineDtoLst.add(medicineDto);
-			PatientRecordDto patientRecordDto = new PatientRecordDto();
-			patientRecordDto.setDateCome((Date)datePickerExaminationDate.getModel().getValue());
-			patientRecordDto.setMedicineId(medicineDto.getId());
-			patientRecordDto.setQuantityMedicine(Integer.parseInt(txtQuantity.getText()));
-			patientRecordDtoList.add(patientRecordDto);
 			populateJtable(modelPrescribing, medicineDto);
 			// JOptionPane.showMessageDialog(null, "Tạo thành công");
 			break;
@@ -432,11 +461,16 @@ public class PrescribingForm extends JInternalFrame implements ActionListener {
 			break;
 		case "SavePrescribing":
 			// save patient record
+			PatientRecordDto patientRecordDto = new PatientRecordDto();
+			patientRecordDto.setDateCome((Date) datePickerExaminationDate.getModel().getValue());
+			patientRecordDto.setExaminationDay((Date)datePickerExaminationDate.getModel().getValue());
+			patientRecordDto.setReExamminatioDate((Date)datePickerReExaminatrionDate.getModel().getValue());
+			patientRecordDto.setTotalCost(Long.parseLong(txtTotalCost.getText()));
+			patientRecordDto.setTotalHour(Integer.parseInt(txtHourExamination.getText()));
+			patientRecordDtoList.add(patientRecordDto);
 			// save Pateint Bill
 			PatientBillDto patientBillDto = new PatientBillDto();
-			patientBillDto.setExaminationDay((Date)datePickerExaminationDate.getModel().getValue());
-			patientBillDto.setReExaminationDate((Date)datePickerReExaminatrionDate.getModel().getValue());
-			patientBillDto.setTotalHour(Integer.parseInt(txtHourExamination.getText().toString()));
+			patientBillDto.setCreateDate(((Date) datePickerExaminationDate.getModel().getValue()));
 			patientBillDtoLst.add(patientBillDto);
 			patientDto.setPatientBill(patientBillDtoLst);
 			patientDto.setPattientRecords(patientRecordDtoList);

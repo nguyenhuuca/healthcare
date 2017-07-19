@@ -1,32 +1,22 @@
 package com.canh.healthcare.model;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import com.canh.healthcare.jpa.entity.Patient;
+import com.canh.healthcare.jpa.entity.PatientBillDetails;
 
 public class PatientBillDto {
 	int patientBillId;
-	int totalHour;
-	Date examinationDay;
 	Patient patient;
-	Date reExaminationDate;
+	List<PatientBillDetails> patientBillDetails = new ArrayList<PatientBillDetails>();
+	Date createDate;
 	public int getPatientBillId() {
 		return patientBillId;
 	}
 	public void setPatientBillId(int patientBillId) {
 		this.patientBillId = patientBillId;
-	}
-	public int getTotalHour() {
-		return totalHour;
-	}
-	public void setTotalHour(int totalHour) {
-		this.totalHour = totalHour;
-	}
-	public Date getExaminationDay() {
-		return examinationDay;
-	}
-	public void setExaminationDay(Date examinationDay) {
-		this.examinationDay = examinationDay;
 	}
 	public Patient getPatient() {
 		return patient;
@@ -34,12 +24,21 @@ public class PatientBillDto {
 	public void setPatient(Patient patient) {
 		this.patient = patient;
 	}
-	public Date getReExaminationDate() {
-		return reExaminationDate;
+	public List<PatientBillDetails> getPatientBillDetails() {
+		return patientBillDetails;
 	}
-	public void setReExaminationDate(Date reExaminationDate) {
-		this.reExaminationDate = reExaminationDate;
+	public void setPatientBillDetails(List<PatientBillDetails> patientBillDetails) {
+		this.patientBillDetails = patientBillDetails;
 	}
+	public Date getCreateDate() {
+		return createDate;
+	}
+	public void setCreateDate(Date createDate) {
+		this.createDate = createDate;
+	}
+	
+	
+	
 	
 	
 }

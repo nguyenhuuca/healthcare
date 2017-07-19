@@ -1,9 +1,12 @@
 package com.canh.healthcare.jpa.entity;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -12,6 +15,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.canh.healthcare.model.PatientBillDto;
@@ -22,39 +26,24 @@ public class PatientBill {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	int patientBillId;
-	int totalHour;
-	Date examinationDay;
-	Date reExamminatioDate;
 	Patient patient;
 	
+	//update schema
+	Date createDate;
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL,mappedBy = "PatientBill")
+	List<PatientBillDetails> patientBillDetails = new ArrayList<PatientBillDetails>();
 	public PatientBill(){
 		
 	}
 	public PatientBill(PatientBillDto patientBillDto){
 		this.patient = patientBillDto.getPatient();
-		this.examinationDay = patientBillDto.getExaminationDay();
-		this.totalHour = patientBillDto.getTotalHour();
-		this.reExamminatioDate = patientBillDto.getReExaminationDate();
+		this.createDate = patientBillDto.getCreateDate();
 	}
 	public int getPatientBillId() {
 		return patientBillId;
 	}
 	public void setPatientBillId(int patientBillId) {
 		this.patientBillId = patientBillId;
-	}
-	@Column(name="total_hour")
-	public int getTotalHour() {
-		return totalHour;
-	}
-	public void setTotalHour(int totalHour) {
-		this.totalHour = totalHour;
-	}
-	@Column(name="examination_day")
-	public Date getExaminationDay() {
-		return examinationDay;
-	}
-	public void setExaminationDay(Date examinationDay) {
-		this.examinationDay = examinationDay;
 	}
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id", nullable = false)
@@ -65,13 +54,20 @@ public class PatientBill {
 	public void setPatient(Patient patient) {
 		this.patient = patient;
 	}
-	public Date getReExamminatioDate() {
-		return reExamminatioDate;
-	}
-	public void setReExamminatioDate(Date reExamminatioDate) {
-		this.reExamminatioDate = reExamminatioDate;
-	}
 	
+	@Column(name="create_date")
+	public Date getCreateDate() {
+		return createDate;
+	}
+	public void setCreateDate(Date createDate) {
+		this.createDate = createDate;
+	}
+	public List<PatientBillDetails> getPatientBillDetails() {
+		return patientBillDetails;
+	}
+	public void setPatientBillDetails(List<PatientBillDetails> patientBillDetails) {
+		this.patientBillDetails = patientBillDetails;
+	}
 	
 
 }
