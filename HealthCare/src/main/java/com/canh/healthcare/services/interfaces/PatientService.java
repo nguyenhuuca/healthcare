@@ -13,6 +13,7 @@ public interface PatientService {
 	public Patient findPatientById(int id);
 	public List<Patient> findAll();
 	public List<Patient> findByName(String name);
+	public Patient findPatientByMobile(String mobile);
 	
 	public void createPatientRecord(PatientRecordDto patientRecordDto, PatientBillDto patientBillDto);
 	public void updatePatientRecord(PatientRecordDto patientRecordDto);

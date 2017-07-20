@@ -11,6 +11,7 @@ public interface PatientBusiness {
 	public void create(PatientDto patient);
 	public void update(PatientDto patient);
 	public PatientDto searchPatientById(int id);
+	public PatientDto searchPatientByMobile(String mobile);
 	public List<PatientDto> searchAll();
 	public List<PatientDto> searchByName(String name);
 	public void createPatientRecord(PatientRecordDto patientRecordDto,PatientBillDto patientBillDto);

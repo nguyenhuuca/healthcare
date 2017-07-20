@@ -68,15 +68,15 @@ public class PrescribingForm extends JInternalFrame implements ActionListener {
 	private JLabel lblReExamination = new JLabel("Ngày tái khám");
 	private JTextField txtReExamination = new JTextField(10);
 	private JLabel lblPriceExamination = new JLabel("Tiền khám");
-	private JTextField txtPriceExamination = new JTextField(10);
+	private JTextField txtPriceExamination = new JTextField("0",10);
 	private JLabel lblHourExamination = new JLabel("Số giờ khám");
-	private JTextField txtHourExamination = new JTextField(5);
+	private JTextField txtHourExamination = new JTextField("0",5);
 	private JLabel lblTotalExaminationCost = new JLabel("Tổng tiền khám");
-	private JTextField txtTotalExaminationCost = new JTextField(10);
+	private JTextField txtTotalExaminationCost = new JTextField("0",10);
 	private JLabel lblTotalMedicineCost = new JLabel("Tiền thuốc");
-	private JTextField txtTotalMedicineCost = new JTextField(10);
+	private JTextField txtTotalMedicineCost = new JTextField("0",10);
 	private JLabel lblTotalCost = new JLabel("Thành tiền");
-	private JTextField txtTotalCost = new JTextField(10);
+	private JTextField txtTotalCost = new JTextField("0",10);
 	private JButton btnConfirmPatient = new JButton("Ok");
 	private JButton btnUpdatePrescribing = new JButton("Cập nhật");
 	private JButton btnSavePrescribing = new JButton("Lưu toa");
@@ -464,7 +464,7 @@ public class PrescribingForm extends JInternalFrame implements ActionListener {
 			break;
 		case "ConfirmPatient":
 			int idPatient = Integer.parseInt(txtId.getText().toString());
-			patientDto = patientBusiness.searchPatientById(idPatient);
+			patientDto = patientBusiness.searchPatientByMobile(txtMobile.getText());
 			populateDateForPatientGroup(patientDto);
 			break;
 		case "SavePrescribing":
@@ -475,11 +475,13 @@ public class PrescribingForm extends JInternalFrame implements ActionListener {
 			patientRecordDto.setReExamminatioDate((Date) datePickerReExaminatrionDate.getModel().getValue());
 			patientRecordDto.setTotalCost(Long.parseLong(txtTotalCost.getText()));
 			patientRecordDto.setTotalHour(Integer.parseInt(txtHourExamination.getText()));
+			patientRecordDto.setExaminationCost(Long.parseLong(txtTotalExaminationCost.getText()));
 			patientRecordDtoList.add(patientRecordDto);
 			// save Pateint Bill
 			PatientBillDto patientBillDto = new PatientBillDto();
 			patientBillDto.setCreateDate(((Date) datePickerExaminationDate.getModel().getValue()));
 			patientBillDto.setPatientBillDetails(patientBillDetailsDtoLst);
+			patientBillDto.setPatient(patientDto);
 			patientBillDtoLst.add(patientBillDto);
 			patientDto.setPatientBill(patientBillDtoLst);
 			patientDto.setPattientRecords(patientRecordDtoList);
@@ -489,5 +491,15 @@ public class PrescribingForm extends JInternalFrame implements ActionListener {
 
 		}
 
+	}
+	
+	public boolean validateItem() {
+		boolean vaild = true;
+		String message = "";
+		if(txtHourExamination.getText().isEmpty()) {
+			message = "Vui long nhap day du thong tin";
+			vaild = false;
+		}
+		return vaild;
 	}
 }

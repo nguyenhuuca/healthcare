@@ -21,7 +21,7 @@ import com.canh.healthcare.model.PatientDto;
 @Table(name = "patients")
 @NamedNativeQueries({
 	@NamedNativeQuery(name = "findPatientById",query = " select * from patients p where p.id = :idPatient ",resultClass = Patient.class
-	),@NamedNativeQuery(name = "findPatientById2",query = " select * from patients p ",resultClass = Patient.class
+	),@NamedNativeQuery(name = "findPatientByMobile",query = " select * from patients p where p.mobile = :mobile",resultClass = Patient.class
 			)
 })
 public class Patient {

@@ -2,6 +2,7 @@ package com.canh.healthcare.jpa.entity;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -21,7 +22,7 @@ public class PatientBillDetails implements Serializable  {
 	int quantity;
 	
 	@Id
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "id")
 	public Medicine getMedicine() {
 		return medicine;
@@ -31,8 +32,8 @@ public class PatientBillDetails implements Serializable  {
 	}
 	
 	@Id
-    @ManyToOne
-    @JoinColumn(name = "patientBillId")
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "patientBillId" )
 	public PatientBill getPatientBill() {
 		return patientBill;
 	}

@@ -36,7 +36,7 @@ public class PatientBill {
 		
 	}
 	public PatientBill(PatientBillDto patientBillDto){
-		this.patient = patientBillDto.getPatient();
+		this.patient = new Patient(patientBillDto.getPatient());
 		this.createDate = patientBillDto.getCreateDate();
 	}
 	public int getPatientBillId() {

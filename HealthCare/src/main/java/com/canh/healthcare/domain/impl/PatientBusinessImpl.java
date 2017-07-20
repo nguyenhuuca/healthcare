@@ -36,7 +36,6 @@ public class PatientBusinessImpl implements PatientBusiness {
 
 	@Override
 	public PatientDto searchPatientById(int id) {
-		// TODO Auto-generated method stub
 		Patient patient = service.findPatientById(id);
 		return populateData(patient);
 	}
@@ -50,6 +49,40 @@ public class PatientBusinessImpl implements PatientBusiness {
 			patientDtoLst.add(patientDto);
 		}
 		return patientDtoLst;
+	}
+
+	@Override
+	public List<PatientDto> searchByName(String name) {
+		List<Patient> patientLst = service.findByName(name);
+		List<PatientDto> patientDtoLst = new ArrayList<PatientDto>();
+		for (Patient patient : patientLst) {
+			PatientDto patientDto = populateData(patient);
+			patientDtoLst.add(patientDto);
+		}
+		return patientDtoLst;
+	}
+
+	@Override
+	public void createPatientRecord(PatientRecordDto patientRecordDto, PatientBillDto patientBillDto) {
+		service.createPatientRecord(patientRecordDto, patientBillDto);
+
+	}
+
+	public PatientBillDetails convertToPatientDetail(PatientBillDetailsDto patientDetailDto) {
+		PatientBillDetails billDetail = new PatientBillDetails();
+		Medicine medicine = new Medicine(patientDetailDto.getMedicine());
+		PatientBill patientBill = new PatientBill();
+		billDetail.setMedicine(medicine);
+		billDetail.setPatientBill(patientBill);
+		billDetail.setQuantity(patientDetailDto.getQuantity());
+		return billDetail;
+
+	}
+
+	@Override
+	public PatientDto searchPatientByMobile(String mobile) {
+		Patient patient = service.findPatientByMobile(mobile);
+		return populateData(patient);
 	}
 
 	public PatientDto populateData(Patient patient) {
@@ -79,44 +112,16 @@ public class PatientBusinessImpl implements PatientBusiness {
 		for (PatientBillDto patientBillDto : patientDto.getPatientBill()) {
 			PatientBill patientBill = new PatientBill(patientBillDto);
 			patientBill.setPatient(patientRef);
-			//PatientBillDetails billDetails = new PatientBillDetails();
-			//for(PatientBillDetailsDto patientBillDetailsDto : patientBillDto.getPatientBillDetails()) {
-			//	billDetails = convertToPatientDetail(patientBillDetailsDto);
-			//	patientBill.getPatientBillDetails().add(billDetails);
-			//}
-			
+			// PatientBillDetails billDetails = new PatientBillDetails();
+			// for(PatientBillDetailsDto patientBillDetailsDto :
+			// patientBillDto.getPatientBillDetails()) {
+			// billDetails = convertToPatientDetail(patientBillDetailsDto);
+			// patientBill.getPatientBillDetails().add(billDetails);
+			// }
+
 			patient.getPatientBill().add(patientBill);
 		}
 		return patient;
-	}
-
-	@Override
-	public List<PatientDto> searchByName(String name) {
-		List<Patient> patientLst = service.findByName(name);
-		List<PatientDto> patientDtoLst = new ArrayList<PatientDto>();
-		for (Patient patient : patientLst) {
-			PatientDto patientDto = populateData(patient);
-			patientDtoLst.add(patientDto);
-		}
-		return patientDtoLst;
-	}
-
-	@Override
-	public void createPatientRecord(PatientRecordDto patientRecordDto, PatientBillDto patientBillDto) {
-		service.createPatientRecord(patientRecordDto, patientBillDto);
-
-	}
-	
-	public PatientBillDetails convertToPatientDetail(PatientBillDetailsDto patientDetailDto) {
-		PatientBillDetails billDetail = new PatientBillDetails();
-		Medicine medicine = new Medicine(patientDetailDto.getMedicine());
-		PatientBill patientBill = new PatientBill();
-		billDetail.setMedicine(medicine);
-		billDetail.setPatientBill(patientBill);
-		billDetail.setQuantity(patientDetailDto.getQuantity());
-		return billDetail;
-				
-		
 	}
 
 }

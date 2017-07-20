@@ -109,4 +109,13 @@ public class PatientServiceImpl extends BaseSercvices implements PatientService 
 
 	}
 
+	@Override
+	public Patient findPatientByMobile(String mobile) {
+		em = EntityManagerUtil.getEntityManager();
+		Patient patient = (Patient) em.createNamedQuery("findPatientByMobile").setParameter("mobile", mobile)
+				.getSingleResult();
+		em.close();
+		return patient;
+	}
+
 }
