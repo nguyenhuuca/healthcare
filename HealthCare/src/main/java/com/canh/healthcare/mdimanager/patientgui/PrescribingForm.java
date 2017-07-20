@@ -33,8 +33,10 @@ import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
 
 import com.canh.healthcare.domain.impl.MedicineBusinessImpl;
+import com.canh.healthcare.domain.impl.PatientBillBusinessImpl;
 import com.canh.healthcare.domain.impl.PatientBusinessImpl;
 import com.canh.healthcare.domain.interfaces.MedicineBusiness;
+import com.canh.healthcare.domain.interfaces.PatientBillBusiness;
 import com.canh.healthcare.domain.interfaces.PatientBusiness;
 import com.canh.healthcare.mdimanager.utils.DateLabelFormatter;
 import com.canh.healthcare.model.MedicineDto;
@@ -92,6 +94,7 @@ public class PrescribingForm extends JInternalFrame implements ActionListener {
 
 	MedicineBusiness medicineBusiness = new MedicineBusinessImpl();
 	PatientBusiness patientBusiness = new PatientBusinessImpl();
+	PatientBillBusiness patientBillBusiness = new PatientBillBusinessImpl();
 	JTable tablePrescribing = new JTable();
 	DefaultTableModel modelPrescribing = new DefaultTableModel();
 
@@ -481,6 +484,7 @@ public class PrescribingForm extends JInternalFrame implements ActionListener {
 			patientDto.setPatientBill(patientBillDtoLst);
 			patientDto.setPattientRecords(patientRecordDtoList);
 			patientBusiness.update(patientDto);
+			patientBillBusiness.create(patientBillDto);
 			break;
 
 		}

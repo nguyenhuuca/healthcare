@@ -7,8 +7,8 @@ import com.canh.healthcare.model.PatientBillDto;
 
 public interface PatientBillService {
 	
-	public void create(PatientBillDto patient);
-	public void update(PatientBillDto patient);
+	public void create(PatientBill patient);
+	public void update(PatientBill patient);
 	public PatientBill findById(int id);
 	public List<PatientBill> findAll();
 
