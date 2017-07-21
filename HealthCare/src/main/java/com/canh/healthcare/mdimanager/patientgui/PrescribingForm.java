@@ -21,6 +21,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -68,15 +69,15 @@ public class PrescribingForm extends JInternalFrame implements ActionListener {
 	private JLabel lblReExamination = new JLabel("Ngày tái khám");
 	private JTextField txtReExamination = new JTextField(10);
 	private JLabel lblPriceExamination = new JLabel("Tiền khám");
-	private JTextField txtPriceExamination = new JTextField("0",10);
+	private JTextField txtPriceExamination = new JTextField("0", 10);
 	private JLabel lblHourExamination = new JLabel("Số giờ khám");
-	private JTextField txtHourExamination = new JTextField("0",5);
+	private JTextField txtHourExamination = new JTextField("0", 5);
 	private JLabel lblTotalExaminationCost = new JLabel("Tổng tiền khám");
-	private JTextField txtTotalExaminationCost = new JTextField("0",10);
+	private JTextField txtTotalExaminationCost = new JTextField("0", 10);
 	private JLabel lblTotalMedicineCost = new JLabel("Tiền thuốc");
-	private JTextField txtTotalMedicineCost = new JTextField("0",10);
+	private JTextField txtTotalMedicineCost = new JTextField("0", 10);
 	private JLabel lblTotalCost = new JLabel("Thành tiền");
-	private JTextField txtTotalCost = new JTextField("0",10);
+	private JTextField txtTotalCost = new JTextField("0", 10);
 	private JButton btnConfirmPatient = new JButton("Ok");
 	private JButton btnUpdatePrescribing = new JButton("Cập nhật");
 	private JButton btnSavePrescribing = new JButton("Lưu toa");
@@ -90,7 +91,7 @@ public class PrescribingForm extends JInternalFrame implements ActionListener {
 	JDatePanelImpl datePanelExaminationDate;
 	JDatePickerImpl datePickerExaminationDate;
 	JDatePanelImpl datePanelReExaminationDate;
-	JDatePickerImpl datePickerReExaminatrionDate;
+	JDatePickerImpl datePickerReExaminationDate;
 
 	MedicineBusiness medicineBusiness = new MedicineBusinessImpl();
 	PatientBusiness patientBusiness = new PatientBusinessImpl();
@@ -243,7 +244,7 @@ public class PrescribingForm extends JInternalFrame implements ActionListener {
 		datePanelExaminationDate = new JDatePanelImpl(examinationDate, p);
 		datePickerExaminationDate = new JDatePickerImpl(datePanelExaminationDate, new DateLabelFormatter());
 		datePanelReExaminationDate = new JDatePanelImpl(reExaminationDate, p);
-		datePickerReExaminatrionDate = new JDatePickerImpl(datePanelReExaminationDate, new DateLabelFormatter());
+		datePickerReExaminationDate = new JDatePickerImpl(datePanelReExaminationDate, new DateLabelFormatter());
 
 		size = datePickerExaminationDate.getPreferredSize();
 		marginLeft += width;
@@ -259,12 +260,12 @@ public class PrescribingForm extends JInternalFrame implements ActionListener {
 		lblReExamination.setBounds(marginLeft, margintTop, width, height);
 		prescribingArea.add(lblReExamination);
 
-		size = datePickerReExaminatrionDate.getPreferredSize();
+		size = datePickerReExaminationDate.getPreferredSize();
 		marginLeft += width;
 		width = size.width;
 		height = size.height;
-		datePickerReExaminatrionDate.setBounds(marginLeft, insets.top + 20, width, height);
-		prescribingArea.add(datePickerReExaminatrionDate);
+		datePickerReExaminationDate.setBounds(marginLeft, insets.top + 20, width, height);
+		prescribingArea.add(datePickerReExaminationDate);
 
 		size = btnSavePrescribing.getPreferredSize();
 		marginLeft += width + 50;
@@ -368,10 +369,11 @@ public class PrescribingForm extends JInternalFrame implements ActionListener {
 		btnAdd.setActionCommand("addMedicine");
 		btnAdd.addActionListener(this);
 
-		List<MedicineDto> medicineDtoList = medicineBusiness.findAll();
-		for (MedicineDto medicieDto : medicineDtoList) {
-			cbxMedical.addItem(medicieDto);
-		}
+		/*
+		 * List<MedicineDto> medicineDtoList = medicineBusiness.findAll(); for
+		 * (MedicineDto medicieDto : medicineDtoList) {
+		 * cbxMedical.addItem(medicieDto); }
+		 */
 
 		size = lblTotalMedicineCost.getPreferredSize();
 		marginLeft += width + 20;
@@ -455,10 +457,10 @@ public class PrescribingForm extends JInternalFrame implements ActionListener {
 			MedicineDto medicineDto = (MedicineDto) cbxMedical.getSelectedItem();
 			medicineDto.setQuantity(Integer.parseInt(txtQuantity.getText()));
 			medicineDtoLst.add(medicineDto);
-		    PatientBillDetailsDto patientBillDetailsDto = new PatientBillDetailsDto();
-		    patientBillDetailsDto.setMedicine(medicineDto);
-		    patientBillDetailsDto.setQuantity(Integer.parseInt(txtQuantity.getText()));
-		    patientBillDetailsDtoLst.add(patientBillDetailsDto);
+			PatientBillDetailsDto patientBillDetailsDto = new PatientBillDetailsDto();
+			patientBillDetailsDto.setMedicine(medicineDto);
+			patientBillDetailsDto.setQuantity(Integer.parseInt(txtQuantity.getText()));
+			patientBillDetailsDtoLst.add(patientBillDetailsDto);
 			populateJtable(modelPrescribing, medicineDto);
 			// JOptionPane.showMessageDialog(null, "Tạo thành công");
 			break;
@@ -469,36 +471,70 @@ public class PrescribingForm extends JInternalFrame implements ActionListener {
 			break;
 		case "SavePrescribing":
 			// save patient record
-			PatientRecordDto patientRecordDto = new PatientRecordDto();
-			patientRecordDto.setDateCome((Date) datePickerExaminationDate.getModel().getValue());
-			patientRecordDto.setExaminationDay((Date) datePickerExaminationDate.getModel().getValue());
-			patientRecordDto.setReExamminatioDate((Date) datePickerReExaminatrionDate.getModel().getValue());
-			patientRecordDto.setTotalCost(Long.parseLong(txtTotalCost.getText()));
-			patientRecordDto.setTotalHour(Integer.parseInt(txtHourExamination.getText()));
-			patientRecordDto.setExaminationCost(Long.parseLong(txtTotalExaminationCost.getText()));
-			patientRecordDtoList.add(patientRecordDto);
-			// save Pateint Bill
-			PatientBillDto patientBillDto = new PatientBillDto();
-			patientBillDto.setCreateDate(((Date) datePickerExaminationDate.getModel().getValue()));
-			patientBillDto.setPatientBillDetails(patientBillDetailsDtoLst);
-			patientBillDto.setPatient(patientDto);
-			patientBillDtoLst.add(patientBillDto);
-			patientDto.setPatientBill(patientBillDtoLst);
-			patientDto.setPattientRecords(patientRecordDtoList);
-			patientBusiness.update(patientDto);
-			patientBillBusiness.create(patientBillDto);
+			try {
+				validateItem();
+				PatientRecordDto patientRecordDto = new PatientRecordDto();
+				patientRecordDto.setDateCome((Date) datePickerExaminationDate.getModel().getValue());
+				patientRecordDto.setExaminationDay((Date) datePickerExaminationDate.getModel().getValue());
+				patientRecordDto.setReExamminatioDate((Date) datePickerReExaminationDate.getModel().getValue());
+				patientRecordDto.setTotalCost(Long.parseLong(txtTotalCost.getText()));
+				patientRecordDto.setTotalHour(Integer.parseInt(txtHourExamination.getText()));
+				patientRecordDto.setExaminationCost(Long.parseLong(txtTotalExaminationCost.getText()));
+				patientRecordDtoList.add(patientRecordDto);
+				// save Pateint Bill
+				PatientBillDto patientBillDto = new PatientBillDto();
+				patientBillDto.setCreateDate(((Date) datePickerExaminationDate.getModel().getValue()));
+				patientBillDto.setPatientBillDetails(patientBillDetailsDtoLst);
+				patientBillDto.setPatient(patientDto);
+				patientBillDtoLst.add(patientBillDto);
+				patientDto.setPatientBill(patientBillDtoLst);
+				patientDto.setPattientRecords(patientRecordDtoList);
+				patientBusiness.update(patientDto);
+				patientBillBusiness.create(patientBillDto);
+
+			} catch (Exception e1) {
+				JOptionPane.showMessageDialog(null, e1.getMessage());
+			}
+
 			break;
 
 		}
 
 	}
-	
+
 	public boolean validateItem() {
 		boolean vaild = true;
-		String message = "";
-		if(txtHourExamination.getText().isEmpty()) {
-			message = "Vui long nhap day du thong tin";
+		if (txtHourExamination.getText().isEmpty()) {
 			vaild = false;
+			throw new IllegalArgumentException("Vui lòng nhập số giờ khám");
+
+		}
+		if (datePickerExaminationDate.getModel().getValue() == null
+				|| datePickerExaminationDate.getModel().getValue().toString().isEmpty()) {
+			vaild = false;
+			throw new IllegalArgumentException("Vui lòng nhâm ngày khám");
+		}
+		if (datePickerReExaminationDate.getModel().getValue() == null
+				|| datePickerReExaminationDate.getModel().getValue().toString().isEmpty()) {
+			vaild = false;
+			throw new IllegalArgumentException("Vui lòng nhâm ngày tái khám");
+
+		}
+		if(txtTotalExaminationCost.getText().isEmpty()){
+			throw new IllegalArgumentException("Vui lòng nhập tiền khám");
+		}
+		
+		if(txtTotalMedicineCost.getText().isEmpty()){
+			throw new IllegalArgumentException("Vui lòng nhập tiền thuốc");
+		}
+		
+		if(txtTotalCost.getText().isEmpty()){
+			throw new IllegalArgumentException("Vui lòng nhập thành tiền");
+		}
+		
+		
+		if(medicineDtoLst.size() == 0){
+			throw new IllegalArgumentException("Vui lòng kê thuốc");
 		}
 		return vaild;
 	}

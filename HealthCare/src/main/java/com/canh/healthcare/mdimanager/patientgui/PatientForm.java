@@ -44,7 +44,7 @@ public class PatientForm extends JInternalFrame implements ActionListener {
 	private static final long serialVersionUID = 1L;
 	private JLabel lblId = new JLabel("Id bệnh nhân:");
 	private JLabel lblName = new JLabel("Tên bệnh nhân:");
-	private JTextField txtId = new JTextField("auto",10);
+	private JTextField txtId = new JTextField("auto", 10);
 	private JTextField txtName = new JTextField("test", 20);
 	private JLabel lblBirthDay = new JLabel("Năm sinh:");
 	private JTextField txtBirthDate = new JTextField(10);
@@ -69,11 +69,10 @@ public class PatientForm extends JInternalFrame implements ActionListener {
 	private JLabel lblIdSearch = new JLabel("Nhập tên:");
 	private JTextField txtSearch = new JTextField(10);
 	private JButton btnSearch = new JButton("Tìm");
-	
+
 	JTable table = new JTable();
 	DefaultTableModel model = new DefaultTableModel();
 	PatientBusiness patientBusiness = new PatientBusinessImpl();
-	
 
 	public PatientForm() {
 		super();
@@ -132,8 +131,8 @@ public class PatientForm extends JInternalFrame implements ActionListener {
 		constraints.gridy = 1;
 		newPanel.add(lblGender, constraints);
 		constraints.gridx = 1;
-		//txtGender.setMinimumSize(txtGender.getPreferredSize());
-		//newPanel.add(txtGender, constraints);
+		// txtGender.setMinimumSize(txtGender.getPreferredSize());
+		// newPanel.add(txtGender, constraints);
 		cbxGender.setPreferredSize(new Dimension(100, 25));
 		cbxGender.addItem("Nam");
 		cbxGender.addItem("Nữ");
@@ -141,14 +140,14 @@ public class PatientForm extends JInternalFrame implements ActionListener {
 		constraints.gridx = 2;
 		newPanel.add(lblFirstDateJoin, constraints);
 		constraints.gridx = 3;
-		//txtFirstDateJoin.setMinimumSize(txtFirstDateJoin.getPreferredSize());
-		//newPanel.add(txtFirstDateJoin, constraints);
+		// txtFirstDateJoin.setMinimumSize(txtFirstDateJoin.getPreferredSize());
+		// newPanel.add(txtFirstDateJoin, constraints);
 		UtilDateModel modelDate = new UtilDateModel();
 		Properties p = new Properties();
 		p.put("text.today", "Today");
 		p.put("text.month", "Month");
 		p.put("text.year", "Year");
-		datePanelFirstDateJoin = new JDatePanelImpl(modelDate,p);
+		datePanelFirstDateJoin = new JDatePanelImpl(modelDate, p);
 		datePickerFirstDateJoin = new JDatePickerImpl(datePanelFirstDateJoin, new DateLabelFormatter());
 		newPanel.add(datePickerFirstDateJoin, constraints);
 		constraints.gridx = 4;
@@ -208,7 +207,7 @@ public class PatientForm extends JInternalFrame implements ActionListener {
 				"Người thân", "LHKC" };
 		model.setColumnIdentifiers(columnNames);
 		table.setModel(model);
-		//populateJtable(model);
+		// populateJtable(model);
 		JScrollPane scrollPane = new JScrollPane(table);
 		setup.anchor = GridBagConstraints.WEST;
 		setup.gridwidth = 1;
@@ -249,16 +248,17 @@ public class PatientForm extends JInternalFrame implements ActionListener {
 		patient.setAddress(txtAddress.getText());
 		patient.setBirthDay(txtBirthDate.getText());
 		patient.setFamilyContact(txtFamilyContact.getText());
-		patient.setFirstDateJoin( (Date) datePickerFirstDateJoin.getModel().getValue());
-		boolean male = cbxGender.getSelectedItem().toString().equals("Nam")?true:false;
+		patient.setFirstDateJoin((Date) datePickerFirstDateJoin.getModel().getValue());
+		boolean male = cbxGender.getSelectedItem().toString().equals("Nam") ? true : false;
 		patient.setMale(male);
 		patient.setMobile(txtMobile.getText());
 		patient.setName(txtName.getText());
 		patient.setUrgentContact(txtUrgent.getText());
+		validatePatient(patient);
 		patientBusiness.create(patient);
 	}
 
-	public void populateJtable(DefaultTableModel model, List<PatientDto> patientDtoLst ) {
+	public void populateJtable(DefaultTableModel model, List<PatientDto> patientDtoLst) {
 		// patientDtoLst.add(patientDto);
 		List<Object[]> ar = new ArrayList<Object[]>();
 		for (int i = 0; i < patientDtoLst.size(); i++) {
@@ -286,22 +286,40 @@ public class PatientForm extends JInternalFrame implements ActionListener {
 		// TODO Auto-generated method stub
 		switch (e.getActionCommand()) {
 		case "NewPatient":
-			createNewPatient();
-			JOptionPane.showMessageDialog(null, "Tạo thành công");
+			try {
+				createNewPatient();
+				JOptionPane.showMessageDialog(null, "Tạo thành công");
+			} catch (Exception e1) {
+				JOptionPane.showMessageDialog(null, e1.getMessage());
+			}
+
 			break;
 		case "SeachPatient":
-			((DefaultTableModel)table.getModel()).setRowCount(0);
+			((DefaultTableModel) table.getModel()).setRowCount(0);
 			List<PatientDto> patientDtoLst = patientBusiness.searchByName(txtSearch.getText());
 			populateJtable(model, patientDtoLst);
 			break;
 
 		}
-		
+
 		/*
 		 * if (e.getSource() == btnNewPatient) {
 		 * 
 		 * }
 		 */
 
+	}
+
+	public void validatePatient(PatientDto patientDto) {
+		if (patientDto.getMobile().toString().isEmpty()) {
+			throw new IllegalArgumentException("Vui lòng nhập số điện thoại");
+		}
+		if (patientDto.getName().trim().toString().isEmpty()) {
+			throw new IllegalArgumentException("Vui lòng nhập họ tên");
+		}
+		if (patientDto.getFirstDateJoin().toString().isEmpty()) {
+			throw new IllegalArgumentException("Vui lòng nhập ngày vào");
+
+		}
 	}
 }
