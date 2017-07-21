@@ -14,13 +14,15 @@ public class PatientBillServiceImpl extends BaseSercvices implements PatientBill
 		em = EntityManagerUtil.getEntityManager();
 		em.getTransaction().begin();
 		//em.persist(patientBill);
-		//em.flush();
+		
 		for(int i = 0 ; i< patientBill.getPatientBillDetails().size();i++){
 			patientBill.getPatientBillDetails().get(i).setPatientBill(patientBill);
 			
 		}
 		em.persist(patientBill);
+		em.flush();
 		em.getTransaction().commit();
+		System.out.println(patientBill.getPatientBillId());
 		em.close();
 		
 	}

@@ -369,11 +369,10 @@ public class PrescribingForm extends JInternalFrame implements ActionListener {
 		btnAdd.setActionCommand("addMedicine");
 		btnAdd.addActionListener(this);
 
-		/*
-		 * List<MedicineDto> medicineDtoList = medicineBusiness.findAll(); for
-		 * (MedicineDto medicieDto : medicineDtoList) {
-		 * cbxMedical.addItem(medicieDto); }
-		 */
+		List<MedicineDto> medicineDtoList = medicineBusiness.findAll();
+		for (MedicineDto medicieDto : medicineDtoList) {
+			cbxMedical.addItem(medicieDto);
+		}
 
 		size = lblTotalMedicineCost.getPreferredSize();
 		marginLeft += width + 20;
@@ -520,20 +519,19 @@ public class PrescribingForm extends JInternalFrame implements ActionListener {
 			throw new IllegalArgumentException("Vui lòng nhâm ngày tái khám");
 
 		}
-		if(txtTotalExaminationCost.getText().isEmpty()){
+		if (txtTotalExaminationCost.getText().isEmpty()) {
 			throw new IllegalArgumentException("Vui lòng nhập tiền khám");
 		}
-		
-		if(txtTotalMedicineCost.getText().isEmpty()){
+
+		if (txtTotalMedicineCost.getText().isEmpty()) {
 			throw new IllegalArgumentException("Vui lòng nhập tiền thuốc");
 		}
-		
-		if(txtTotalCost.getText().isEmpty()){
+
+		if (txtTotalCost.getText().isEmpty()) {
 			throw new IllegalArgumentException("Vui lòng nhập thành tiền");
 		}
-		
-		
-		if(medicineDtoLst.size() == 0){
+
+		if (medicineDtoLst.size() == 0) {
 			throw new IllegalArgumentException("Vui lòng kê thuốc");
 		}
 		return vaild;

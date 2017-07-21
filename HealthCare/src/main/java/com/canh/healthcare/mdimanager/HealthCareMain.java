@@ -1,7 +1,6 @@
 package com.canh.healthcare.mdimanager;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -15,6 +14,7 @@ import javax.swing.JScrollPane;
 
 import com.canh.healthcare.mdimanager.authgui.LoginForm;
 import com.canh.healthcare.mdimanager.patientgui.PatientForm;
+import com.canh.healthcare.mdimanager.patientgui.PatientHistoryForm;
 import com.canh.healthcare.mdimanager.patientgui.PrescribingForm;
 import com.canh.healthcare.mdimanager.utils.GUIUtils;
 
@@ -33,6 +33,7 @@ public class HealthCareMain extends JFrame  {
 
 	private JMenuItem newMenu = new JMenuItem("Tạo mới          ");
 	private JMenuItem prescribingMnuItem = new JMenuItem("Kê Toa");
+	private JMenuItem patientHistoryMnuItem = new JMenuItem("Tra bệnh án");
 	
 
 	private JScrollPane scrollPane = new JScrollPane();
@@ -45,6 +46,7 @@ public class HealthCareMain extends JFrame  {
 		menuBar.add(authMenu);
 		patientMenu.add(newMenu);
 		patientMenu.add(prescribingMnuItem);
+		patientMenu.add(patientHistoryMnuItem);
 		authMenu.add(loginMnuItem);
 		setJMenuBar(menuBar);
 		setTitle("HealthCare Anh Thy");
@@ -86,6 +88,17 @@ public class HealthCareMain extends JFrame  {
 				PrescribingForm prescribingForm = new PrescribingForm();
 				desktop.add(prescribingForm);
 				GUIUtils.centerWithinDesktop(prescribingForm);
+			}
+		});
+		
+		patientHistoryMnuItem.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				PatientHistoryForm patientHistoryForm = new PatientHistoryForm();
+				desktop.add(patientHistoryForm);
+				GUIUtils.centerWithinDesktop(patientHistoryForm);
+				
 			}
 		});
 	}
