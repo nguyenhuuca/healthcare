@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 
 import com.canh.healthcare.jpa.entity.Patient;
 import com.canh.healthcare.jpa.entity.PatientBill;
@@ -16,13 +18,16 @@ import com.canh.healthcare.services.BaseSercvices;
 import com.canh.healthcare.services.interfaces.PatientService;
 
 public class PatientServiceImpl extends BaseSercvices implements PatientService {
-
-	public PatientServiceImpl() {
+	private static PatientService patientService;
+	private PatientServiceImpl() {
 		// em = EntityManagerUtil.getEntityManager();
 	}
 
-	public PatientServiceImpl(EntityManager em) {
-		this.em = em;
+	public static PatientService getInstance() {
+		if (patientService == null) {
+			patientService = new PatientServiceImpl();
+		}
+		return patientService;
 	}
 
 	@Override
@@ -32,7 +37,7 @@ public class PatientServiceImpl extends BaseSercvices implements PatientService 
 		Patient patientEnt = new Patient(patient);
 		em.persist(patientEnt);
 		em.getTransaction().commit();
-		em.close();
+		
 
 	}
 
@@ -43,7 +48,7 @@ public class PatientServiceImpl extends BaseSercvices implements PatientService 
 		//Patient patientEnt = new Patient(patient);
 		patient = em.merge(patient);
 		em.getTransaction().commit();
-		em.close();
+		
 
 	}
 
@@ -52,7 +57,7 @@ public class PatientServiceImpl extends BaseSercvices implements PatientService 
 		em = EntityManagerUtil.getEntityManager();
 		Patient patient = (Patient) em.createNamedQuery("findPatientById").setParameter("idPatient", id)
 				.getSingleResult();
-		em.close();
+
 		return patient;
 
 	}
@@ -64,7 +69,6 @@ public class PatientServiceImpl extends BaseSercvices implements PatientService 
 		em.getTransaction().begin();
 		List<Patient> patientLst = (ArrayList<Patient>) em.createQuery("Select p from Patient p").getResultList();
 		em.getTransaction().commit();
-		em.close();
 		return patientLst;
 	}
 
@@ -77,7 +81,6 @@ public class PatientServiceImpl extends BaseSercvices implements PatientService 
 				.createQuery("Select p from Patient p where p.name like :namePatient")
 				.setParameter("namePatient", "%" + name + "%").getResultList();
 		em.getTransaction().commit();
-		em.close();
 		return patientLst;
 	}
 
@@ -91,7 +94,6 @@ public class PatientServiceImpl extends BaseSercvices implements PatientService 
 			em.persist(patientRecord);
 			em.persist(patientBill);
 			em.getTransaction().commit();
-			em.close();
 		} catch (Exception e) {
 			em.getTransaction().rollback();
 		}
@@ -105,7 +107,6 @@ public class PatientServiceImpl extends BaseSercvices implements PatientService 
 		PatientRecord patientRecord = new PatientRecord(patientRecordDto);
 		em.merge(patientRecord);
 		em.getTransaction().commit();
-		em.close();
 
 	}
 
@@ -114,7 +115,7 @@ public class PatientServiceImpl extends BaseSercvices implements PatientService 
 		em = EntityManagerUtil.getEntityManager();
 		Patient patient = (Patient) em.createNamedQuery("findPatientByMobile").setParameter("mobile", mobile)
 				.getSingleResult();
-		em.close();
+		//em.close();
 		return patient;
 	}
 

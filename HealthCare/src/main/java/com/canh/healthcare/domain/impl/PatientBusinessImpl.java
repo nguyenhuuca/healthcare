@@ -17,7 +17,7 @@ import com.canh.healthcare.services.impl.PatientServiceImpl;
 import com.canh.healthcare.services.interfaces.PatientService;
 
 public class PatientBusinessImpl implements PatientBusiness {
-	PatientService service = new PatientServiceImpl();
+	PatientService service = PatientServiceImpl.getInstance();
 
 	@Override
 	public void create(PatientDto patient) {
@@ -96,6 +96,19 @@ public class PatientBusinessImpl implements PatientBusiness {
 		patientDto.setMobile(patient.getMobile());
 		patientDto.setName(patient.getName());
 		patientDto.setUrgentContact(patient.getUrgentContact());
+		List<PatientRecordDto> patientRecordDtoList = new ArrayList<PatientRecordDto>();
+		for(PatientRecord patientRecord : patient.getPattientRecords()) {
+			PatientRecordDto patientRecordDto = new PatientRecordDto();
+			patientRecordDto.setDateCome(patientRecord.getDatecome());
+			patientRecordDto.setDescription(patientRecord.getDescription());
+			patientRecordDto.setExaminationDay(patientRecord.getExaminationDay());
+			patientRecordDto.setPatientRecordId(patientRecord.getPatientRecordId());
+			patientRecordDto.setReExamminatioDate(patientRecord.getReExamminatioDate());
+			patientRecordDto.setTotalCost(patientRecord.getTotalCost());
+			patientRecordDtoList.add(patientRecordDto);
+		}
+		patientDto.setPattientRecords(patientRecordDtoList);
+		
 
 		return patientDto;
 	}
@@ -123,5 +136,6 @@ public class PatientBusinessImpl implements PatientBusiness {
 		}
 		return patient;
 	}
+	
 
 }
