@@ -173,6 +173,7 @@ public class PatientHistoryForm extends JInternalFrame implements ActionListener
 		Object columnNames[] = { "Id", "Ngày khám", "Ngày tái khám", "Chẩn đoán bệnh", "Tổn chi phí" };
 		model.setColumnIdentifiers(columnNames);
 		table.setModel(model);
+
 		table.addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent me) {
 				JTable table = (JTable) me.getSource();
