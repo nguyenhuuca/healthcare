@@ -8,7 +8,17 @@ import com.canh.healthcare.services.BaseSercvices;
 import com.canh.healthcare.services.interfaces.PatientBillService;
 
 public class PatientBillServiceImpl extends BaseSercvices implements PatientBillService {
-
+    
+	private static PatientBillService patientBillService;
+	private PatientBillServiceImpl() {
+		
+	}
+	public static PatientBillService getInstance() {
+		if (patientBillService == null) {
+			patientBillService = new PatientBillServiceImpl();
+		}
+		return patientBillService;
+	}
 	@Override
 	public void create(PatientBill patientBill) {
 		em = EntityManagerUtil.getEntityManager();
@@ -23,7 +33,6 @@ public class PatientBillServiceImpl extends BaseSercvices implements PatientBill
 		em.flush();
 		em.getTransaction().commit();
 		System.out.println(patientBill.getPatientBillId());
-		em.close();
 
 	}
 

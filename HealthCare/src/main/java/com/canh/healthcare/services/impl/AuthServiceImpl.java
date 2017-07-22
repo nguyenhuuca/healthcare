@@ -10,6 +10,17 @@ import com.canh.healthcare.services.interfaces.AuthService;
 
 public class AuthServiceImpl extends BaseSercvices implements AuthService {
 
+	private static AuthService authService;
+	private AuthServiceImpl() {
+		
+	}
+	
+	public static AuthService getInstance() {
+		if(authService == null) {
+			authService = new AuthServiceImpl();
+		}
+		return authService;
+	}
 	@Override
 	public void create(AppUserDto appUserDto) {
 		em = EntityManagerUtil.getEntityManager();
@@ -17,7 +28,6 @@ public class AuthServiceImpl extends BaseSercvices implements AuthService {
 		AppUser appUser = new AppUser(appUserDto);
 		em.persist(appUser);
 		em.getTransaction().commit();
-		em.close();
 		
 	}
 
@@ -28,7 +38,6 @@ public class AuthServiceImpl extends BaseSercvices implements AuthService {
 		AppUser appUser = new AppUser(appUserDto);
 		em.merge(appUser);
 		em.getTransaction().commit();
-		em.close();
 		
 	}
 

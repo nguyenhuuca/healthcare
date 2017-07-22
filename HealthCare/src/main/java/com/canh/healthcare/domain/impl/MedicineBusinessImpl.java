@@ -11,7 +11,7 @@ import com.canh.healthcare.services.impl.MedicineServiceImpl;
 import com.canh.healthcare.services.interfaces.MedicineService;
 
 public class MedicineBusinessImpl implements MedicineBusiness {
-	MedicineService service = new MedicineServiceImpl();
+	MedicineService service = MedicineServiceImpl.getInstance();
 	@Override
 	public void create(MedicineDto patient) {
 		// TODO Auto-generated method stub

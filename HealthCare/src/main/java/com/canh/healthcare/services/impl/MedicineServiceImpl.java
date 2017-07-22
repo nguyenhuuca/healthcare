@@ -11,6 +11,19 @@ import com.canh.healthcare.services.interfaces.MedicineService;
 
 public class MedicineServiceImpl extends BaseSercvices implements MedicineService {
 
+	private static MedicineService medicineService;
+
+	private MedicineServiceImpl() {
+
+	}
+
+	public static MedicineService getInstance() {
+		if (medicineService == null) {
+			medicineService = new MedicineServiceImpl();
+		}
+		return medicineService;
+	}
+
 	@Override
 	public void create(MedicineDto medicineDto) {
 		em = EntityManagerUtil.getEntityManager();
@@ -18,7 +31,6 @@ public class MedicineServiceImpl extends BaseSercvices implements MedicineServic
 		Medicine medicine = new Medicine(medicineDto);
 		em.persist(medicine);
 		em.getTransaction().commit();
-		em.close();
 
 	}
 
@@ -29,7 +41,6 @@ public class MedicineServiceImpl extends BaseSercvices implements MedicineServic
 		Medicine medicine = new Medicine(medicineDto);
 		em.merge(medicine);
 		em.getTransaction().commit();
-		em.close();
 
 	}
 
@@ -46,7 +57,6 @@ public class MedicineServiceImpl extends BaseSercvices implements MedicineServic
 		em = EntityManagerUtil.getEntityManager();
 		@SuppressWarnings("unchecked")
 		List<Medicine> medicineList = (ArrayList<Medicine>) em.createQuery("Select m from Medicine m").getResultList();
-		em.close();
 		return medicineList;
 	}
 

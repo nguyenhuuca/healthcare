@@ -13,7 +13,7 @@ import com.canh.healthcare.services.impl.PatientBillServiceImpl;
 import com.canh.healthcare.services.interfaces.PatientBillService;
 
 public class PatientBillBusinessImpl implements PatientBillBusiness {
-	PatientBillService service = new PatientBillServiceImpl();
+	PatientBillService service = PatientBillServiceImpl.getInstance();
 
 	@Override
 	public void create(PatientBillDto patientBillDto) {
