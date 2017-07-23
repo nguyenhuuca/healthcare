@@ -3,10 +3,6 @@ package com.canh.healthcare.services.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-
 import com.canh.healthcare.jpa.entity.Patient;
 import com.canh.healthcare.jpa.entity.PatientBill;
 import com.canh.healthcare.jpa.entity.PatientRecord;
@@ -16,9 +12,12 @@ import com.canh.healthcare.model.PatientDto;
 import com.canh.healthcare.model.PatientRecordDto;
 import com.canh.healthcare.services.BaseSercvices;
 import com.canh.healthcare.services.interfaces.PatientService;
+import com.canh.healthcare.utils.Constants;
+import com.canh.healthcare.utils.ResultInfo;
 
 public class PatientServiceImpl extends BaseSercvices implements PatientService {
 	private static PatientService patientService;
+
 	private PatientServiceImpl() {
 		// em = EntityManagerUtil.getEntityManager();
 	}
@@ -31,24 +30,42 @@ public class PatientServiceImpl extends BaseSercvices implements PatientService 
 	}
 
 	@Override
-	public void create(PatientDto patient) {
-		em = EntityManagerUtil.getEntityManager();
-		em.getTransaction().begin();
-		Patient patientEnt = new Patient(patient);
-		em.persist(patientEnt);
-		em.getTransaction().commit();
-		
+	public ResultInfo create(PatientDto patient) {
+		ResultInfo resultInfo = new ResultInfo();
+		try {
+			em = EntityManagerUtil.getEntityManager();
+			em.getTransaction().begin();
+			Patient patientEnt = new Patient(patient);
+			em.persist(patientEnt);
+			em.getTransaction().commit();
+			resultInfo.setResultType(Constants.PERFORM_SUCCESS);
+		} catch (Exception e) {
+			em.getTransaction().rollback();
+			resultInfo.setResultType(Constants.PERORM_FAILURE);
+			resultInfo.setMesssage(e.getMessage());
+		}
+
+		return resultInfo;
 
 	}
 
 	@Override
-	public void update(Patient patient) {
-		em = EntityManagerUtil.getEntityManager();
-		em.getTransaction().begin();
-		//Patient patientEnt = new Patient(patient);
-		patient = em.merge(patient);
-		em.getTransaction().commit();
-		
+	public ResultInfo update(Patient patient) {
+		ResultInfo resultInfo = new ResultInfo();
+		try {
+			em = EntityManagerUtil.getEntityManager();
+			em.getTransaction().begin();
+			// Patient patientEnt = new Patient(patient);
+			patient = em.merge(patient);
+			em.getTransaction().commit();
+			resultInfo.setResultType(Constants.PERFORM_SUCCESS);
+
+		} catch (Exception e) {
+			em.getTransaction().rollback();
+			resultInfo.setResultType(Constants.PERORM_FAILURE);
+			resultInfo.setMesssage(e.getMessage());
+		}
+		return resultInfo;
 
 	}
 
@@ -85,7 +102,8 @@ public class PatientServiceImpl extends BaseSercvices implements PatientService 
 	}
 
 	@Override
-	public void createPatientRecord(PatientRecordDto patientRecordDto, PatientBillDto patientBillDto) {
+	public ResultInfo createPatientRecord(PatientRecordDto patientRecordDto, PatientBillDto patientBillDto) {
+		ResultInfo resultInfo = new ResultInfo();
 		em = EntityManagerUtil.getEntityManager();
 		try {
 			em.getTransaction().begin();
@@ -94,19 +112,33 @@ public class PatientServiceImpl extends BaseSercvices implements PatientService 
 			em.persist(patientRecord);
 			em.persist(patientBill);
 			em.getTransaction().commit();
+			resultInfo.setResultType(Constants.PERFORM_SUCCESS);
 		} catch (Exception e) {
 			em.getTransaction().rollback();
+			resultInfo.setResultType(Constants.PERORM_FAILURE);
+			resultInfo.setMesssage(e.getMessage());
 		}
+		return resultInfo;
 
 	}
 
 	@Override
-	public void updatePatientRecord(PatientRecordDto patientRecordDto) {
-		em = EntityManagerUtil.getEntityManager();
-		em.getTransaction().begin();
-		PatientRecord patientRecord = new PatientRecord(patientRecordDto);
-		em.merge(patientRecord);
-		em.getTransaction().commit();
+	public ResultInfo updatePatientRecord(PatientRecordDto patientRecordDto) {
+		ResultInfo resultInfo = new ResultInfo();
+		try {
+			em = EntityManagerUtil.getEntityManager();
+			em.getTransaction().begin();
+			PatientRecord patientRecord = new PatientRecord(patientRecordDto);
+			em.merge(patientRecord);
+			em.getTransaction().commit();
+			resultInfo.setResultType(Constants.PERFORM_SUCCESS);
+		} catch (Exception e) {
+
+			em.getTransaction().rollback();
+			resultInfo.setResultType(Constants.PERORM_FAILURE);
+			resultInfo.setMesssage(e.getMessage());
+		}
+		return resultInfo;
 
 	}
 
@@ -115,7 +147,7 @@ public class PatientServiceImpl extends BaseSercvices implements PatientService 
 		em = EntityManagerUtil.getEntityManager();
 		Patient patient = (Patient) em.createNamedQuery("findPatientByMobile").setParameter("mobile", mobile)
 				.getSingleResult();
-		//em.close();
+		// em.close();
 		return patient;
 	}
 

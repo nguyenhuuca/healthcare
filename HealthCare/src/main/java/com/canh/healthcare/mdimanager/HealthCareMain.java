@@ -12,13 +12,11 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JScrollPane;
 
-import com.canh.healthcare.jpa.utils.EntityManagerUtil;
 import com.canh.healthcare.mdimanager.authgui.LoginForm;
 import com.canh.healthcare.mdimanager.patientgui.PatientForm;
 import com.canh.healthcare.mdimanager.patientgui.PatientHistoryForm;
 import com.canh.healthcare.mdimanager.patientgui.PrescribingForm;
 import com.canh.healthcare.mdimanager.utils.GUIUtils;
-import com.sun.xml.internal.stream.Entity;
 
 // Referenced from http://www.javaworld.com/javaworld/jw-05-2001/jw-0525-mdi.html
 

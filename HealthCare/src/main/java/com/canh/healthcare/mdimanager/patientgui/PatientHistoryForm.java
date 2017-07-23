@@ -45,6 +45,7 @@ public class PatientHistoryForm extends JInternalFrame implements ActionListener
 	private JLabel lblAddress = new JLabel("Địa chỉ:");
 	private JTextField txtAddress = new JTextField(30);
 	private JButton btnSearch = new JButton("Tìm kiếm");
+	PatientDto patientDto = null;;
 
 	PatientBusiness patientBusiness = new PatientBusinessImpl();
 
@@ -172,7 +173,7 @@ public class PatientHistoryForm extends JInternalFrame implements ActionListener
 		resultArea.setBounds(marginLeft, margintTop, width, height);
 		resultArea.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Kết quả tìm kiếm"));
 
-		Object columnNames[] = { "Id", "Ngày khám", "Tên thuốc", "Chẩn đoán bệnh", "Tổn chi phí" };
+		Object columnNames[] = { "Id", "Ngày khám","Ngày tám khám", "Chẩn đoán bệnh", "Tổn chi phí" };
 		model.setColumnIdentifiers(columnNames);
 		table.setModel(model);
 		
@@ -183,7 +184,7 @@ public class PatientHistoryForm extends JInternalFrame implements ActionListener
 				int row = table.rowAtPoint(p);
 				if (me.getClickCount() == 2) {
 					System.out.println(table.getValueAt(table.getSelectedRow(), 0).toString());
-					MedicneBillCheckDialog billCheckForm = new MedicneBillCheckDialog(Integer.parseInt(table.getValueAt(table.getSelectedRow(), 0).toString()));
+					MedicneBillCheckForm billCheckForm = new MedicneBillCheckForm(Integer.parseInt(table.getValueAt(table.getSelectedRow(), 0).toString()),patientDto);
 					JDesktopPane d = getDesktopPane();
 					d.add(billCheckForm);
 					GUIUtils.centerWithinDesktop(billCheckForm);
@@ -242,7 +243,7 @@ public class PatientHistoryForm extends JInternalFrame implements ActionListener
 		switch (e.getActionCommand()) {
 		case "SearchHistoryPatient":
 			((DefaultTableModel) table.getModel()).setRowCount(0);
-			PatientDto patientDto = patientBusiness.searchPatientByMobile(txtMobile.getText());
+			patientDto = patientBusiness.searchPatientByMobile(txtMobile.getText());
 			populateDateForPatientGroup(patientDto);
 			populateJtable(model, patientDto);
 			break;
