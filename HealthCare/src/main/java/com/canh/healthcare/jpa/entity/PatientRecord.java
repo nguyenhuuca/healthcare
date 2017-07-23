@@ -31,6 +31,7 @@ public class PatientRecord {
 	Long examinationCost;
 	Long totalCost;
 	String description;
+	int patientBillId;
 
 	public PatientRecord() {
 
@@ -47,6 +48,7 @@ public class PatientRecord {
 		this.reExamminatioDate = patientRecordDto.getReExamminatioDate();
 		this.totalHour = patientRecordDto.getTotalHour();
 		this.description = patientRecordDto.getDescription();
+		this.patientBillId = patientRecordDto.getPatientBillId();
 	}
 
 	public int getPatientRecordId() {
@@ -67,7 +69,7 @@ public class PatientRecord {
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "id", nullable = false)
+	@JoinColumn(name = "patientId", nullable = false)
 	@Access(AccessType.PROPERTY)
 	public Patient getPatient() {
 		return patient;
@@ -129,6 +131,17 @@ public class PatientRecord {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+
+	@Column(name = "patient_bill_id")
+	public int getPatientBillId() {
+		return patientBillId;
+	}
+
+	public void setPatientBillId(int patientBillId) {
+		this.patientBillId = patientBillId;
+	}
+	
+	
 	
 
 }

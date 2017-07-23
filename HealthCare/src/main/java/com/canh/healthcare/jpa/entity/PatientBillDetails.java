@@ -23,7 +23,7 @@ public class PatientBillDetails implements Serializable  {
 	
 	@Id
     @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "medicineId")
 	public Medicine getMedicine() {
 		return medicine;
 	}

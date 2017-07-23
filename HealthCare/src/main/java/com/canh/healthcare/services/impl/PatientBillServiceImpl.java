@@ -2,6 +2,7 @@ package com.canh.healthcare.services.impl;
 
 import java.util.List;
 
+import com.canh.healthcare.jpa.entity.Patient;
 import com.canh.healthcare.jpa.entity.PatientBill;
 import com.canh.healthcare.jpa.utils.EntityManagerUtil;
 import com.canh.healthcare.services.BaseSercvices;
@@ -20,7 +21,7 @@ public class PatientBillServiceImpl extends BaseSercvices implements PatientBill
 		return patientBillService;
 	}
 	@Override
-	public void create(PatientBill patientBill) {
+	public int create(PatientBill patientBill) {
 		em = EntityManagerUtil.getEntityManager();
 		em.getTransaction().begin();
 		// em.persist(patientBill);
@@ -33,7 +34,7 @@ public class PatientBillServiceImpl extends BaseSercvices implements PatientBill
 		em.flush();
 		em.getTransaction().commit();
 		System.out.println(patientBill.getPatientBillId());
-
+		return patientBill.getPatientBillId();
 	}
 
 	@Override
@@ -44,8 +45,11 @@ public class PatientBillServiceImpl extends BaseSercvices implements PatientBill
 
 	@Override
 	public PatientBill findById(int id) {
-		// TODO Auto-generated method stub
-		return null;
+		em = EntityManagerUtil.getEntityManager();
+		PatientBill patientBill = (PatientBill) em.createNamedQuery("findPatientBillById").setParameter("patientBillId", id)
+				.getSingleResult();
+
+		return patientBill;
 	}
 
 	@Override

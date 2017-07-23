@@ -15,6 +15,7 @@ public class PatientRecordDto {
 	Long examinationCost;
 	Long totalCost;
 	String description;
+	int patientBillId;
 
 	public int getPatientRecordId() {
 		return patientRecordId;
@@ -87,5 +88,14 @@ public class PatientRecordDto {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+
+	public int getPatientBillId() {
+		return patientBillId;
+	}
+
+	public void setPatientBillId(int patientBillId) {
+		this.patientBillId = patientBillId;
+	}
+	
 
 }

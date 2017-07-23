@@ -13,6 +13,7 @@ import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JDesktopPane;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -23,6 +24,7 @@ import javax.swing.table.DefaultTableModel;
 
 import com.canh.healthcare.domain.impl.PatientBusinessImpl;
 import com.canh.healthcare.domain.interfaces.PatientBusiness;
+import com.canh.healthcare.mdimanager.utils.GUIUtils;
 import com.canh.healthcare.model.PatientDto;
 import com.canh.healthcare.model.PatientRecordDto;
 
@@ -170,10 +172,10 @@ public class PatientHistoryForm extends JInternalFrame implements ActionListener
 		resultArea.setBounds(marginLeft, margintTop, width, height);
 		resultArea.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Kết quả tìm kiếm"));
 
-		Object columnNames[] = { "Id", "Ngày khám", "Ngày tái khám", "Chẩn đoán bệnh", "Tổn chi phí" };
+		Object columnNames[] = { "Id", "Ngày khám", "Tên thuốc", "Chẩn đoán bệnh", "Tổn chi phí" };
 		model.setColumnIdentifiers(columnNames);
 		table.setModel(model);
-
+		
 		table.addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent me) {
 				JTable table = (JTable) me.getSource();
@@ -181,6 +183,12 @@ public class PatientHistoryForm extends JInternalFrame implements ActionListener
 				int row = table.rowAtPoint(p);
 				if (me.getClickCount() == 2) {
 					System.out.println(table.getValueAt(table.getSelectedRow(), 0).toString());
+					MedicneBillCheckDialog billCheckForm = new MedicneBillCheckDialog(Integer.parseInt(table.getValueAt(table.getSelectedRow(), 0).toString()));
+					JDesktopPane d = getDesktopPane();
+					d.add(billCheckForm);
+					GUIUtils.centerWithinDesktop(billCheckForm);
+					toBack();
+					
 				}
 			}
 		});
@@ -209,7 +217,7 @@ public class PatientHistoryForm extends JInternalFrame implements ActionListener
 
 		for (PatientRecordDto patientRecordDto : patientDto.getPattientRecords()) {
 
-			int id = patientRecordDto.getPatientRecordId();
+			int id = patientRecordDto.getPatientBillId();
 			Date examinationDate = patientRecordDto.getExaminationDay();
 			Date reExaminateDate = patientRecordDto.getReExamminatioDate();
 			String description = patientRecordDto.getDescription();

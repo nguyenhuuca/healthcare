@@ -104,6 +104,7 @@ public class PatientBusinessImpl implements PatientBusiness {
 			patientRecordDto.setExaminationDay(patientRecord.getExaminationDay());
 			patientRecordDto.setPatientRecordId(patientRecord.getPatientRecordId());
 			patientRecordDto.setReExamminatioDate(patientRecord.getReExamminatioDate());
+			patientRecordDto.setPatientBillId(patientRecord.getPatientBillId());
 			patientRecordDto.setTotalCost(patientRecord.getTotalCost());
 			patientRecordDtoList.add(patientRecordDto);
 		}
@@ -121,7 +122,7 @@ public class PatientBusinessImpl implements PatientBusiness {
 			patientRecord.setPatient(patientRef);
 			patient.getPattientRecords().add(patientRecord);
 		}
-
+        /*
 		for (PatientBillDto patientBillDto : patientDto.getPatientBill()) {
 			PatientBill patientBill = new PatientBill(patientBillDto);
 			patientBill.setPatient(patientRef);
@@ -133,7 +134,7 @@ public class PatientBusinessImpl implements PatientBusiness {
 			// }
 
 			patient.getPatientBill().add(patientBill);
-		}
+		}*/
 		return patient;
 	}
 	

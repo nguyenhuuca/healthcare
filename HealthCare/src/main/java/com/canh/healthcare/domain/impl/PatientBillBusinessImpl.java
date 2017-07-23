@@ -4,21 +4,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.canh.healthcare.domain.interfaces.PatientBillBusiness;
+import com.canh.healthcare.domain.interfaces.PatientBusiness;
 import com.canh.healthcare.jpa.entity.Medicine;
 import com.canh.healthcare.jpa.entity.PatientBill;
 import com.canh.healthcare.jpa.entity.PatientBillDetails;
 import com.canh.healthcare.model.PatientBillDetailsDto;
 import com.canh.healthcare.model.PatientBillDto;
+import com.canh.healthcare.model.PatientDto;
 import com.canh.healthcare.services.impl.PatientBillServiceImpl;
 import com.canh.healthcare.services.interfaces.PatientBillService;
 
 public class PatientBillBusinessImpl implements PatientBillBusiness {
 	PatientBillService service = PatientBillServiceImpl.getInstance();
+	PatientBusiness patientServcie = new PatientBusinessImpl();
 
 	@Override
-	public void create(PatientBillDto patientBillDto) {
+	public void create(PatientBillDto patientBillDto, PatientDto patientDto) {
 		PatientBill patientBill = convertToPatientBill(patientBillDto);
-		service.create(patientBill);
+		int patientBillId = service.create(patientBill);
+		for (int i = 0; i < patientDto.getPattientRecords().size(); i++) {
+			patientDto.getPattientRecords().get(i).setPatientBillId(patientBillId);
+
+		}
+		patientServcie.update(patientDto);
 
 	}
 
@@ -48,6 +56,12 @@ public class PatientBillBusinessImpl implements PatientBillBusiness {
 		billDetail.setQuantity(patientDetailDto.getQuantity());
 		return billDetail;
 
+	}
+
+	@Override
+	public PatientBill searchPatientBillById(int id) {
+		PatientBill patientBill = service.findById(id);
+		return patientBill;
 	}
 
 }

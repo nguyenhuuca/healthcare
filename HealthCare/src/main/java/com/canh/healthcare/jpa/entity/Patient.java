@@ -20,7 +20,7 @@ import com.canh.healthcare.model.PatientDto;
 @Entity
 @Table(name = "patients")
 @NamedNativeQueries({
-	@NamedNativeQuery(name = "findPatientById",query = " select * from patients p where p.id = :idPatient ",resultClass = Patient.class
+	@NamedNativeQuery(name = "findPatientById",query = " select * from patients p where p.patientId = :idPatient ",resultClass = Patient.class
 	),@NamedNativeQuery(name = "findPatientByMobile",query = " select * from patients p where p.mobile = :mobile",resultClass = Patient.class
 			)
 })
@@ -28,7 +28,7 @@ public class Patient {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	int id;
+	int patientId;
 	String name;
 	String birthDay;
 	boolean male;
@@ -47,7 +47,7 @@ public class Patient {
 	}
 	public Patient(PatientDto patient) {
 		if(patient.getId() != 0){
-			this.id = patient.getId();
+			this.patientId = patient.getId();
 		}
 		this.address = patient.getAddress();
 		this.birthDay = patient.getBirthDay();
@@ -60,11 +60,11 @@ public class Patient {
 	}
 
 	public int getId() {
-		return id;
+		return patientId;
 	}
 
 	public void setId(int id) {
-		this.id = id;
+		this.patientId = id;
 	}
 
 	@Column(name = "patient_name")

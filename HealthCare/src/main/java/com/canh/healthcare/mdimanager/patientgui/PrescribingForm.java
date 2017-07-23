@@ -488,8 +488,8 @@ public class PrescribingForm extends JInternalFrame implements ActionListener {
 				patientBillDtoLst.add(patientBillDto);
 				patientDto.setPatientBill(patientBillDtoLst);
 				patientDto.setPattientRecords(patientRecordDtoList);
-				patientBusiness.update(patientDto);
-				patientBillBusiness.create(patientBillDto);
+				//patientBusiness.update(patientDto);
+				patientBillBusiness.create(patientBillDto,patientDto);
 
 			} catch (Exception e1) {
 				JOptionPane.showMessageDialog(null, e1.getMessage());

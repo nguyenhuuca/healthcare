@@ -25,7 +25,7 @@ public class AppUser implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private Long userId;
 	private String userName;
 	private String passUser;
 	private String comment;
@@ -36,7 +36,7 @@ public class AppUser implements Serializable {
 
 	public AppUser(AppUserDto appUserDto) {
 		if (appUserDto.getId() != null) {
-			this.id = appUserDto.getId();
+			this.userId = appUserDto.getId();
 		}
 		this.userName = appUserDto.getUserName();
 		this.passUser = appUserDto.getPassUser();
@@ -46,11 +46,11 @@ public class AppUser implements Serializable {
 
 	@Column(name = "id")
 	public Long getId() {
-		return id;
+		return userId;
 	}
 
 	public void setId(Long id) {
-		this.id = id;
+		this.userId = id;
 	}
 
 	@Column(name = "user_name")
