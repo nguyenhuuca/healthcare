@@ -40,7 +40,7 @@ public class MedicineServiceImpl extends BaseSercvices implements MedicineServic
 		} catch (Exception e) {
 			em.getTransaction().rollback();
 			resultInfo.setMesssage(e.getMessage());
-			resultInfo.setResultType(Constants.PERORM_FAILURE);
+			resultInfo.setResultType(Constants.PERFORM_SUCCESS);
 		}
 		return resultInfo;
 
@@ -58,7 +58,7 @@ public class MedicineServiceImpl extends BaseSercvices implements MedicineServic
 			resultInfo.setResultType(Constants.PERFORM_SUCCESS);
 		} catch (Exception e) {
 			em.getTransaction().rollback();
-			resultInfo.setResultType(Constants.PERORM_FAILURE);
+			resultInfo.setResultType(Constants.PERFORM_SUCCESS);
 			resultInfo.setMesssage(e.getMessage());
 		}
 		return resultInfo;

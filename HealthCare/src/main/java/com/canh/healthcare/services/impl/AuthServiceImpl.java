@@ -38,7 +38,7 @@ public class AuthServiceImpl extends BaseSercvices implements AuthService {
 		} catch (Exception e) {
 			em.getTransaction().rollback();
 			resultInfo.setMesssage(e.getMessage());
-			resultInfo.setResultType(Constants.PERORM_FAILURE);
+			resultInfo.setResultType(Constants.PERFORM_SUCCESS);
 		}
 		return resultInfo;
 	}
@@ -56,7 +56,7 @@ public class AuthServiceImpl extends BaseSercvices implements AuthService {
 		} catch (Exception e) {
 			em.getTransaction().rollback();
 			resultInfo.setMesssage(e.getMessage());
-			resultInfo.setResultType(Constants.PERORM_FAILURE);
+			resultInfo.setResultType(Constants.PERFORM_SUCCESS);
 		}
 		return resultInfo;
 	}

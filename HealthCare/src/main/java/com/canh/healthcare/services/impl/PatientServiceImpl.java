@@ -41,7 +41,7 @@ public class PatientServiceImpl extends BaseSercvices implements PatientService 
 			resultInfo.setResultType(Constants.PERFORM_SUCCESS);
 		} catch (Exception e) {
 			em.getTransaction().rollback();
-			resultInfo.setResultType(Constants.PERORM_FAILURE);
+			resultInfo.setResultType(Constants.PERFORM_FAILURE);
 			resultInfo.setMesssage(e.getMessage());
 		}
 
@@ -62,7 +62,7 @@ public class PatientServiceImpl extends BaseSercvices implements PatientService 
 
 		} catch (Exception e) {
 			em.getTransaction().rollback();
-			resultInfo.setResultType(Constants.PERORM_FAILURE);
+			resultInfo.setResultType(Constants.PERFORM_FAILURE);
 			resultInfo.setMesssage(e.getMessage());
 		}
 		return resultInfo;
@@ -115,7 +115,7 @@ public class PatientServiceImpl extends BaseSercvices implements PatientService 
 			resultInfo.setResultType(Constants.PERFORM_SUCCESS);
 		} catch (Exception e) {
 			em.getTransaction().rollback();
-			resultInfo.setResultType(Constants.PERORM_FAILURE);
+			resultInfo.setResultType(Constants.PERFORM_FAILURE);
 			resultInfo.setMesssage(e.getMessage());
 		}
 		return resultInfo;
@@ -135,7 +135,7 @@ public class PatientServiceImpl extends BaseSercvices implements PatientService 
 		} catch (Exception e) {
 
 			em.getTransaction().rollback();
-			resultInfo.setResultType(Constants.PERORM_FAILURE);
+			resultInfo.setResultType(Constants.PERFORM_FAILURE);
 			resultInfo.setMesssage(e.getMessage());
 		}
 		return resultInfo;

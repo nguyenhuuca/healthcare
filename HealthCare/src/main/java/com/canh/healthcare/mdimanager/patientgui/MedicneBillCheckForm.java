@@ -19,10 +19,9 @@ import javax.swing.table.DefaultTableModel;
 
 import com.canh.healthcare.domain.impl.PatientBillBusinessImpl;
 import com.canh.healthcare.domain.interfaces.PatientBillBusiness;
-import com.canh.healthcare.jpa.entity.PatientBill;
-import com.canh.healthcare.jpa.entity.PatientBillDetails;
+import com.canh.healthcare.model.PatientBillDetailsDto;
+import com.canh.healthcare.model.PatientBillDto;
 import com.canh.healthcare.model.PatientDto;
-import com.canh.healthcare.model.PatientRecordDto;
 
 public class MedicneBillCheckForm extends JInternalFrame implements ActionListener {
 	/**
@@ -192,12 +191,12 @@ public class MedicneBillCheckForm extends JInternalFrame implements ActionListen
 	}
 
 	public void populateDateForMedicineInFo(DefaultTableModel model) {
-		PatientBill patientBill = patientBillBusiness.searchPatientBillById(this.billId);
+		PatientBillDto patientBill = patientBillBusiness.searchPatientBillById(this.billId);
 		List<Object[]> ar = new ArrayList<Object[]>();
 		// Object columnNames[] = { "Id","Ngày khám", "Tên thuốc", "Số lượng", "Liều
 		// dùng" };
 
-		for (PatientBillDetails patientBillDetail : patientBill.getPatientBillDetails()) {
+		for (PatientBillDetailsDto patientBillDetail : patientBill.getPatientBillDetails()) {
 
 			int id = patientBillDetail.getMedicine().getId();
 			Date examinationDate = patientBill.getCreateDate();

@@ -40,9 +40,9 @@ public class PatientBillBusinessImpl implements PatientBillBusiness {
 	}
 
 	@Override
-	public PatientBill searchPatientBillById(int id) {
+	public PatientBillDto searchPatientBillById(int id) {
 		PatientBill patientBill = service.findById(id);
-		return patientBill;
+		return convertToPatientBillDto(patientBill);
 	}
 
 	public static PatientBill convertToPatientBill(PatientBillDto patientBillDto) {
@@ -70,8 +70,7 @@ public class PatientBillBusinessImpl implements PatientBillBusiness {
 	public static PatientBillDetailsDto convertToPatientBillDetailDto(PatientBillDetails patientBillDetail) {
 		PatientBillDetailsDto patientBillDetailsDto = new PatientBillDetailsDto();
 		patientBillDetailsDto.setQuantity(patientBillDetail.getQuantity());
-		patientBillDetailsDto
-				.setPatientBill(PatientBillBusinessImpl.convertToPatientBillDto(patientBillDetail.getPatientBill()));
+		//patientBillDetailsDto.setPatientBill(PatientBillBusinessImpl.convertToPatientBillDto(patientBillDetail.getPatientBill()));
 		patientBillDetailsDto.setMedicine(MedicineBusinessImpl.convertToMedicineDto(patientBillDetail.getMedicine()));
 		return patientBillDetailsDto;
 

@@ -41,7 +41,7 @@ public class PatientRecord {
 		if (patientRecordDto.getPatientRecordId() != 0) {
 			this.patientRecordId = patientRecordDto.getPatientRecordId();
 		}
-		this.patient = patientRecordDto.getPatient();
+		//this.patient = patientRecordDto.getPatient();
 		this.dateCome = patientRecordDto.getDateCome();
 		this.totalCost = patientRecordDto.getTotalCost();
 		this.examinationDay = patientRecordDto.getExaminationDay();

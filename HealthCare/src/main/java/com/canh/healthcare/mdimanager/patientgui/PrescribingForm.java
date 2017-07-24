@@ -11,6 +11,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -19,6 +22,7 @@ import java.util.Properties;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFormattedTextField;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -27,6 +31,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 
 import org.jdatepicker.impl.JDatePanelImpl;
@@ -46,7 +52,7 @@ import com.canh.healthcare.model.PatientBillDto;
 import com.canh.healthcare.model.PatientDto;
 import com.canh.healthcare.model.PatientRecordDto;
 
-public class PrescribingForm extends JInternalFrame implements ActionListener {
+public class PrescribingForm extends JInternalFrame implements ActionListener, PropertyChangeListener {
 
 	/**
 	 * 
@@ -73,6 +79,7 @@ public class PrescribingForm extends JInternalFrame implements ActionListener {
 	private JLabel lblHourExamination = new JLabel("Số giờ khám");
 	private JTextField txtHourExamination = new JTextField("0", 5);
 	private JLabel lblTotalExaminationCost = new JLabel("Tổng tiền khám");
+	private JFormattedTextField fmtTotalExaminationCost;
 	private JTextField txtTotalExaminationCost = new JTextField("0", 10);
 	private JLabel lblTotalMedicineCost = new JLabel("Tiền thuốc");
 	private JTextField txtTotalMedicineCost = new JTextField("0", 10);
@@ -99,6 +106,14 @@ public class PrescribingForm extends JInternalFrame implements ActionListener {
 	JTable tablePrescribing = new JTable();
 	DefaultTableModel modelPrescribing = new DefaultTableModel();
 
+	// Formats to format and parse numbers
+	private NumberFormat amountFormat;
+	private NumberFormat percentFormat;
+	private NumberFormat paymentFormat;
+
+	// Values for the fields
+	private long amount = 100000;
+
 	// hold date
 	PatientDto patientDto = new PatientDto();
 	// PatientRecordDto patientRecordDto = new PatientRecordDto();
@@ -110,6 +125,7 @@ public class PrescribingForm extends JInternalFrame implements ActionListener {
 
 	public PrescribingForm() {
 		super();
+		setUpFormats();
 		createPrescribingInput();
 		createPrescribingArea();
 		createPrescribingList();
@@ -314,12 +330,16 @@ public class PrescribingForm extends JInternalFrame implements ActionListener {
 		lblTotalExaminationCost.setBounds(marginLeft, margintTop, width, height);
 		prescribingArea.add(lblTotalExaminationCost);
 
-		size = txtTotalExaminationCost.getPreferredSize();
+		fmtTotalExaminationCost = new JFormattedTextField(amountFormat);
+		fmtTotalExaminationCost.setColumns(10);
+		fmtTotalExaminationCost.setValue(new Double(amount));
+		fmtTotalExaminationCost.addPropertyChangeListener("value", this);
+		size = fmtTotalExaminationCost.getPreferredSize();
 		marginLeft += width;
 		width = size.width;
 		height = size.height;
-		txtTotalExaminationCost.setBounds(marginLeft, insets.top + 50, width, height);
-		prescribingArea.add(txtTotalExaminationCost);
+		fmtTotalExaminationCost.setBounds(marginLeft, insets.top + 50, width, height);
+		prescribingArea.add(fmtTotalExaminationCost);
 
 		size = lblTotalCost.getPreferredSize();
 		marginLeft += width;
@@ -333,6 +353,7 @@ public class PrescribingForm extends JInternalFrame implements ActionListener {
 		width = size.width;
 		height = size.height;
 		txtTotalCost.setBounds(marginLeft, insets.top + 50, width, height);
+		txtTotalCost.setEditable(false);
 		prescribingArea.add(txtTotalCost);
 
 		// row 3
@@ -385,6 +406,7 @@ public class PrescribingForm extends JInternalFrame implements ActionListener {
 		width = size.width;
 		height = size.height;
 		txtTotalMedicineCost.setBounds(marginLeft, insets.top + 80, width, height);
+		txtTotalMedicineCost.setEditable(false);
 
 		prescribingArea.add(lblNameMedical);
 		prescribingArea.add(cbxMedical);
@@ -460,6 +482,12 @@ public class PrescribingForm extends JInternalFrame implements ActionListener {
 			patientBillDetailsDto.setMedicine(medicineDto);
 			patientBillDetailsDto.setQuantity(Integer.parseInt(txtQuantity.getText()));
 			patientBillDetailsDtoLst.add(patientBillDetailsDto);
+			long totalMedicineCost = Long.parseLong(txtTotalMedicineCost.getText());
+			totalMedicineCost += medicineDto.getTotaCost();
+			txtTotalMedicineCost.setText(String.valueOf(totalMedicineCost));
+			long totalExaminationCost = amount;
+			long totalCost = totalMedicineCost + totalExaminationCost;
+			txtTotalCost.setText(String.valueOf(totalCost));
 			populateJtable(modelPrescribing, medicineDto);
 			// JOptionPane.showMessageDialog(null, "Tạo thành công");
 			break;
@@ -478,7 +506,7 @@ public class PrescribingForm extends JInternalFrame implements ActionListener {
 				patientRecordDto.setReExamminatioDate((Date) datePickerReExaminationDate.getModel().getValue());
 				patientRecordDto.setTotalCost(Long.parseLong(txtTotalCost.getText()));
 				patientRecordDto.setTotalHour(Integer.parseInt(txtHourExamination.getText()));
-				patientRecordDto.setExaminationCost(Long.parseLong(txtTotalExaminationCost.getText()));
+				patientRecordDto.setExaminationCost(amount);
 				patientRecordDtoList.add(patientRecordDto);
 				// save Pateint Bill
 				PatientBillDto patientBillDto = new PatientBillDto();
@@ -488,8 +516,8 @@ public class PrescribingForm extends JInternalFrame implements ActionListener {
 				patientBillDtoLst.add(patientBillDto);
 				patientDto.setPatientBill(patientBillDtoLst);
 				patientDto.setPattientRecords(patientRecordDtoList);
-				//patientBusiness.update(patientDto);
-				patientBillBusiness.create(patientBillDto,patientDto);
+				// patientBusiness.update(patientDto);
+				patientBillBusiness.create(patientBillDto, patientDto);
 
 			} catch (Exception e1) {
 				JOptionPane.showMessageDialog(null, e1.getMessage());
@@ -536,4 +564,38 @@ public class PrescribingForm extends JInternalFrame implements ActionListener {
 		}
 		return vaild;
 	}
+
+	/*
+	 * public void initForm() { // Listen for changes in the text
+	 * txtTotalExaminationCost.getDocument().addDocumentListener(new
+	 * DocumentListener() { public void changedUpdate(DocumentEvent e) { warn(); }
+	 * public void removeUpdate(DocumentEvent e) { warn(); } public void
+	 * insertUpdate(DocumentEvent e) { warn(); }
+	 * 
+	 * public void warn() { if
+	 * (Integer.parseInt(txtTotalExaminationCost.getText())<=0){
+	 * JOptionPane.showMessageDialog(null,
+	 * "Error: Please enter number bigger than 0", "Error Massage",
+	 * JOptionPane.ERROR_MESSAGE); } } }); }
+	 */
+	// Create and set up number formats. These objects also
+	// parse numbers input by user.
+	private void setUpFormats() {
+		amountFormat = NumberFormat.getNumberInstance();
+
+		percentFormat = NumberFormat.getNumberInstance();
+		percentFormat.setMinimumFractionDigits(3);
+
+		paymentFormat = NumberFormat.getCurrencyInstance();
+	}
+
+	@Override
+	public void propertyChange(PropertyChangeEvent e) {
+		Object source = e.getSource();
+		if (source == fmtTotalExaminationCost) {
+			amount = ((Number) fmtTotalExaminationCost.getValue()).longValue();
+		}
+
+	}
+
 }

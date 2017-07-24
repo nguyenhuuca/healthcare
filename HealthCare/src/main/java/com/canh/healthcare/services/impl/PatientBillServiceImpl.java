@@ -42,7 +42,7 @@ public class PatientBillServiceImpl extends BaseSercvices implements PatientBill
 			
 		}catch(Exception e){
 			em.getTransaction().rollback();
-			resultInfo.setResultType(Constants.PERORM_FAILURE);
+			resultInfo.setResultType(Constants.PERFORM_FAILURE);
 			resultInfo.setMesssage(e.getMessage());
 		}
 		
@@ -69,7 +69,7 @@ public class PatientBillServiceImpl extends BaseSercvices implements PatientBill
 			
 		}catch(Exception e){
 			em.getTransaction().rollback();
-			resultInfo.setResultType(Constants.PERORM_FAILURE);
+			resultInfo.setResultType(Constants.PERFORM_FAILURE);
 			resultInfo.setMesssage(e.getMessage());
 		}
 		

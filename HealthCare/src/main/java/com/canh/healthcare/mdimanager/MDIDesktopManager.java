@@ -14,7 +14,11 @@ import javax.swing.JViewport;
  * Used to provide scrollbar functionality.
  */
 class MDIDesktopManager extends DefaultDesktopManager {
-  private MDIDesktopPane desktop;
+  /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+private MDIDesktopPane desktop;
 
   public MDIDesktopManager(MDIDesktopPane desktop) {
     this.desktop = desktop;
