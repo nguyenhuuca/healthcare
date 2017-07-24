@@ -8,6 +8,8 @@ import com.canh.healthcare.jpa.utils.EntityManagerUtil;
 import com.canh.healthcare.model.MedicineDto;
 import com.canh.healthcare.services.BaseSercvices;
 import com.canh.healthcare.services.interfaces.MedicineService;
+import com.canh.healthcare.utils.Constants;
+import com.canh.healthcare.utils.ResultInfo;
 
 public class MedicineServiceImpl extends BaseSercvices implements MedicineService {
 
@@ -25,22 +27,41 @@ public class MedicineServiceImpl extends BaseSercvices implements MedicineServic
 	}
 
 	@Override
-	public void create(MedicineDto medicineDto) {
-		em = EntityManagerUtil.getEntityManager();
-		em.getTransaction().begin();
-		Medicine medicine = new Medicine(medicineDto);
-		em.persist(medicine);
-		em.getTransaction().commit();
+	public ResultInfo create(MedicineDto medicineDto) {
+		ResultInfo resultInfo = new ResultInfo();
+		try {
+			em = EntityManagerUtil.getEntityManager();
+			em.getTransaction().begin();
+			Medicine medicine = new Medicine(medicineDto);
+			em.persist(medicine);
+			em.getTransaction().commit();
+			resultInfo.setResultType(Constants.PERFORM_SUCCESS);
+
+		} catch (Exception e) {
+			em.getTransaction().rollback();
+			resultInfo.setMesssage(e.getMessage());
+			resultInfo.setResultType(Constants.PERORM_FAILURE);
+		}
+		return resultInfo;
 
 	}
 
 	@Override
-	public void update(MedicineDto medicineDto) {
-		em = EntityManagerUtil.getEntityManager();
-		em.getTransaction().begin();
-		Medicine medicine = new Medicine(medicineDto);
-		em.merge(medicine);
-		em.getTransaction().commit();
+	public ResultInfo update(MedicineDto medicineDto) {
+		ResultInfo resultInfo = new ResultInfo();
+		try {
+			em = EntityManagerUtil.getEntityManager();
+			em.getTransaction().begin();
+			Medicine medicine = new Medicine(medicineDto);
+			em.merge(medicine);
+			em.getTransaction().commit();
+			resultInfo.setResultType(Constants.PERFORM_SUCCESS);
+		} catch (Exception e) {
+			em.getTransaction().rollback();
+			resultInfo.setResultType(Constants.PERORM_FAILURE);
+			resultInfo.setMesssage(e.getMessage());
+		}
+		return resultInfo;
 
 	}
 

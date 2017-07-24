@@ -29,7 +29,7 @@ public class PatientBusinessImpl implements PatientBusiness {
 
 	@Override
 	public void update(PatientDto patientDto) {
-		Patient patient = populateDateForPatient(patientDto);
+		Patient patient = convertToPatient(patientDto);
 		service.update(patient);
 
 	}
@@ -37,7 +37,7 @@ public class PatientBusinessImpl implements PatientBusiness {
 	@Override
 	public PatientDto searchPatientById(int id) {
 		Patient patient = service.findPatientById(id);
-		return populateData(patient);
+		return convertToPatientDto(patient);
 	}
 
 	@Override
@@ -45,7 +45,7 @@ public class PatientBusinessImpl implements PatientBusiness {
 		List<Patient> patientLst = service.findAll();
 		List<PatientDto> patientDtoLst = new ArrayList<PatientDto>();
 		for (Patient patient : patientLst) {
-			PatientDto patientDto = populateData(patient);
+			PatientDto patientDto = convertToPatientDto(patient);
 			patientDtoLst.add(patientDto);
 		}
 		return patientDtoLst;
@@ -56,7 +56,7 @@ public class PatientBusinessImpl implements PatientBusiness {
 		List<Patient> patientLst = service.findByName(name);
 		List<PatientDto> patientDtoLst = new ArrayList<PatientDto>();
 		for (Patient patient : patientLst) {
-			PatientDto patientDto = populateData(patient);
+			PatientDto patientDto = convertToPatientDto(patient);
 			patientDtoLst.add(patientDto);
 		}
 		return patientDtoLst;
@@ -68,24 +68,15 @@ public class PatientBusinessImpl implements PatientBusiness {
 
 	}
 
-	public PatientBillDetails convertToPatientDetail(PatientBillDetailsDto patientDetailDto) {
-		PatientBillDetails billDetail = new PatientBillDetails();
-		Medicine medicine = new Medicine(patientDetailDto.getMedicine());
-		PatientBill patientBill = new PatientBill();
-		billDetail.setMedicine(medicine);
-		billDetail.setPatientBill(patientBill);
-		billDetail.setQuantity(patientDetailDto.getQuantity());
-		return billDetail;
-
-	}
+	
 
 	@Override
 	public PatientDto searchPatientByMobile(String mobile) {
 		Patient patient = service.findPatientByMobile(mobile);
-		return populateData(patient);
+		return convertToPatientDto(patient);
 	}
 
-	public PatientDto populateData(Patient patient) {
+	public static PatientDto convertToPatientDto(Patient patient) {
 		PatientDto patientDto = new PatientDto();
 		patientDto.setAddress(patient.getAddress());
 		patientDto.setBirthDay(patient.getBirthDay());
@@ -114,7 +105,7 @@ public class PatientBusinessImpl implements PatientBusiness {
 		return patientDto;
 	}
 
-	public Patient populateDateForPatient(PatientDto patientDto) {
+	public static Patient convertToPatient(PatientDto patientDto) {
 		Patient patient = new Patient(patientDto);
 		Patient patientRef = new Patient(patientDto);
 		for (PatientRecordDto patientRecordDto : patientDto.getPattientRecords()) {

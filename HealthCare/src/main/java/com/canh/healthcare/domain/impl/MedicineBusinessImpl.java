@@ -35,14 +35,14 @@ public class MedicineBusinessImpl implements MedicineBusiness {
 		List<Medicine> medicineLst = service.findAll();
 		List<MedicineDto> medicineDtoLst =  new ArrayList<MedicineDto>();
 		for(Medicine medicine : medicineLst){
-			MedicineDto medicineDto = populateData(medicine);
+			MedicineDto medicineDto = convertToMedicineDto(medicine);
 			medicineDtoLst.add(medicineDto);
 		}
 		return medicineDtoLst;
 	}
 	
 
-	public MedicineDto populateData(Medicine medicine){
+	public static MedicineDto convertToMedicineDto(Medicine medicine){
 		MedicineDto medicineDto = new MedicineDto();
 		medicineDto.setId(medicine.getId());;
 		medicineDto.setName(medicine.getName());;

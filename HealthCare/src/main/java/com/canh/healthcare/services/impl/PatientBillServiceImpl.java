@@ -2,11 +2,12 @@ package com.canh.healthcare.services.impl;
 
 import java.util.List;
 
-import com.canh.healthcare.jpa.entity.Patient;
 import com.canh.healthcare.jpa.entity.PatientBill;
 import com.canh.healthcare.jpa.utils.EntityManagerUtil;
 import com.canh.healthcare.services.BaseSercvices;
 import com.canh.healthcare.services.interfaces.PatientBillService;
+import com.canh.healthcare.utils.Constants;
+import com.canh.healthcare.utils.ResultInfo;
 
 public class PatientBillServiceImpl extends BaseSercvices implements PatientBillService {
     
@@ -21,25 +22,58 @@ public class PatientBillServiceImpl extends BaseSercvices implements PatientBill
 		return patientBillService;
 	}
 	@Override
-	public int create(PatientBill patientBill) {
-		em = EntityManagerUtil.getEntityManager();
-		em.getTransaction().begin();
-		// em.persist(patientBill);
+	public ResultInfo create(PatientBill patientBill) {
+		ResultInfo resultInfo = new ResultInfo();
+		try {
+			em = EntityManagerUtil.getEntityManager();
+			em.getTransaction().begin();
+			// em.persist(patientBill);
 
-		for (int i = 0; i < patientBill.getPatientBillDetails().size(); i++) {
-			patientBill.getPatientBillDetails().get(i).setPatientBill(patientBill);
+			for (int i = 0; i < patientBill.getPatientBillDetails().size(); i++) {
+				patientBill.getPatientBillDetails().get(i).setPatientBill(patientBill);
 
+			}
+			em.persist(patientBill);
+			em.flush();
+			em.getTransaction().commit();
+			System.out.println(patientBill.getPatientBillId());
+			resultInfo.setResultType(Constants.PERFORM_SUCCESS);
+			resultInfo.setObject(patientBill);
+			
+		}catch(Exception e){
+			em.getTransaction().rollback();
+			resultInfo.setResultType(Constants.PERORM_FAILURE);
+			resultInfo.setMesssage(e.getMessage());
 		}
-		em.persist(patientBill);
-		em.flush();
-		em.getTransaction().commit();
-		System.out.println(patientBill.getPatientBillId());
-		return patientBill.getPatientBillId();
+		
+		return resultInfo;
 	}
 
 	@Override
-	public void update(PatientBill patient) {
-		// TODO Auto-generated method stub
+	public ResultInfo update(PatientBill patientBill) {
+		ResultInfo resultInfo = new ResultInfo();
+		try {
+			em = EntityManagerUtil.getEntityManager();
+			em.getTransaction().begin();
+			/*
+			for (int i = 0; i < patientBill.getPatientBillDetails().size(); i++) {
+				patientBill.getPatientBillDetails().get(i).setPatientBill(patientBill);
+
+			}*/
+			em.merge(patientBill);
+			em.flush();
+			em.getTransaction().commit();
+			System.out.println(patientBill.getPatientBillId());
+			resultInfo.setResultType(Constants.PERFORM_SUCCESS);
+			resultInfo.setObject(patientBill);
+			
+		}catch(Exception e){
+			em.getTransaction().rollback();
+			resultInfo.setResultType(Constants.PERORM_FAILURE);
+			resultInfo.setMesssage(e.getMessage());
+		}
+		
+		return resultInfo;
 
 	}
 

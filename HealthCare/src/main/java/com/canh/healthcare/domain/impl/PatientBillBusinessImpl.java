@@ -13,6 +13,7 @@ import com.canh.healthcare.model.PatientBillDto;
 import com.canh.healthcare.model.PatientDto;
 import com.canh.healthcare.services.impl.PatientBillServiceImpl;
 import com.canh.healthcare.services.interfaces.PatientBillService;
+import com.canh.healthcare.utils.ResultInfo;
 
 public class PatientBillBusinessImpl implements PatientBillBusiness {
 	PatientBillService service = PatientBillServiceImpl.getInstance();
@@ -21,7 +22,9 @@ public class PatientBillBusinessImpl implements PatientBillBusiness {
 	@Override
 	public void create(PatientBillDto patientBillDto, PatientDto patientDto) {
 		PatientBill patientBill = convertToPatientBill(patientBillDto);
-		int patientBillId = service.create(patientBill);
+		// int patientBillId = service.create(patientBill);
+		ResultInfo resultInfo = service.create(patientBill);
+		int patientBillId = ((PatientBill) resultInfo.getObject()).getPatientBillId();
 		for (int i = 0; i < patientDto.getPattientRecords().size(); i++) {
 			patientDto.getPattientRecords().get(i).setPatientBillId(patientBillId);
 
@@ -36,18 +39,24 @@ public class PatientBillBusinessImpl implements PatientBillBusiness {
 
 	}
 
-	public PatientBill convertToPatientBill(PatientBillDto patientBillDto) {
+	@Override
+	public PatientBill searchPatientBillById(int id) {
+		PatientBill patientBill = service.findById(id);
+		return patientBill;
+	}
+
+	public static PatientBill convertToPatientBill(PatientBillDto patientBillDto) {
 		PatientBill patientBill = new PatientBill(patientBillDto);
 		List<PatientBillDetails> patientBillDetailList = new ArrayList<PatientBillDetails>();
 		for (PatientBillDetailsDto patientBillDetailDto : patientBillDto.getPatientBillDetails()) {
-			PatientBillDetails patientBillDetail = convertToPatientDetail(patientBillDetailDto);
+			PatientBillDetails patientBillDetail = convertToPatientBillDetail(patientBillDetailDto);
 			patientBillDetailList.add(patientBillDetail);
 		}
 		patientBill.setPatientBillDetails(patientBillDetailList);
 		return patientBill;
 	}
 
-	public PatientBillDetails convertToPatientDetail(PatientBillDetailsDto patientDetailDto) {
+	public static PatientBillDetails convertToPatientBillDetail(PatientBillDetailsDto patientDetailDto) {
 		PatientBillDetails billDetail = new PatientBillDetails();
 		Medicine medicine = new Medicine(patientDetailDto.getMedicine());
 		PatientBill patientBill = new PatientBill();
@@ -58,10 +67,28 @@ public class PatientBillBusinessImpl implements PatientBillBusiness {
 
 	}
 
-	@Override
-	public PatientBill searchPatientBillById(int id) {
-		PatientBill patientBill = service.findById(id);
-		return patientBill;
+	public static PatientBillDetailsDto convertToPatientBillDetailDto(PatientBillDetails patientBillDetail) {
+		PatientBillDetailsDto patientBillDetailsDto = new PatientBillDetailsDto();
+		patientBillDetailsDto.setQuantity(patientBillDetail.getQuantity());
+		patientBillDetailsDto
+				.setPatientBill(PatientBillBusinessImpl.convertToPatientBillDto(patientBillDetail.getPatientBill()));
+		patientBillDetailsDto.setMedicine(MedicineBusinessImpl.convertToMedicineDto(patientBillDetail.getMedicine()));
+		return patientBillDetailsDto;
+
+	}
+
+	public static PatientBillDto convertToPatientBillDto(PatientBill patientBill) {
+		PatientBillDto patientBillDto = new PatientBillDto();
+		patientBillDto.setCreateDate(patientBill.getCreateDate());
+		patientBillDto.setPatientBillId(patientBill.getPatientBillId());
+		patientBillDto.setPatient(PatientBusinessImpl.convertToPatientDto(patientBill.getPatient()));
+		List<PatientBillDetailsDto> patientBillDetailDtoLst = new ArrayList<PatientBillDetailsDto>();
+		for (PatientBillDetails patientBillDetail : patientBill.getPatientBillDetails()) {
+			PatientBillDetailsDto patientBillDetailsDto = convertToPatientBillDetailDto(patientBillDetail);
+			patientBillDetailDtoLst.add(patientBillDetailsDto);
+		}
+		patientBillDto.setPatientBillDetails(patientBillDetailDtoLst);
+		return patientBillDto;
 	}
 
 }
