@@ -4,6 +4,8 @@ import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -22,6 +24,15 @@ import com.canh.healthcare.domain.interfaces.PatientBillBusiness;
 import com.canh.healthcare.model.PatientBillDetailsDto;
 import com.canh.healthcare.model.PatientBillDto;
 import com.canh.healthcare.model.PatientDto;
+
+import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
+import net.sf.dynamicreports.report.builder.DynamicReports;
+import net.sf.dynamicreports.report.builder.column.Columns;
+import net.sf.dynamicreports.report.builder.component.Components;
+import net.sf.dynamicreports.report.builder.datatype.DataTypes;
+import net.sf.dynamicreports.report.constant.HorizontalAlignment;
+import net.sf.dynamicreports.report.exception.DRException;
+import net.sf.jasperreports.engine.JREmptyDataSource;
 
 public class MedicneBillCheckForm extends JInternalFrame implements ActionListener {
 	/**
@@ -63,6 +74,7 @@ public class MedicneBillCheckForm extends JInternalFrame implements ActionListen
 		this.setVisible(true);
 		setPreferredSize(new Dimension(800, 400));
 		this.setTitle("Kiểm toa");
+		createReport();
 		pack();
 	}
 
@@ -209,6 +221,33 @@ public class MedicneBillCheckForm extends JInternalFrame implements ActionListen
 
 		for (int i = 0; i < ar.size(); i++) {
 			model.addRow(ar.get(i));
+		}
+	}
+
+	public void createReport() {
+		JasperReportBuilder report = DynamicReports.report();// a new report
+		List<String> a = new ArrayList<String>();
+		report.columns(Columns.column("Customer Id", "id", DataTypes.integerType()),
+				Columns.column("First Name", "first_name", DataTypes.stringType()),
+				Columns.column("Last Name", "last_name", DataTypes.stringType()),
+				Columns.column("Date", "date", DataTypes.dateType()))
+				.title(// title of the report
+						Components.text("SimpleReportExample").setHorizontalAlignment(HorizontalAlignment.CENTER))
+				.addTitle(Components.text("-------------------"))
+				.pageFooter(Components.pageXofY())// show page number on the page foote
+				.setDataSource(new JREmptyDataSource());
+
+		report.addTitle(Components.text("----sdfdf---------------"));
+		try {
+			// show the report
+			report.show();
+
+			// export the report to a pdf file
+			report.toPdf(new FileOutputStream("D:/report.pdf"));
+		} catch (DRException e) {
+			e.printStackTrace();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
 		}
 	}
 
