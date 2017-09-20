@@ -15,6 +15,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedNativeQueries;
+import javax.persistence.NamedNativeQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -22,6 +24,10 @@ import com.canh.healthcare.model.PatientBillDto;
 
 @Entity
 @Table(name = "Patient_Bills")
+@NamedNativeQueries({
+	@NamedNativeQuery(name = "findPatientBillById",query = " select * from Patient_Bills p where p.patientBillId = :patientBillId ",resultClass = PatientBill.class
+	)
+})
 public class PatientBill {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,7 +52,7 @@ public class PatientBill {
 		this.patientBillId = patientBillId;
 	}
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "id", nullable = false)
+	@JoinColumn(name = "patientId", nullable = false)
 	@Access(AccessType.PROPERTY)
 	public Patient getPatient() {
 		return patient;

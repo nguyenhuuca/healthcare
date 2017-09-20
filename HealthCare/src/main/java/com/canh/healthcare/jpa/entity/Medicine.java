@@ -20,13 +20,13 @@ import com.canh.healthcare.model.MedicineDto;
 @Entity
 @Table(name = "medicine")
 @NamedNativeQueries({
-	@NamedNativeQuery(name = "findMedicineById",query = " select * from Medicine p where p.id = :medicineId ",resultClass = Medicine.class
+	@NamedNativeQuery(name = "findMedicineById",query = " select * from Medicine p where p.medicineId = :medicineId ",resultClass = Medicine.class
 	)
 })
 public class Medicine {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	int id;
+	int medicineId;
 	String name;
 	String unit;
 	Long unitPriceBuy;
@@ -39,7 +39,7 @@ public class Medicine {
 	}
 	public Medicine(MedicineDto medicineDto){
 		if(medicineDto.getId()!=0){
-			this.id = medicineDto.getId();
+			this.medicineId = medicineDto.getId();
 		}
 		this.name = medicineDto.getName();
 		this.unit =  medicineDto.getUnit();
@@ -48,11 +48,11 @@ public class Medicine {
 	}
 
 	public int getId() {
-		return id;
+		return medicineId;
 	}
 
 	public void setId(int id) {
-		this.id = id;
+		this.medicineId = id;
 	}
 
 	@Column(name = "name_medicine")

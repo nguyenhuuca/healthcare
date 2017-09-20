@@ -2,11 +2,18 @@ package com.canh.healthcare.mdimanager.patientgui;
 
 import java.awt.Dimension;
 import java.awt.Insets;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JDesktopPane;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -14,6 +21,12 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
+
+import com.canh.healthcare.domain.impl.PatientBusinessImpl;
+import com.canh.healthcare.domain.interfaces.PatientBusiness;
+import com.canh.healthcare.mdimanager.utils.GUIUtils;
+import com.canh.healthcare.model.PatientDto;
+import com.canh.healthcare.model.PatientRecordDto;
 
 public class PatientHistoryForm extends JInternalFrame implements ActionListener {
 
@@ -31,7 +44,19 @@ public class PatientHistoryForm extends JInternalFrame implements ActionListener
 	private JTextField txtMobile = new JTextField(10);
 	private JLabel lblAddress = new JLabel("Địa chỉ:");
 	private JTextField txtAddress = new JTextField(30);
-	private JButton btnSearch= new JButton("Tìm kiếm");
+	private JButton btnSearch = new JButton("Tìm kiếm");
+	PatientDto patientDto = null;;
+
+	PatientBusiness patientBusiness = new PatientBusinessImpl();
+
+	JTable table = new JTable();
+	DefaultTableModel model = new DefaultTableModel() {
+		@Override
+		public boolean isCellEditable(int row, int column) {
+			// all cells false
+			return false;
+		}
+	};
 
 	public PatientHistoryForm() {
 		super();
@@ -61,7 +86,7 @@ public class PatientHistoryForm extends JInternalFrame implements ActionListener
 		searchArea
 				.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Thông tin bệnh nhân"));
 
-		//row 1
+		// row 1
 		size = lblMobile.getPreferredSize();
 		marginLeft = 20 + insets.left;
 		margintTop = 25 + insets.top;
@@ -90,7 +115,7 @@ public class PatientHistoryForm extends JInternalFrame implements ActionListener
 		height = size.height;
 		txtName.setBounds(marginLeft, insets.top + 20, width, height);
 		searchArea.add(txtName);
-		
+
 		size = lblBirthDay.getPreferredSize();
 		marginLeft += width;
 		width = size.width;
@@ -104,8 +129,8 @@ public class PatientHistoryForm extends JInternalFrame implements ActionListener
 		height = size.height;
 		txtBirthDate.setBounds(marginLeft, insets.top + 20, width, height);
 		searchArea.add(txtBirthDate);
-		
-		//row 2:
+
+		// row 2:
 		size = lblAddress.getPreferredSize();
 		marginLeft = 20 + insets.left;
 		margintTop = 55 + insets.top;
@@ -113,27 +138,28 @@ public class PatientHistoryForm extends JInternalFrame implements ActionListener
 		height = size.height;
 		lblAddress.setBounds(marginLeft, margintTop, width, height);
 		searchArea.add(lblAddress);
-		
+
 		size = txtAddress.getPreferredSize();
 		marginLeft += width;
 		width = size.width;
 		height = size.height;
 		txtAddress.setBounds(marginLeft, insets.top + 50, width, height);
 		searchArea.add(txtAddress);
-		
-		//row 3
+
+		// row 3
 		size = btnSearch.getPreferredSize();
 		marginLeft = 20 + insets.left;
 		margintTop = 85 + insets.top;
 		width = size.width;
 		height = size.height;
 		btnSearch.setBounds(marginLeft, margintTop, width, height);
+		btnSearch.setActionCommand("SearchHistoryPatient");
+		btnSearch.addActionListener(this);
 		searchArea.add(btnSearch);
-		
 
 		add(searchArea);
 	}
-	
+
 	public void createResultArea() {
 		JPanel resultArea = new JPanel();
 		resultArea.setLayout(null);
@@ -146,12 +172,30 @@ public class PatientHistoryForm extends JInternalFrame implements ActionListener
 		int height = size.height;
 		resultArea.setBounds(marginLeft, margintTop, width, height);
 		resultArea.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Kết quả tìm kiếm"));
-		
-		JTable table = new JTable();
-		DefaultTableModel model = new DefaultTableModel();
-		Object columnNames[] = { "Ngày khám", "Ngày tái khám", "Chẩn đoán bệnh","Tổn chi phí" };
+
+		Object columnNames[] = { "Id", "Ngày khám","Ngày tám khám", "Chẩn đoán bệnh", "Tổn chi phí" };
 		model.setColumnIdentifiers(columnNames);
 		table.setModel(model);
+		
+		table.addMouseListener(new MouseAdapter() {
+			public void mousePressed(MouseEvent me) {
+				JTable table = (JTable) me.getSource();
+				Point p = me.getPoint();
+				int row = table.rowAtPoint(p);
+				if (me.getClickCount() == 2) {
+					System.out.println(table.getValueAt(table.getSelectedRow(), 0).toString());
+					MedicneBillCheckForm billCheckForm = new MedicneBillCheckForm(Integer.parseInt(table.getValueAt(table.getSelectedRow(), 0).toString()),patientDto);
+					JDesktopPane d = getDesktopPane();
+					d.add(billCheckForm);
+					GUIUtils.centerWithinDesktop(billCheckForm);
+					toBack();
+					
+				}
+			}
+		});
+		table.getColumnModel().getColumn(0).setMinWidth(0);
+		table.getColumnModel().getColumn(0).setMaxWidth(0);
+		table.getColumnModel().getColumn(0).setWidth(0);
 		// populateJtable(model);
 		JScrollPane scrollPane = new JScrollPane(table);
 		scrollPane.setPreferredSize(new Dimension(750, 200));
@@ -162,15 +206,48 @@ public class PatientHistoryForm extends JInternalFrame implements ActionListener
 		height = size.height;
 		scrollPane.setBounds(marginLeft, margintTop, width, height);
 		resultArea.add(scrollPane);
-		
-		
-		
+
 		add(resultArea);
 
 	}
 
+	public void populateJtable(DefaultTableModel model, PatientDto patientDto) {
+		List<Object[]> ar = new ArrayList<Object[]>();
+		// Object columnNames[] = { "Ngày khám", "Ngày tái khám", "Chẩn đoán bệnh", "Tổn
+		// chi phí" };
+
+		for (PatientRecordDto patientRecordDto : patientDto.getPattientRecords()) {
+
+			int id = patientRecordDto.getPatientBillId();
+			Date examinationDate = patientRecordDto.getExaminationDay();
+			Date reExaminateDate = patientRecordDto.getReExamminatioDate();
+			String description = patientRecordDto.getDescription();
+			Long totalCost = patientRecordDto.getTotalCost();
+			Object[] row = { id, examinationDate, reExaminateDate, description, totalCost };
+			ar.add(row);
+		}
+
+		for (int i = 0; i < ar.size(); i++) {
+			model.addRow(ar.get(i));
+		}
+	}
+
+	public void populateDateForPatientGroup(PatientDto patientDto) {
+		txtName.setText(patientDto.getName());
+		txtBirthDate.setText(patientDto.getBirthDay());
+		txtAddress.setText(patientDto.getAddress());
+	}
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		switch (e.getActionCommand()) {
+		case "SearchHistoryPatient":
+			((DefaultTableModel) table.getModel()).setRowCount(0);
+			patientDto = patientBusiness.searchPatientByMobile(txtMobile.getText());
+			populateDateForPatientGroup(patientDto);
+			populateJtable(model, patientDto);
+			break;
+		}
 
 	}
 
